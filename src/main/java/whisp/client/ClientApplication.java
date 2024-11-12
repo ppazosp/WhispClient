@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import whisp.interfaces.ClientInterface;
+import whisp.interfaces.ServerInterface;
 
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
