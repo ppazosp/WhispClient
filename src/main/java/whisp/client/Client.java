@@ -10,7 +10,7 @@ import java.util.Map;
 public class Client extends UnicastRemoteObject implements ClientInterface {
 
     String username;
-    HashMap<String, ClientInterface> activeClients;
+    HashMap<String, ClientInterface> friends;
 
     protected Client(String username) throws RemoteException {
         super();
@@ -29,8 +29,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 
     @Override
     public void receiveActiveClients(HashMap<String,ClientInterface> clients) throws RemoteException {
-        activeClients = clients;
-        activeClients.remove(this.username);
+        friends = clients;
 
         printActiveClients();
     }
@@ -39,7 +38,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
     public void receiveNewClient(ClientInterface client) throws RemoteException {
         System.out.println(client.getUsername() + " connected");
 
-        activeClients.put(client.getUsername(), client);
+        friends.put(client.getUsername(), client);
 
         printActiveClients();
     }
@@ -47,7 +46,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
     @Override
     public void disconnectClient(ClientInterface client) throws RemoteException {
         String clientUsername = "";
-        for (Map.Entry<String, ClientInterface> entry : activeClients.entrySet()) {
+        for (Map.Entry<String, ClientInterface> entry : friends.entrySet()) {
             if (entry.getValue().equals(client)) {
                 clientUsername = entry.getKey();
                 break;
@@ -56,7 +55,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 
         System.out.println( clientUsername + " disconnected");
 
-        activeClients.remove(clientUsername);
+        friends.remove(clientUsername);
 
         printActiveClients();
     }
@@ -65,9 +64,9 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
     public void ping() throws RemoteException {}
 
     private void printActiveClients() throws RemoteException {
-        System.out.println("\n-----Active clients (" + activeClients.size() + ")-----");
+        System.out.println("\n-----Active friends (" + friends.size() + ")-----");
         System.out.print("[ ");
-        for (ClientInterface c : activeClients.values()) System.out.print(c.getUsername()+ " ");
+        for (ClientInterface c : friends.values()) System.out.print(c.getUsername()+ " ");
         System.out.print("]\n\n");
     }
 }

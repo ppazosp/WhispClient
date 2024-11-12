@@ -10,7 +10,6 @@ import whisp.interfaces.ServerInterface;
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Scanner;
 
 public class ClientApplication extends Application {
     @Override
@@ -32,7 +31,7 @@ public class ClientApplication extends Application {
             server.registerClient(client);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error connecting to server " + e.getMessage());
         }
     }
 }
