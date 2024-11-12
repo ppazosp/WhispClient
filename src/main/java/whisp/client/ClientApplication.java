@@ -10,6 +10,7 @@ import whisp.interfaces.ServerInterface;
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Scanner;
 
 public class ClientApplication extends Application {
     @Override
@@ -26,7 +27,8 @@ public class ClientApplication extends Application {
             Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             ServerInterface server = (ServerInterface) registry.lookup("MessagingServer");
 
-            ClientInterface client = new Client();
+            String username = args[0];
+            ClientInterface client = new Client(username);
             server.registerClient(client);
 
         } catch (Exception e) {
