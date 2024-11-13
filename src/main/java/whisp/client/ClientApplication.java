@@ -27,8 +27,12 @@ public class ClientApplication extends Application {
             ServerInterface server = (ServerInterface) registry.lookup("MessagingServer");
 
             String username = args[0];
-            ClientInterface client = new Client(username);
-            server.registerClient(client);
+            Client client = new Client(username);
+            server.registerClient((ClientInterface) client);
+
+            client.menuImplementation();
+
+
 
         } catch (Exception e) {
             System.err.println("Error connecting to server " + e.getMessage());
