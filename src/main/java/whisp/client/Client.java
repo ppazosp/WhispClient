@@ -15,6 +15,10 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
     private HashMap<String, ClientInterface> friends;
     private MenuViewController controller;
 
+    public HashMap<String, ClientInterface> getFriends() {
+        return friends;
+    }
+
     public void setController(MenuViewController controller) {
         this.controller = controller;
     }
@@ -35,7 +39,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
         System.out.println("[" + senderName + "]: " + message);
         System.out.println("------------------------------");
 
-        controller.showMessage(message);
+        controller.receiveMessage(new Message(senderName, message, username));
     }
 
     @Override
@@ -50,6 +54,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
         System.out.println(client.getUsername() + " connected");
 
         friends.put(client.getUsername(), client);
+
+        controller.friendConnected(client.getUsername());
 
         printActiveClients();
     }
@@ -68,6 +74,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 
         friends.remove(clientUsername);
 
+        controller.friendDisconnected(clientUsername);
+
         printActiveClients();
     }
 
@@ -82,16 +90,30 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
         }
         System.out.print("]\n\n");
 
-        controller.showFriends(friends.keySet());
+        controller.showFriends();
     }
 
-    public void sendMessage(String friend, String message) {
+    public void sendMessage(Message message) {
         try {
-            ClientInterface friendClient = friends.get(friend);
-            friendClient.receiveMessage(message, this.username);
+            ClientInterface friendClient = friends.get(message.getReceiver());
+            friendClient.receiveMessage(message.getContent(), message.getSender());
         }catch (RemoteException e){
-            System.err.println(friend + " is not available right now. Try messaging him later");
+            System.err.println(message.getSender() + " is not available right now. Try messaging him later");
             Logger.error("Cannot send message to " + message);
         }
+    }
+
+    private void addFriend(String text){
+        //buscar en la lista de clientes activos
+        for(String friend : friends.keySet()){
+            if(friend.equals(text)){
+                Logger.error("You are already friend of "+ friend + ".");
+                return;
+            }
+        }
+
+        //llamar al servido consultando la lista de clientes activos
+
+
     }
 }

@@ -3,7 +3,7 @@ package whisp.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class FriendViewController {
+public class RequestViewController {
 
     MenuViewController menuViewController;
 
@@ -19,9 +19,12 @@ public class FriendViewController {
     }
 
     @FXML
-    public void loadChat()
-    {
-        menuViewController.setLoadedChatUser(usernameLabel.getText());
-        menuViewController.loadChat();
+    public void acceptResquest(){
+
+    }
+
+    @FXML
+    public void cancelResquest(){
+
     }
 }
