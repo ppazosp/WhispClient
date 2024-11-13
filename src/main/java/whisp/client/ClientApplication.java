@@ -24,15 +24,17 @@ public class ClientApplication extends Application {
         menuViewController.initialize(client);
         client.setController(menuViewController);
         server.registerClient(client);
+        menuViewController.createDB();
 
         stage.setTitle("Whisp");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
     public static void main(String[] args) {
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            Registry registry = LocateRegistry.getRegistry("localhost", 1100);
             server = (ServerInterface) registry.lookup("MessagingServer");
 
             String username = args[0];

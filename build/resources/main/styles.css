@@ -1,0 +1,9 @@
+.hbox-default {
+    -fx-border-color: #000000;
+    -fx-border-radius: 1;
+    -fx-border-width: 2;
+}
+
+.hbox-default:hover {
+    -fx-background-color: #dcdcdc;
+}
