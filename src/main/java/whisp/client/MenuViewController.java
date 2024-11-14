@@ -74,8 +74,8 @@ public class MenuViewController {
     }
 
     @FXML
-    public void addFriend(){
-        client.addFriend(searchField.getText());
+    public void sendRequest(){
+        client.sendRequest(searchField.getText());
         searchField.clear();
     }
 
@@ -166,7 +166,7 @@ public class MenuViewController {
                         RequestViewController controller = loader.getController();
                         controller.setMenuViewController(this);
 
-                        controller.setUsernameLabel(fr.getReceiverUsername());
+                        controller.setUsernameLabel(fr.getSenderUsername());
 
                         friendsVbox.getChildren().add(requestNode);
                     }
@@ -188,6 +188,15 @@ public class MenuViewController {
         friendRequests.add(new FriendRequest(sender, receiver));
 
         showFriends();
+    }
+
+    public void addFriend(String friendName){
+        client.addFriend(friendName);
+    }
+
+    public void friendAdded(String friendName){
+        friendRequests.removeIf(f -> f.getSenderUsername().equals(friendName));
+        friendsMap.put(friendName, new Friend());
     }
 
 

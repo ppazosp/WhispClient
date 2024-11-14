@@ -6,9 +6,7 @@ import whisp.interfaces.ServerInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Client extends UnicastRemoteObject implements ClientInterface {
@@ -112,8 +110,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
         }
     }
 
-    public void addFriend(String userNewFriend){
-        //buscar en la lista de clientes activos
+    public void sendRequest(String userNewFriend){
         for(String friend : friends.keySet()){
             if(friend.equals(userNewFriend)){
                 Logger.error("You are already friend of "+ friend + ".");
@@ -122,9 +119,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
         }
 
         try {
-            //llamar al servido consultando la lista de clientes activos
            if (server.sendRequest(username, userNewFriend)){
-               //LOGICA DE CAMBIAR GUI
                controller.addResquest(username, userNewFriend);
 
            }
@@ -134,9 +129,24 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
         }
     }
 
+    public void addFriend(String friendName){
+        try {
+            System.out.println(friendName + " is now your friend");
+
+            friends.put(friendName, server.getClient(friendName));
+
+            controller.friendAdded(friendName);
+
+            printActiveClients();
+
+        } catch (RemoteException e) {
+            Logger.error("Cannot connect to server");
+        }
+
+    }
+
     @Override
     public void receiveFriendRequest(String requestSender) throws RemoteException {
-        //LOGICA DE CAMBIAR LA GUI
         controller.addResquest(requestSender, username);
     }
 }

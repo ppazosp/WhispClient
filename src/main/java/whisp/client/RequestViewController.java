@@ -20,7 +20,7 @@ public class RequestViewController {
 
     @FXML
     public void acceptResquest(){
-
+        menuViewController.addFriend(usernameLabel.getText());
     }
 
     @FXML

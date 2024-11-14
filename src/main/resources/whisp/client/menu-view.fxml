@@ -26,7 +26,7 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="650.0" style="-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5;">
                <children>
                   <TextField fx:id="searchField" prefHeight="26.0" prefWidth="543.0" promptText="Search friend..." />
-                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#addFriend" prefHeight="26.0" prefWidth="60.0" text="+" />
+                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#sendRequest" prefHeight="26.0" prefWidth="60.0" text="+" />
                </children>
                <HBox.margin>
                   <Insets />
