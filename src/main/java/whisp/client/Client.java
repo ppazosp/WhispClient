@@ -2,18 +2,26 @@ package whisp.client;
 
 import whisp.Logger;
 import whisp.interfaces.ClientInterface;
+import whisp.interfaces.ServerInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Client extends UnicastRemoteObject implements ClientInterface {
 
     final String username;
     private HashMap<String, ClientInterface> friends;
     private MenuViewController controller;
+    private static ServerInterface server;
+
+    //setter para server
+    public static void setServer(ServerInterface server) {
+        Client.server = server;
+    }
 
     public HashMap<String, ClientInterface> getFriends() {
         return friends;
@@ -26,6 +34,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
     protected Client(String username) throws RemoteException {
         super();
         this.username = username;
+        setServer(ClientApplication.getServer());
     }
 
     @Override
@@ -103,17 +112,31 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
         }
     }
 
-    private void addFriend(String text){
+    public void addFriend(String userNewFriend){
         //buscar en la lista de clientes activos
         for(String friend : friends.keySet()){
-            if(friend.equals(text)){
+            if(friend.equals(userNewFriend)){
                 Logger.error("You are already friend of "+ friend + ".");
                 return;
             }
         }
 
-        //llamar al servido consultando la lista de clientes activos
+        try {
+            //llamar al servido consultando la lista de clientes activos
+           if (server.sendRequest(username, userNewFriend)){
+               //LOGICA DE CAMBIAR GUI
+               controller.addResquest(username, userNewFriend);
 
+           }
+        }catch (RemoteException e){
+            System.err.println("Error connecting to server");
+            Logger.error("Error connecting to server");
+        }
+    }
 
+    @Override
+    public void receiveFriendRequest(String requestSender) throws RemoteException {
+        //LOGICA DE CAMBIAR LA GUI
+        controller.addResquest(requestSender, username);
     }
 }

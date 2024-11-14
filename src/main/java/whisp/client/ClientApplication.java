@@ -15,6 +15,11 @@ public class ClientApplication extends Application {
     private static Client client;
     private static ServerInterface server;
 
+    //getter de server
+    public static ServerInterface getServer() {
+        return server;
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("menu-view.fxml"));
