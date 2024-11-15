@@ -2,6 +2,7 @@ package whisp.client;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 public class FriendViewController {
 
@@ -9,6 +10,8 @@ public class FriendViewController {
 
     @FXML
     Label usernameLabel;
+    @FXML
+    HBox friendHbox;
 
     public void setUsernameLabel(String username) {
         usernameLabel.setText(username);
@@ -21,6 +24,7 @@ public class FriendViewController {
     @FXML
     public void loadChat()
     {
+        menuViewController.showFriends();
         menuViewController.setLoadedChatUser(usernameLabel.getText());
         menuViewController.loadChat();
     }

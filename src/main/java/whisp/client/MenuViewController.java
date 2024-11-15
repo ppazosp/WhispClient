@@ -85,6 +85,8 @@ public class MenuViewController {
 
     @FXML
     public void sendRequest(){
+        if (searchField.getText().isEmpty()) return;
+
         client.sendRequest(searchField.getText());
         searchField.clear();
     }
@@ -119,6 +121,9 @@ public class MenuViewController {
                 }
 
                 chatLabel.setText(loadedChatUser + "'s chat");
+
+                friendsMap.get(loadedChatUser).readMessage();
+                showFriends();
             } catch (IOException e) {
                 Logger.error("Cannot load chat");
             }
@@ -153,6 +158,18 @@ public class MenuViewController {
                     FriendViewController controller = loader.getController();
                     controller.setMenuViewController(this);
                     controller.setUsernameLabel(friendName);
+
+                    if(!friendsMap.get(friendName).isConnected()){
+                        friendNode.getStyleClass().add("hbox-disconnected");
+                    }
+
+                    if (friendsMap.get(friendName).hasMessages()){
+                        friendNode.getStyleClass().add("hbox-alert");
+                    }
+
+                    if (friendName.equals(loadedChatUser)) {
+                        friendNode.getStyleClass().add("hbox-selected");
+                    }
 
                     friendsVbox.getChildren().add(friendNode);
                 }
@@ -194,6 +211,8 @@ public class MenuViewController {
         friendsMap.get(message.getSender()).addMessage(message);
 
         if(loadedChatUser.equals(message.getSender())) loadChat();
+
+        showFriends();
     }
 
     public void addResquest(String sender, String receiver){

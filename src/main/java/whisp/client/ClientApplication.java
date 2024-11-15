@@ -67,8 +67,12 @@ public class ClientApplication extends Application {
         window.setScene(scene);
 
         scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER && !menuViewController.sendButton.isDisable()) {
-                menuViewController.sendMessage();
+            if (event.getCode() == KeyCode.ENTER) {
+                if (menuViewController.searchField.isFocused()) {
+                    menuViewController.sendRequest();
+                } else if (menuViewController.myMessageField.isFocused() && !menuViewController.sendButton.isDisable()) {
+                    menuViewController.sendMessage();
+                }
             }
         });
 
@@ -79,6 +83,7 @@ public class ClientApplication extends Application {
 
     public static void main(String[] args) {
         try {
+            System.setProperty("java.rmi.server.hostname", "192.168.1.140");
             Registry registry = LocateRegistry.getRegistry("192.168.1.140", 1099);
             server = (ServerInterface) registry.lookup("MessagingServer");
 
@@ -92,8 +97,7 @@ public class ClientApplication extends Application {
 
     public boolean login(String username, String password){
         try{
-            //return server.login(username, password);
-            return true;
+            return server.login(username, password);
         }catch (Exception e){
             Logger.error("Cannot connect to server");
         }

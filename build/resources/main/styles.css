@@ -8,3 +8,36 @@
 .hbox-default:hover {
     -fx-background-color: #dcdcdc;
 }
+
+.hbox-selected {
+    -fx-background-color:  #dcdcdc;
+    -fx-border-color: #000000;
+    -fx-border-radius: 1;
+    -fx-border-width: 2;
+}
+
+.hbox-selected:hover {
+    -fx-background-color: #dcdcdc;
+}
+
+.hbox-disconnected {
+    -fx-background-color:  #9B9A97;
+    -fx-border-color: #000000;
+    -fx-border-radius: 1;
+    -fx-border-width: 2;
+}
+
+.hbox-disconnected:hover {
+    -fx-background-color: #dcdcdc;
+}
+
+.hbox-alert {
+    -fx-background-color:  #D16AEA;
+    -fx-border-color: #000000;
+    -fx-border-radius: 1;
+    -fx-border-width: 2;
+}
+
+.hbox-alert:hover {
+    -fx-background-color: #dcdcdc;
+}

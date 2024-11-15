@@ -29,6 +29,8 @@ public class LoginViewController {
             }catch (Exception e){
                 Logger.error("Cannot connect to mainApp");
             }
+        }else{
+
         }
     }
 
