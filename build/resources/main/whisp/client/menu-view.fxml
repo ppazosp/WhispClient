@@ -61,9 +61,9 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <ScrollPane focusTraversable="false" hbarPolicy="NEVER" prefHeight="414.0" prefWidth="560.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-border-color: #000000; -fx-border-width: 2;" vbarPolicy="NEVER">
+                  <ScrollPane fx:id="chatScroll" focusTraversable="false" hbarPolicy="NEVER" prefHeight="414.0" prefWidth="560.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-border-color: #000000; -fx-border-width: 2;" vbarPolicy="NEVER">
                      <content>
-                        <VBox fx:id="chatVbox" alignment="TOP_CENTER" prefHeight="392.0" prefWidth="554.0" spacing="10.0" style="-fx-background-color: transparent;">
+                        <VBox fx:id="chatVbox" alignment="BOTTOM_CENTER" prefHeight="392.0" prefWidth="554.0" spacing="10.0" style="-fx-background-color: transparent;">
                            <padding>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </padding>
@@ -73,7 +73,7 @@
                                     <Image url="@../../images/whisp_logo.png" />
                                  </image>
                                  <VBox.margin>
-                                    <Insets top="20.0" />
+                                    <Insets bottom="20.0" />
                                  </VBox.margin>
                               </ImageView>
                            </children>

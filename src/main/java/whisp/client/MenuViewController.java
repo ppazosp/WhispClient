@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import whisp.Logger;
@@ -41,6 +42,9 @@ public class MenuViewController {
     TextField searchField;
 
     @FXML
+    ScrollPane chatScroll;
+
+    @FXML
     TextField myMessageField;
     @FXML
     Button sendButton;
@@ -50,6 +54,10 @@ public class MenuViewController {
         this.client = client;
 
         usernameLabel.setText(client.username + " Whisps");
+
+        chatVbox.heightProperty().addListener((_, _, _) -> {
+            chatScroll.setVvalue(1.0);
+        });
 
     }
 
@@ -121,6 +129,8 @@ public class MenuViewController {
         }else{
             friendsMap.get(friend).setConnected(true);
         }
+
+        friendRequests.removeIf(f -> f.getReceiverUsername().equals(friend));
     }
 
     public void friendDisconnected(String friend){
