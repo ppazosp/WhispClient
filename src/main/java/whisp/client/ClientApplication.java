@@ -3,6 +3,7 @@ package whisp.client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import whisp.Logger;
 import whisp.interfaces.ServerInterface;
@@ -62,7 +63,15 @@ public class ClientApplication extends Application {
         window = new Stage();
 
         window.setTitle("Whisp");
+
         window.setScene(scene);
+
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER && !menuViewController.sendButton.isDisable()) {
+                menuViewController.sendMessage();
+            }
+        });
+
         window.show();
 
         oldWindow.close();
@@ -70,7 +79,7 @@ public class ClientApplication extends Application {
 
     public static void main(String[] args) {
         try {
-            Registry registry = LocateRegistry.getRegistry("192.168.1.135", 1099);
+            Registry registry = LocateRegistry.getRegistry("192.168.1.140", 1099);
             server = (ServerInterface) registry.lookup("MessagingServer");
 
             launch(args);

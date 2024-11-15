@@ -73,6 +73,8 @@ public class MenuViewController {
     @FXML
     public void sendMessage()
     {
+        if(myMessageField.getText().isEmpty()) return;
+
         Message message = new Message(client.username, myMessageField.getText(), loadedChatUser);
         client.sendMessage(message);
         friendsMap.get(loadedChatUser).addMessage(message);

@@ -1,5 +1,7 @@
 package whisp.client;
 
+import java.io.Serializable;
+
 public class Message {
 
     private final String sender;

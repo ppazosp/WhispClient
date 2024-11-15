@@ -4,12 +4,13 @@ import whisp.Logger;
 import whisp.interfaces.ClientInterface;
 import whisp.interfaces.ServerInterface;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Client extends UnicastRemoteObject implements ClientInterface {
+public class Client extends UnicastRemoteObject implements ClientInterface, Serializable {
 
     final String username;
     private HashMap<String, ClientInterface> friends;
@@ -51,9 +52,12 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
 
     @Override
     public void receiveActiveClients(HashMap<String,ClientInterface> clients) throws RemoteException {
-        friends = clients;
-
-        printActiveClients();
+        try {
+            friends = clients;
+            printActiveClients();
+        }catch (Exception e){
+            Logger.error("Cannot receive friends");
+        }
     }
 
     @Override

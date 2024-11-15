@@ -1,5 +1,7 @@
 package whisp.client;
 
+import java.io.Serializable;
+
 public class FriendRequest {
 
     String senderUsername;
