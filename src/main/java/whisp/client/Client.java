@@ -129,6 +129,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
         }
     }
 
+    //FUNCION ACEPTAR AMIGO
     public void addFriend(String friendName){
         try {
             System.out.println(friendName + " is now your friend");
@@ -136,6 +137,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
             friends.put(friendName, server.getClient(friendName));
 
             controller.friendAdded(friendName);
+
+            server.requestAcepted(friendName, username);
 
             printActiveClients();
 
@@ -149,4 +152,5 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
     public void receiveFriendRequest(String requestSender) throws RemoteException {
         controller.addResquest(requestSender, username);
     }
+
 }
