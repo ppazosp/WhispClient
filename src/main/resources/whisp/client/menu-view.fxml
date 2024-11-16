@@ -7,88 +7,96 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" spacing="15.0" style="-fx-background-color: #32D7D9;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.MenuViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.MenuViewController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <children>
-      <HBox alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="760.0">
+      <ImageView fitHeight="544.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../images/bg.jpg" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER_RIGHT" prefHeight="532.0" prefWidth="800.0" text="made by PABLO PAZOS &amp; DAVID M. RAPOSEIRAS" textAlignment="RIGHT" textFill="WHITE">
+         <padding>
+            <Insets right="80.0" />
+         </padding>
+         <font>
+            <Font name="Arial Hebrew Scholar Bold" size="18.0" />
+         </font>
+      </Label>
+      <VBox alignment="TOP_CENTER" prefHeight="532.0" prefWidth="800.0" spacing="15.0" style="-fx-background: transparent; -fx-background-color: transparent;">
          <children>
-            <Label fx:id="usernameLabel" prefHeight="23.0" prefWidth="290.0" text="Whisp´s ">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="650.0" style="-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5;">
+            <HBox alignment="CENTER" prefHeight="20.0" prefWidth="760.0">
                <children>
-                  <TextField fx:id="searchField" prefHeight="26.0" prefWidth="543.0" promptText="Search friend..." />
-                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#sendRequest" prefHeight="26.0" prefWidth="60.0" text="+" />
+                  <Label fx:id="usernameLabel" alignment="CENTER" prefHeight="23.0" prefWidth="290.0" text="Whisp´s " textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Hebrew Bold" size="24.0" />
+                     </font>
+                  </Label>
                </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
+            </HBox>
+            <HBox prefHeight="460.0" prefWidth="760.0" spacing="20.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+               <children>
+                  <VBox prefHeight="390.0" prefWidth="200.0" spacing="5.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+                     <children>
+                        <Label text="Friend list" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Hebrew Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane focusTraversable="false" hbarPolicy="NEVER" prefHeight="440.0" prefWidth="180.0" style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: #FFFFFF; -fx-border-radius: 3;" vbarPolicy="NEVER">
+                           <content>
+                              <VBox fx:id="friendsVbox" prefHeight="434.0" prefWidth="178.0" spacing="4.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <HBox alignment="CENTER" prefHeight="10.0" prefWidth="180.0" spacing="5.0">
+                           <children>
+                              <TextField fx:id="searchField" prefHeight="34.0" prefWidth="151.0" promptText="Search friend..." styleClass="field-menu" stylesheets="@../../styles.css" />
+                              <Button fx:id="searchButton" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendRequest" prefHeight="24.0" prefWidth="24.0" styleClass="menu-button" stylesheets="@../../styles.css" text="+" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="390.0" prefWidth="580.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="chatLabel">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane fx:id="chatScroll" focusTraversable="false" hbarPolicy="NEVER" prefHeight="414.0" prefWidth="560.0" style="-fx-background-color: transparent; -fx-border-color: #FFFFFF; -fx-border-radius: 3;" vbarPolicy="NEVER">
+                           <content>
+                              <VBox fx:id="chatVbox" alignment="BOTTOM_CENTER" prefWidth="554.0" spacing="10.0" style="-fx-background-color: transparent;">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <HBox fillHeight="false" prefHeight="3.0" prefWidth="560.0" spacing="5.0" stylesheets="@../../styles.css">
+                           <children>
+                              <TextField fx:id="myMessageField" focusTraversable="false" prefHeight="26.0" prefWidth="550.0" promptText="Message..." styleClass="field-menu" stylesheets="@../../styles.css" />
+                              <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="24.0" prefWidth="36.0" styleClass="menu-button" stylesheets="@../../styles.css" text="&gt;&gt;" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
             </HBox>
          </children>
-      </HBox>
-      <HBox prefHeight="460.0" prefWidth="760.0" spacing="20.0">
-         <children>
-            <VBox prefHeight="390.0" prefWidth="200.0">
-               <children>
-                  <Label text="Friends">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <ScrollPane focusTraversable="false" hbarPolicy="NEVER" prefHeight="440.0" prefWidth="180.0" style="-fx-background-color: transparent; -fx-border-color: #000000; -fx-border-radius: 5; -fx-border-width: 2;" vbarPolicy="NEVER">
-                     <content>
-                        <VBox fx:id="friendsVbox" prefHeight="434.0" prefWidth="178.0" spacing="4.0" style="-fx-background-color: transparent;">
-                           <padding>
-                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                           </padding>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
-               </children>
-            </VBox>
-            <VBox prefHeight="390.0" prefWidth="580.0" spacing="2.0">
-               <children>
-                  <Label fx:id="chatLabel">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <ScrollPane fx:id="chatScroll" focusTraversable="false" hbarPolicy="NEVER" prefHeight="414.0" prefWidth="560.0" style="-fx-background-color: transparent; -fx-border-radius: 5; -fx-border-color: #000000; -fx-border-width: 2;" vbarPolicy="NEVER">
-                     <content>
-                        <VBox fx:id="chatVbox" alignment="BOTTOM_CENTER" prefWidth="554.0" spacing="10.0" style="-fx-background-color: transparent;">
-                           <padding>
-                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                           </padding>
-                           <children>
-                              <ImageView fitHeight="415.0" fitWidth="321.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../images/whisp_logo.png" />
-                                 </image>
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                           </children>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
-                  <HBox fillHeight="false" prefHeight="1.0" prefWidth="560.0" style="-fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 5;">
-                     <children>
-                        <TextField fx:id="myMessageField" focusTraversable="false" prefHeight="26.0" prefWidth="550.0" promptText="Message..." />
-                        <Button fx:id="sendButton" disable="true" mnemonicParsing="false" onAction="#sendMessage" prefHeight="26.0" prefWidth="70.0" text="&gt;&gt;" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
    </children>
-</VBox>
+</AnchorPane>

@@ -133,7 +133,6 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
         }
     }
 
-    //FUNCION ACEPTAR AMIGO
     public void addFriend(String friendName){
         try {
             System.out.println(friendName + " is now your friend");

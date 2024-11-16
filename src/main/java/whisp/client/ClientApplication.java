@@ -8,9 +8,14 @@ import javafx.stage.Stage;
 import whisp.Logger;
 import whisp.interfaces.ServerInterface;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 public class ClientApplication extends Application {
 
@@ -30,17 +35,10 @@ public class ClientApplication extends Application {
     }
 
     private void showLoginStage(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        LoginViewController loginViewController = fxmlLoader.getController();
-        loginViewController.initialize(this);
-
         this.window = stage;
-
-        window.setTitle("Whisp");
-        window.setScene(scene);
         window.setResizable(false);
-        window.show();
+
+        showLoginScene();
     }
 
     public void showMenuStage(String username) throws IOException {
@@ -81,26 +79,77 @@ public class ClientApplication extends Application {
         oldWindow.close();
     }
 
+    public void showLoginScene() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        LoginViewController loginViewController = fxmlLoader.getController();
+        loginViewController.initialize(this);
+
+        window.setScene(scene);
+        window.show();
+    }
+
+    public void showRegisterScene() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("register-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        RegisterViewController registerViewController = fxmlLoader.getController();
+        registerViewController.initialize(this);
+
+        window.setScene(scene);
+        window.show();
+    }
+
+    public void showChangePasswordScene() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("changePassword-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        ChangePasswordViewController changePasswordViewController = fxmlLoader.getController();
+        changePasswordViewController.initialize(this);
+
+        window.setScene(scene);
+        window.show();
+    }
+
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname", "192.168.1.140");
-            Registry registry = LocateRegistry.getRegistry("192.168.1.140", 1099);
+            System.setProperty("java.rmi.server.hostname", "localhost");
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             server = (ServerInterface) registry.lookup("MessagingServer");
 
             launch(args);
 
         } catch (Exception e) {
             System.err.println("Error connecting to server");
-            e.printStackTrace();
         }
     }
 
     public boolean login(String username, String password){
         try{
-            return server.login(username, password);
+            byte[] salt = server.getSalt(username);
+            if (salt == null) return false;
+
+            return server.login(username, Encrypter.getHashedPassword(password, salt));
         }catch (Exception e){
             Logger.error("Cannot connect to server");
         }
         return false;
+    }
+
+    public void register(String username, String password) {
+        try {
+            String[] pass = Encrypter.createHashPassword(password);
+            server.register(username, pass[1], pass[0]);
+        }catch (Exception e){
+            Logger.error("Registration failed");
+        }
+
+    }
+
+    public void changePassword(String username, String password){
+        try {
+            String[] pass = Encrypter.createHashPassword(password);
+            server.changePassword(username, pass[1], pass[0]);
+        }catch (Exception e){
+            Logger.error("Registration failed");
+        }
     }
 }

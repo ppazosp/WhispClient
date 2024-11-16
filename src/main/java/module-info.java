@@ -2,6 +2,7 @@ module whisp.client {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.rmi;
+    requires java.desktop;
 
     exports whisp.client;
     opens whisp.client to javafx.fxml;

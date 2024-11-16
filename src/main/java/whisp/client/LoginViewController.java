@@ -1,6 +1,7 @@
 package whisp.client;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -11,8 +12,9 @@ public class LoginViewController {
     ClientApplication clientApp;
 
     @FXML
+    Label errorLabel;
+    @FXML
     TextField usernameField;
-
     @FXML
     PasswordField passwordField;
 
@@ -30,7 +32,26 @@ public class LoginViewController {
                 Logger.error("Cannot connect to mainApp");
             }
         }else{
+            errorLabel.setVisible(true);
+        }
+    }
 
+    @FXML
+    public void changePassword(){
+        try {
+            clientApp.showChangePasswordScene();
+        }catch (Exception e){
+            Logger.error("Cannot load Change Password scene");
+        }
+    }
+
+    @FXML
+    public void register(){
+        try {
+            clientApp.showRegisterScene();
+        }catch (Exception e){
+            Logger.error("Cannot load Register Scene ");
+            e.printStackTrace();
         }
     }
 
