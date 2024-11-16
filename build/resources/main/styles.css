@@ -1,3 +1,70 @@
+.field-login{
+    -fx-background-radius: 5;
+    -fx-background-color:   #0E39AD;
+
+    -fx-text-fill: #FFFFFF;
+    -fx-prompt-text-fill: #FFFFFF;
+
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial Hebrew";
+    -fx-font-weight: bold;
+
+}
+
+.login-button{
+    -fx-background-color:  #0E39AD;
+
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial Hebrew";
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.login-button-inverse{
+    -fx-background-color:  #FFFFFF;
+
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial Hebrew";
+    -fx-font-weight: bold;
+    -fx-text-fill: #0E39AD;
+}
+
+.login-button:hover{
+    -fx-background-color:  #6798FA;
+}
+
+.login-button-inverse:hover{
+    -fx-background-color:  #6798FA;
+}
+
+.menu-button{
+    -fx-background-color:  #FFFFFF;
+    -fx-background-radius: 3;
+
+    -fx-font-size: 18px;
+    -fx-font-family: "Arial Hebrew";
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+
+    -fx-background-insets: 0;
+}
+
+.menu-button:hover{
+    -fx-background-color:  #6798FA;
+}
+
+.field-menu{
+    -fx-background-radius: 3;
+    -fx-background-color:   #FFFFFF;
+
+    -fx-text-fill: #000000;
+    -fx-prompt-text-fill: #000000;
+
+    -fx-font-size: 12px;
+    -fx-font-family: "Arial Hebrew";
+}
+
+
 .hbox-default {
     -fx-background-color:  #32D7D9;
     -fx-border-color: #000000;

@@ -83,8 +83,8 @@ public class ClientApplication extends Application {
 
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname", "192.168.1.140");
-            Registry registry = LocateRegistry.getRegistry("192.168.1.140", 1099);
+            System.setProperty("java.rmi.server.hostname", "localhost");
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             server = (ServerInterface) registry.lookup("MessagingServer");
 
             launch(args);
