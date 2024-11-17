@@ -2,12 +2,22 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <HBox fx:id="friendHbox" alignment="CENTER_LEFT" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#loadChat" prefHeight="30.0" prefWidth="170.0" styleClass="hbox-default" stylesheets="@../../styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.FriendViewController">
    <children>
-      <Label fx:id="usernameLabel" text="Username">
+      <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+         <HBox.margin>
+            <Insets bottom="2.0" right="2.0" top="2.0" />
+         </HBox.margin>
+         <image>
+            <Image url="@../../images/user_white.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="usernameLabel" prefHeight="16.0" prefWidth="193.0" styleClass="label-default" stylesheets="@../../styles.css" text="Username">
          <font>
             <Font size="14.0" />
          </font>
@@ -15,6 +25,11 @@
             <Insets bottom="2.0" left="2.0" top="2.0" />
          </HBox.margin>
       </Label>
+      <ImageView fx:id="iconView" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+         <HBox.margin>
+            <Insets bottom="2.0" right="2.0" top="2.0" />
+         </HBox.margin>
+      </ImageView>
    </children>
    <padding>
       <Insets left="5.0" />
