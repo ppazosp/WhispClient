@@ -10,12 +10,15 @@ public class MessageViewController {
 
     @FXML
     Label messageLabel;
-
+    @FXML
+    Label timeLabel;
     @FXML
     HBox messageHbox;
 
-    public void setMessageLabel(String message) {
-        messageLabel.setText(message);
+    public void setMessage(Message message) {
+        messageLabel.setText(message.getContent());
+        timeLabel.setText(message.getTime());
+
     }
 
     public void ownMessage(){

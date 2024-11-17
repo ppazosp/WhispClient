@@ -8,12 +8,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import whisp.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MenuViewController {
 
@@ -32,6 +34,9 @@ public class MenuViewController {
     Label usernameLabel;
     @FXML
     Label chatLabel;
+
+    @FXML
+    VBox chatSideVbox;
 
     @FXML
     VBox friendsVbox;
@@ -94,6 +99,7 @@ public class MenuViewController {
     {
         Platform.runLater(() -> {
             try {
+                chatSideVbox.setVisible(true);
                 chatVbox.getChildren().clear();
 
                 for (Message message : friendsMap.get(loadedChatUser).getChat()){
@@ -101,7 +107,7 @@ public class MenuViewController {
                     Node messageNode = loader.load();
 
                     MessageViewController controller = loader.getController();
-                    controller.setMessageLabel(message.getContent());
+                    controller.setMessage(message);
 
                     if(message.getSender().equals(client.username)){
                         controller.ownMessage();
@@ -159,11 +165,11 @@ public class MenuViewController {
                     controller.setUsernameLabel(friendName);
 
                     if(!friendsMap.get(friendName).isConnected()){
-                        friendNode.getStyleClass().add("hbox-disconnected");
-                    }
-
-                    if (friendsMap.get(friendName).hasMessages()){
-                        friendNode.getStyleClass().add("hbox-alert");
+                        controller.iconView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/exclamation.png")).toExternalForm()));
+                    }else if (friendsMap.get(friendName).hasMessages()){
+                        controller.iconView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/disconnect.png")).toExternalForm()));
+                    }else{
+                        controller.iconView.setImage(null);
                     }
 
                     if (friendName.equals(loadedChatUser)) {
@@ -182,7 +188,7 @@ public class MenuViewController {
                         controller.setMenuViewController(this);
 
                         controller.setUsernameLabel(fr.getReceiverUsername());
-                        ownRequestNode.setStyle("-fx-background-color: #4CE868;");
+                        controller.iconView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/send.png")).toExternalForm()));
 
                         friendsVbox.getChildren().add(ownRequestNode);
 

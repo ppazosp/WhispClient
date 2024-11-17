@@ -2,6 +2,7 @@ package whisp.client;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class FriendViewController {
@@ -12,6 +13,8 @@ public class FriendViewController {
     Label usernameLabel;
     @FXML
     HBox friendHbox;
+    @FXML
+    ImageView iconView;
 
     public void setUsernameLabel(String username) {
         usernameLabel.setText(username);
