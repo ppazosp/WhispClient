@@ -71,7 +71,7 @@
                <font>
                   <Font name="Arial Hebrew Scholar Bold" size="12.0" />
                </font></Button>
-            <Button maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#changePassword" prefHeight="28.0" prefWidth="270.0" styleClass="login-button-inverse" stylesheets="@../../styles.css" text="I forgot my password" textFill="#0e39ad">
+            <Button maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#changePassword" prefHeight="28.0" prefWidth="270.0" styleClass="login-button-inverse" stylesheets="@../../styles.css" text="Change my password" textFill="#0e39ad">
                <font>
                   <Font name="Arial Hebrew Scholar Bold" size="12.0" />
                </font>

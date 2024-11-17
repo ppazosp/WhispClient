@@ -8,8 +8,12 @@ import javafx.stage.Stage;
 import whisp.Logger;
 import whisp.interfaces.ServerInterface;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
+
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.net.ssl.SSLContext;
 import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
@@ -111,14 +115,26 @@ public class ClientApplication extends Application {
 
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname", "localhost");
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            System.setProperty("java.rmi.server.hostname", "100.108.25.72");
+            System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
+            System.setProperty("javax.rmi.ssl.client.enabledProtocols", "TLSv1.2,TLSv1.3");
+            System.setProperty("javax.net.ssl.trustStore", "client.truststore");
+            System.setProperty("javax.net.ssl.trustStorePassword", "password");
+
+            SslRMIClientSocketFactory sslRMIClientSocketFactory = new SslRMIClientSocketFactory();
+
+
+            Registry registry = LocateRegistry.getRegistry("100.79.5.93", 1099, sslRMIClientSocketFactory);
+
             server = (ServerInterface) registry.lookup("MessagingServer");
+
+
 
             launch(args);
 
         } catch (Exception e) {
             System.err.println("Error connecting to server");
+            e.printStackTrace();
         }
     }
 
