@@ -8,9 +8,9 @@
 
 <HBox fx:id="messageHbox" alignment="CENTER_LEFT" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.MessageViewController">
    <children>
-      <VBox minWidth="100.0" style="-fx-background-color: #0E39AD; -fx-background-radius: 3;">
+      <VBox minWidth="100.0" style="-fx-background-color: #5b8085; -fx-background-radius: 3;">
          <children>
-            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #0E39AD; -fx-background-radius: 3;">
+            <HBox alignment="CENTER_LEFT">
                <children>
                   <Label fx:id="messageLabel" style="-fx-text-fill: #FFFFFF;" text="Text" wrapText="true">
                      <HBox.margin>

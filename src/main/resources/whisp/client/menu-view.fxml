@@ -17,12 +17,12 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <children>
-      <ImageView fitHeight="544.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="583.0" fitWidth="901.0" layoutX="-101.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../images/bg.jpg" />
+            <Image url="@../../images/bg3.jpeg" />
          </image>
       </ImageView>
-      <Label alignment="CENTER_RIGHT" prefHeight="532.0" prefWidth="800.0" text="made by PABLO PAZOS &amp; DAVID M. RAPOSEIRAS" textAlignment="RIGHT" textFill="WHITE">
+      <Label alignment="CENTER_RIGHT" prefHeight="532.0" prefWidth="800.0" text="made by PABLO PAZOS &amp; DAVID M. RAPOSEIRAS" textAlignment="RIGHT" textFill="WHITE" visible="false">
          <padding>
             <Insets right="80.0" />
          </padding>
@@ -50,7 +50,7 @@
                               <Font name="Arial Hebrew Bold" size="16.0" />
                            </font>
                         </Label>
-                        <ScrollPane focusTraversable="false" hbarPolicy="NEVER" prefHeight="440.0" prefWidth="180.0" style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: #FFFFFF; -fx-border-radius: 3;" vbarPolicy="NEVER">
+                        <ScrollPane focusTraversable="false" hbarPolicy="NEVER" prefHeight="440.0" prefWidth="180.0" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="NEVER">
                            <content>
                               <VBox fx:id="friendsVbox" prefHeight="434.0" prefWidth="178.0" spacing="4.0" style="-fx-background: transparent; -fx-background-color: transparent;">
                                  <padding>
@@ -78,10 +78,10 @@
                      <children>
                         <Label fx:id="chatLabel">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ScrollPane fx:id="chatScroll" focusTraversable="false" hbarPolicy="NEVER" prefHeight="414.0" prefWidth="560.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #FFFFFF; -fx-border-radius: 3;" vbarPolicy="NEVER">
+                        <ScrollPane fx:id="chatScroll" focusTraversable="false" hbarPolicy="NEVER" prefHeight="414.0" prefWidth="560.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
                            <content>
                               <VBox fx:id="chatVbox" alignment="BOTTOM_CENTER" prefWidth="554.0" spacing="10.0" style="-fx-background-color: transparent;">
                                  <padding>

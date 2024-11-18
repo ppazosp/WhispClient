@@ -125,7 +125,7 @@ public class MenuViewController {
                     myMessageField.setPromptText("User disconnected");
                 }
 
-                chatLabel.setText(loadedChatUser + "'s chat");
+                chatLabel.setText(loadedChatUser);
 
                 friendsMap.get(loadedChatUser).readMessage();
                 showFriends();
@@ -164,9 +164,9 @@ public class MenuViewController {
                     controller.setMenuViewController(this);
                     controller.setUsernameLabel(friendName);
 
-                    if(!friendsMap.get(friendName).isConnected()){
+                    if(friendsMap.get(friendName).hasMessages()){
                         controller.iconView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/exclamation.png")).toExternalForm()));
-                    }else if (friendsMap.get(friendName).hasMessages()){
+                    }else if (!friendsMap.get(friendName).isConnected()){
                         controller.iconView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/images/disconnect.png")).toExternalForm()));
                     }else{
                         controller.iconView.setImage(null);

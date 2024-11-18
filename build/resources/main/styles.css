@@ -1,6 +1,6 @@
 .field-login{
     -fx-background-radius: 5;
-    -fx-background-color:   #0E39AD;
+    -fx-background-color:   #055763;
 
     -fx-text-fill: #FFFFFF;
     -fx-prompt-text-fill: #FFFFFF;
@@ -12,7 +12,7 @@
 }
 
 .login-button{
-    -fx-background-color:  #0E39AD;
+    -fx-background-color:  #055763;
 
     -fx-font-size: 12px;
     -fx-font-family: "Arial Hebrew";
@@ -26,15 +26,15 @@
     -fx-font-size: 12px;
     -fx-font-family: "Arial Hebrew";
     -fx-font-weight: bold;
-    -fx-text-fill: #0E39AD;
+    -fx-text-fill: #055763;
 }
 
 .login-button:hover{
-    -fx-background-color:  #6798FA;
+    -fx-background-color:  #5b8085;
 }
 
 .login-button-inverse:hover{
-    -fx-background-color:  #6798FA;
+    -fx-background-color:  #5b8085;
 }
 
 .menu-button{
@@ -54,7 +54,7 @@
 }
 
 .menu-button-inverted{
-    -fx-background-color:  #0E39AD;
+    -fx-background-color:  #055763;
     -fx-background-radius: 3;
 
     -fx-font-size: 18px;
@@ -82,13 +82,13 @@
 
 .hbox-simple {
     -fx-background-radius: 5;
-    -fx-background-color:   #0E39AD;
+    -fx-background-color:   #5b8085;
 }
 
 
 .hbox-default {
     -fx-background-radius: 5;
-    -fx-background-color:   #0E39AD;
+    -fx-background-color:   #5b8085;
 }
 
 .label-default{
@@ -108,23 +108,5 @@
 }
 
 .hbox-selected:hover {
-    -fx-background-color: #dcdcdc;
-}
-
-.hbox-disconnected {
-    -fx-background-color:  #9B9A97;
-    -fx-background-radius: 5;
-}
-
-.hbox-disconnected:hover {
-    -fx-background-color: #dcdcdc;
-}
-
-.hbox-alert {
-    -fx-background-color:  #D16AEA;
-    -fx-background-radius: 5;
-}
-
-.hbox-alert:hover {
     -fx-background-color: #dcdcdc;
 }

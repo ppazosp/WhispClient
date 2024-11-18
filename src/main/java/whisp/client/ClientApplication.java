@@ -58,6 +58,7 @@ public class ClientApplication extends Application {
             menuViewController.createDB();
         } catch (Exception e) {
             Logger.error(" Cannot register client:");
+            e.printStackTrace();
         }
 
         Stage oldWindow = window;
@@ -115,7 +116,7 @@ public class ClientApplication extends Application {
 
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname", "100.108.25.72");
+            System.setProperty("java.rmi.server.hostname", "100.79.5.93");
             System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
             System.setProperty("javax.rmi.ssl.client.enabledProtocols", "TLSv1.2,TLSv1.3");
             System.setProperty("javax.net.ssl.trustStore", "client.truststore");
