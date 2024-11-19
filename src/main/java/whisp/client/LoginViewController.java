@@ -26,7 +26,7 @@ public class LoginViewController {
     public void login(){
         if (clientApp.login(usernameField.getText(), passwordField.getText())){
             try{
-                clientApp.showMenuStage(usernameField.getText());
+                clientApp.showAuthScene(usernameField.getText());
                 System.out.println("name");
             }catch (Exception e){
                 Logger.error("Cannot connect to mainApp");

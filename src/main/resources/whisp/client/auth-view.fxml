@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="439.0" prefWidth="330.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.AuthRegisterViewController">
+<AnchorPane prefHeight="439.0" prefWidth="330.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.AuthViewController">
     <children>
         <ImageView fitHeight="228.0" fitWidth="380.0" layoutX="-50.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -32,20 +32,19 @@
                     <font>
                         <Font name="Arial Hebrew Scholar Bold" size="13.0" />
                     </font></Label>
-            <ImageView fx:id="qrView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="270.0" spacing="5.0">
-               <padding>
-                  <Insets bottom="3.0" left="5.0" right="3.0" top="3.0" />
-               </padding>
-               <children>
-                  <TextField fx:id="digit1" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
-                  <TextField fx:id="digit2" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
-                  <TextField fx:id="digit3" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
-                  <TextField fx:id="digit4" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
-                  <TextField fx:id="digit5" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
-                  <TextField fx:id="digit6" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
-               </children>
-            </HBox>
+                <HBox alignment="CENTER" prefHeight="40.0" prefWidth="270.0" spacing="5.0">
+                    <padding>
+                        <Insets bottom="3.0" left="5.0" right="3.0" top="3.0" />
+                    </padding>
+                    <children>
+                        <TextField fx:id="digit1" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
+                        <TextField fx:id="digit2" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
+                        <TextField fx:id="digit3" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
+                        <TextField fx:id="digit4" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
+                        <TextField fx:id="digit5" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
+                        <TextField fx:id="digit6" prefHeight="36.0" prefWidth="30.0" styleClass="field-tfa" stylesheets="@../../styles.css" />
+                    </children>
+                </HBox>
                 <Button maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#validate" prefHeight="28.0" prefWidth="270.0" styleClass="login-button" stylesheets="@../../styles.css" text="Validate" textFill="WHITE">
                     <VBox.margin>
                         <Insets top="10.0" />

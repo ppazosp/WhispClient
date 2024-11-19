@@ -11,8 +11,10 @@ import whisp.interfaces.ServerInterface;
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Base64;
 
 public class ClientApplication extends Application {
 
@@ -97,11 +99,21 @@ public class ClientApplication extends Application {
         window.show();
     }
 
-    public void showAuthRegisterScene(String qr) throws IOException {
+    public void showAuthRegisterScene(String username, String qr) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("authRegister-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         AuthRegisterViewController authRegisterViewController = fxmlLoader.getController();
-        authRegisterViewController.initialize(qr, this);
+        authRegisterViewController.initialize(username, qr, this);
+
+        window.setScene(scene);
+        window.show();
+    }
+
+    public void showAuthScene(String username) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("auth-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        AuthViewController authViewController = fxmlLoader.getController();
+        authViewController.initialize(username, this);
 
         window.setScene(scene);
         window.show();
@@ -144,22 +156,27 @@ public class ClientApplication extends Application {
 
     public boolean login(String username, String password){
         try{
-            byte[] salt = server.getSalt(username);
+            String salt = server.getSalt(username);
             if (salt == null) return false;
-
-            return server.login(username, Encrypter.getHashedPassword(password, salt));
+            return server.login(username, Encrypter.getHashedPassword(password, Base64.getDecoder().decode(salt.getBytes())));
         }catch (Exception e){
-            Logger.error("Cannot connect to server");
+            Logger.error("Login failed");
+            e.printStackTrace();
         }
         return false;
     }
 
     public void register(String username, String password) {
         try {
+            if(server.checkUsernameAvailability(username)){
+                Logger.error("Username is taken");
+                return;
+            }
+
             String[] pass = Encrypter.createHashPassword(password);
             String qr = server.register(username, pass[1], pass[0]);
 
-            showAuthRegisterScene(qr);
+            showAuthRegisterScene(username, qr);
 
         }catch (Exception e){
             Logger.error("Registration failed");
@@ -174,5 +191,15 @@ public class ClientApplication extends Application {
         }catch (Exception e){
             Logger.error("Registration failed");
         }
+    }
+
+    public boolean validate(String username, int code){
+        try {
+            return server.validate(username, code);
+        } catch (RemoteException e) {
+            Logger.error("Could not validate code");
+        }
+
+        return false;
     }
 }

@@ -3,14 +3,9 @@ package whisp.client;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import whisp.Logger;
 
-import java.io.ByteArrayInputStream;
-import java.util.Base64;
-
-public class AuthRegisterViewController {
+public class AuthViewController {
 
     ClientApplication clientApp;
     String username;
@@ -31,14 +26,10 @@ public class AuthRegisterViewController {
     @FXML
     TextField digit6;
 
-    @FXML
-    ImageView qrView;
-
-    public void initialize(String username, String qr, ClientApplication clientApp){
+    public void initialize(String username, ClientApplication clientApp){
 
         this.clientApp = clientApp;
         this.username = username;
-        qrView.setImage(stringToImage(qr));
 
         TextField[] code = {digit1, digit2, digit3, digit4, digit5, digit6};
 
@@ -70,11 +61,11 @@ public class AuthRegisterViewController {
     @FXML
     public void validate(){
         if(digit1.getText().isEmpty() ||
-            digit2.getText().isEmpty() ||
-            digit3.getText().isEmpty() ||
-            digit4.getText().isEmpty() ||
-            digit5.getText().isEmpty() ||
-            digit6.getText().isEmpty()){
+                digit2.getText().isEmpty() ||
+                digit3.getText().isEmpty() ||
+                digit4.getText().isEmpty() ||
+                digit5.getText().isEmpty() ||
+                digit6.getText().isEmpty()){
 
             errorLabel.setText("Blanks are not allowed");
             return;
@@ -89,17 +80,14 @@ public class AuthRegisterViewController {
         int code = Integer.parseInt(scode);
 
         if(clientApp.validate(username, code)){
-            back();
+            try {
+                clientApp.showMenuStage(username);
+            }catch (Exception e){
+                Logger.error("Could not show Menu");
+            }
         }else{
             errorLabel.setVisible(true);
             errorLabel.setText("Invalid Code");
         }
-    }
-
-    private Image stringToImage(String source){
-        byte[] imageBytes = Base64.getDecoder().decode(source);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
-
-        return new Image(inputStream);
     }
 }
