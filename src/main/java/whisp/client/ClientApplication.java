@@ -9,17 +9,10 @@ import whisp.Logger;
 import whisp.interfaces.ServerInterface;
 
 import javax.rmi.ssl.SslRMIClientSocketFactory;
-import javax.rmi.ssl.SslRMIServerSocketFactory;
 
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.net.ssl.SSLContext;
-import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.security.SecureRandom;
-import java.util.Base64;
 
 public class ClientApplication extends Application {
 
@@ -104,6 +97,16 @@ public class ClientApplication extends Application {
         window.show();
     }
 
+    public void showAuthRegisterScene(String qr) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("authRegister-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        AuthRegisterViewController authRegisterViewController = fxmlLoader.getController();
+        authRegisterViewController.initialize(qr, this);
+
+        window.setScene(scene);
+        window.show();
+    }
+
     public void showChangePasswordScene() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("changePassword-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
@@ -154,11 +157,14 @@ public class ClientApplication extends Application {
     public void register(String username, String password) {
         try {
             String[] pass = Encrypter.createHashPassword(password);
-            server.register(username, pass[1], pass[0]);
+            String qr = server.register(username, pass[1], pass[0]);
+
+            showAuthRegisterScene(qr);
+
         }catch (Exception e){
             Logger.error("Registration failed");
+            e.printStackTrace();
         }
-
     }
 
     public void changePassword(String username, String password){

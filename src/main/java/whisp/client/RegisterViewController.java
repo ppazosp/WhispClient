@@ -41,13 +41,8 @@ public class RegisterViewController {
             return;
         }
 
-        clientApp.register(usernameField.getText(), passwordField.getText());
 
-        try {
-            clientApp.showLoginScene();
-        }catch (Exception e){
-            Logger.error("Cannot load Login Scene");
-        }
+        clientApp.register(usernameField.getText(), passwordField.getText());
     }
 
     @FXML

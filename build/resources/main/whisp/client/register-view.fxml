@@ -33,26 +33,26 @@
                     <font>
                         <Font name="Arial Hebrew Scholar Bold" size="13.0" />
                     </font></Label>
-                <HBox alignment="CENTER_LEFT" prefHeight="18.0" prefWidth="270.0" style="-fx-background-color: #055763; -fx-background-radius: 20;">
-                    <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../images/user_white.png" />
-                            </image>
-                            <HBox.margin>
-                                <Insets left="1.0" />
-                            </HBox.margin>
-                        </ImageView>
-                        <TextField fx:id="usernameField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="24.0" prefWidth="240.0" promptText="username" styleClass="field-login" stylesheets="@../../styles.css">
-                            <font>
-                                <Font name="Arial Hebrew Scholar" size="13.0" />
-                            </font>
-                        </TextField>
-                    </children>
-                    <padding>
-                        <Insets bottom="3.0" left="5.0" right="3.0" top="3.0" />
-                    </padding>
-                </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="18.0" prefWidth="270.0" style="-fx-background-color: #055763; -fx-background-radius: 20;">
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/user_white.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="1.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <TextField fx:id="usernameField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="24.0" prefWidth="240.0" promptText="username" styleClass="field-login" stylesheets="@../../styles.css">
+                     <font>
+                        <Font name="Arial Hebrew Scholar" size="13.0" />
+                     </font>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets bottom="3.0" left="5.0" right="3.0" top="3.0" />
+               </padding>
+            </HBox>
                 <HBox alignment="CENTER_LEFT" prefHeight="33.0" prefWidth="270.0" style="-fx-background-color: #055763; -fx-background-radius: 20;">
                     <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
