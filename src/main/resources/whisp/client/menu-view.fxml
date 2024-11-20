@@ -90,7 +90,7 @@
                               </VBox>
                            </content>
                         </ScrollPane>
-                        <HBox fillHeight="false" prefHeight="3.0" prefWidth="560.0" spacing="5.0" stylesheets="@../../styles.css">
+                        <HBox fx:id="myMessageHbox" fillHeight="false" prefHeight="3.0" prefWidth="560.0" spacing="5.0" stylesheets="@../../styles.css">
                            <children>
                               <TextField fx:id="myMessageField" focusTraversable="false" prefHeight="26.0" prefWidth="550.0" promptText="Message..." styleClass="field-menu" stylesheets="@../../styles.css" />
                               <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="24.0" prefWidth="32.0" styleClass="menu-button" stylesheets="@../../styles.css">

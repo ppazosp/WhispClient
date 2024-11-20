@@ -42,12 +42,18 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     }
 
     @Override
-    public void receiveMessage(String message, String senderName) throws RemoteException {
-        System.out.println("-----New message received-----");
-        System.out.println("[" + senderName + "]: " + message);
-        System.out.println("------------------------------");
+    public void receiveMessage(String message, String senderName, boolean isText) throws RemoteException {
+        if(isText) {
+            System.out.println("-----New text received-----");
+            System.out.println("[" + senderName + "]: " + message);
+            System.out.println("------------------------------");
+        }else {
+            System.out.println("-----New image received-----");
+            System.out.println("[" + senderName + "]: image");
+            System.out.println("------------------------------");
+        }
 
-        controller.receiveMessage(new Message(senderName, message, username));
+        controller.receiveMessage(new Message(senderName, message, username, isText));
     }
 
     @Override
@@ -107,7 +113,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     public void sendMessage(Message message) {
         try {
             ClientInterface friendClient = friends.get(message.getReceiver());
-            friendClient.receiveMessage(message.getContent(), message.getSender());
+            friendClient.receiveMessage(message.getContent(), message.getSender(), message.isText());
         }catch (RemoteException e){
             System.err.println(message.getSender() + " is not available right now. Try messaging him later");
             Logger.error("Cannot send message to " + message);

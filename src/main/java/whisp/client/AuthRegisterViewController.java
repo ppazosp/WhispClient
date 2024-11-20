@@ -38,7 +38,8 @@ public class AuthRegisterViewController {
 
         this.clientApp = clientApp;
         this.username = username;
-        qrView.setImage(stringToImage(qr));
+
+        qrView.setImage(Utils.stringToImage(qr));
 
         TextField[] code = {digit1, digit2, digit3, digit4, digit5, digit6};
 
@@ -94,12 +95,5 @@ public class AuthRegisterViewController {
             errorLabel.setVisible(true);
             errorLabel.setText("Invalid Code");
         }
-    }
-
-    private Image stringToImage(String source){
-        byte[] imageBytes = Base64.getDecoder().decode(source);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
-
-        return new Image(inputStream);
     }
 }

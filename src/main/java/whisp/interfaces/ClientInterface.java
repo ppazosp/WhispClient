@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ClientInterface extends Remote  {
     String getUsername() throws RemoteException;
-    void receiveMessage(String message, String senderName) throws RemoteException;
+    void receiveMessage(String message, String senderName, boolean isText) throws RemoteException;
     void receiveActiveClients(HashMap<String,ClientInterface> clients) throws RemoteException;
     void receiveNewClient(ClientInterface clients) throws RemoteException;
     void disconnectClient(ClientInterface client) throws RemoteException;

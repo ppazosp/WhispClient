@@ -9,19 +9,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import whisp.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static whisp.client.Utils.isImageFile;
+
 public class MenuViewController {
 
     Client client;
 
-    String loadedChatUser = " ";
+    String loadedChatUser = "";
 
     HashMap<String, Friend> friendsMap;
     ArrayList<FriendRequest> friendRequests;
@@ -50,6 +57,8 @@ public class MenuViewController {
     ScrollPane chatScroll;
 
     @FXML
+    HBox myMessageHbox;
+    @FXML
     TextField myMessageField;
     @FXML
     Button sendButton;
@@ -61,6 +70,50 @@ public class MenuViewController {
 
         chatVbox.heightProperty().addListener((_, _, _) -> {
             chatScroll.setVvalue(1.0);
+        });
+
+        myMessageHbox.setOnDragOver(event -> {
+            if(loadedChatUser.isEmpty()) return;
+
+            Dragboard dragboard = event.getDragboard();
+            if (dragboard.hasFiles()) {
+                if (dragboard.getFiles().stream().allMatch(Utils::isImageFile)) {
+                    event.acceptTransferModes(TransferMode.COPY);
+                }
+            }
+            event.consume();
+        });
+
+        myMessageHbox.setOnDragDropped(event -> {
+            if(loadedChatUser.isEmpty()) return;
+
+            Dragboard dragboard = event.getDragboard();
+            boolean success = false;
+
+            if (dragboard.hasFiles()) {
+                for (File file : dragboard.getFiles()) {
+                    if (isImageFile(file)) {
+                        try {
+                            Image image = new Image(file.toURI().toString());
+                            String simage = Utils.imageToString(image);
+
+                            Message message = new Message(client.username, simage, loadedChatUser, false);
+                            client.sendMessage(message);
+                            friendsMap.get(loadedChatUser).addMessage(message);
+                            loadChat();
+
+                            success = true;
+                        } catch (Exception e) {
+                            Logger.error("Could not convert image to String");
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+
+            event.setDropCompleted(success);
+            event.consume();
         });
 
     }
@@ -79,7 +132,7 @@ public class MenuViewController {
     {
         if(myMessageField.getText().isEmpty()) return;
 
-        Message message = new Message(client.username, myMessageField.getText(), loadedChatUser);
+        Message message = new Message(client.username, myMessageField.getText(), loadedChatUser, true);
         client.sendMessage(message);
         friendsMap.get(loadedChatUser).addMessage(message);
 
@@ -100,20 +153,39 @@ public class MenuViewController {
         Platform.runLater(() -> {
             try {
                 chatSideVbox.setVisible(true);
+
+                System.out.println("Scene: " + myMessageHbox.getScene());
+                System.out.println("Visible: " + myMessageHbox.isVisible());
+                System.out.println("Managed: " + myMessageHbox.isManaged());
+
                 chatVbox.getChildren().clear();
 
                 for (Message message : friendsMap.get(loadedChatUser).getChat()){
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("message-view.fxml"));
-                    Node messageNode = loader.load();
+                    if(message.isText()) {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("message-view.fxml"));
+                        Node messageNode = loader.load();
 
-                    MessageViewController controller = loader.getController();
-                    controller.setMessage(message);
+                        MessageViewController controller = loader.getController();
+                        controller.setMessage(message);
 
-                    if(message.getSender().equals(client.username)){
-                        controller.ownMessage();
+                        if (message.getSender().equals(client.username)) {
+                            controller.ownMessage();
+                        }
+
+                        chatVbox.getChildren().add(messageNode);
+                    }else{
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("image_message-view.fxml"));
+                        Node messageNode = loader.load();
+
+                        MessageViewController controller = loader.getController();
+                        controller.setImageMessage(message);
+
+                        if (message.getSender().equals(client.username)) {
+                            controller.ownMessage();
+                        }
+
+                        chatVbox.getChildren().add(messageNode);
                     }
-
-                    chatVbox.getChildren().add(messageNode);
                 }
 
                 if (friendsMap.get(loadedChatUser).isConnected()) {

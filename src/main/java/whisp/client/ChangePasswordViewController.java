@@ -6,6 +6,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import whisp.Logger;
 
+import java.io.IOException;
+
 public class ChangePasswordViewController {
 
     ClientApplication clientApp;
@@ -44,12 +46,11 @@ public class ChangePasswordViewController {
         }
 
         if (clientApp.login(usernameField.getText(), oldPasswordField.getText())){
-            clientApp.changePassword(usernameField.getText(), newPasswordField.getText());
 
             try {
-                clientApp.showLoginScene();
-            }catch (Exception e){
-                Logger.error("Cannot load Login Scene");
+                clientApp.showAuthChangesScene(usernameField.getText(), newPasswordField.getText());
+            } catch (IOException e) {
+                Logger.error("Cannot load Auth Changes Scene");
             }
 
         }else{

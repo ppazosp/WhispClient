@@ -7,8 +7,11 @@ import whisp.Logger;
 
 public class AuthViewController {
 
+    int mode;
+
     ClientApplication clientApp;
     String username;
+    String password;
 
     @FXML
     Label errorLabel;
@@ -26,10 +29,12 @@ public class AuthViewController {
     @FXML
     TextField digit6;
 
-    public void initialize(String username, ClientApplication clientApp){
+    public void initialize(String username, String aux, ClientApplication clientApp, int mode){
 
         this.clientApp = clientApp;
         this.username = username;
+
+        if(mode == 1)  this.password = aux;
 
         TextField[] code = {digit1, digit2, digit3, digit4, digit5, digit6};
 
@@ -67,6 +72,7 @@ public class AuthViewController {
                 digit5.getText().isEmpty() ||
                 digit6.getText().isEmpty()){
 
+            errorLabel.setVisible(true);
             errorLabel.setText("Blanks are not allowed");
             return;
         }
@@ -80,6 +86,9 @@ public class AuthViewController {
         int code = Integer.parseInt(scode);
 
         if(clientApp.validate(username, code)){
+            if(mode == 1){
+                clientApp.changePassword(username, password);
+            }
             try {
                 clientApp.showMenuStage(username);
             }catch (Exception e){

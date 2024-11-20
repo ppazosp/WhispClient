@@ -3,6 +3,7 @@ module whisp.client {
     requires javafx.fxml;
     requires java.rmi;
     requires java.desktop;
+    requires jdk.jshell;
 
     exports whisp.client;
     opens whisp.client to javafx.fxml;

@@ -100,7 +100,7 @@ public class ClientApplication extends Application {
     }
 
     public void showAuthRegisterScene(String username, String qr) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("authRegister-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("auth_register-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         AuthRegisterViewController authRegisterViewController = fxmlLoader.getController();
         authRegisterViewController.initialize(username, qr, this);
@@ -113,14 +113,24 @@ public class ClientApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("auth-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         AuthViewController authViewController = fxmlLoader.getController();
-        authViewController.initialize(username, this);
+        authViewController.initialize(username, null, this, 0);
+
+        window.setScene(scene);
+        window.show();
+    }
+
+    public void showAuthChangesScene(String username, String password) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("auth_register-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        AuthViewController authViewController = fxmlLoader.getController();
+        authViewController.initialize(username, password, this, 1);
 
         window.setScene(scene);
         window.show();
     }
 
     public void showChangePasswordScene() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("changePassword-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("change_password-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         ChangePasswordViewController changePasswordViewController = fxmlLoader.getController();
         changePasswordViewController.initialize(this);
