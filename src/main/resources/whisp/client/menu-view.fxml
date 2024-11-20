@@ -22,6 +22,7 @@
             <Image url="@../../images/bg3.jpeg" />
          </image>
       </ImageView>
+      <AnchorPane prefHeight="533.0" prefWidth="220.0" style="-fx-background-color: #055763;" />
       <Label alignment="CENTER_RIGHT" prefHeight="532.0" prefWidth="800.0" text="made by PABLO PAZOS &amp; DAVID M. RAPOSEIRAS" textAlignment="RIGHT" textFill="WHITE" visible="false">
          <padding>
             <Insets right="80.0" />
@@ -32,20 +33,11 @@
       </Label>
       <VBox alignment="TOP_CENTER" prefHeight="532.0" prefWidth="800.0" spacing="15.0" style="-fx-background: transparent; -fx-background-color: transparent;">
          <children>
-            <HBox alignment="CENTER" prefHeight="20.0" prefWidth="760.0">
-               <children>
-                  <Label fx:id="usernameLabel" alignment="CENTER" prefHeight="23.0" prefWidth="290.0" text="Whisp´s " textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Hebrew Bold" size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox prefHeight="460.0" prefWidth="760.0" spacing="20.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+            <HBox prefHeight="500.0" prefWidth="760.0" spacing="20.0" style="-fx-background: transparent; -fx-background-color: transparent;">
                <children>
                   <VBox prefHeight="390.0" prefWidth="200.0" spacing="5.0" style="-fx-background: transparent; -fx-background-color: transparent;">
                      <children>
-                        <Label text="Friend list" textFill="WHITE">
+                        <Label text="My Friends" textFill="WHITE">
                            <font>
                               <Font name="Arial Hebrew Bold" size="16.0" />
                            </font>
@@ -81,7 +73,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <ScrollPane fx:id="chatScroll" focusTraversable="false" hbarPolicy="NEVER" prefHeight="414.0" prefWidth="560.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
+                        <ScrollPane fx:id="chatScroll" focusTraversable="false" hbarPolicy="NEVER" prefHeight="476.0" prefWidth="560.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
                            <content>
                               <VBox fx:id="chatVbox" alignment="BOTTOM_CENTER" prefWidth="554.0" spacing="10.0" style="-fx-background-color: transparent;">
                                  <padding>
@@ -104,6 +96,12 @@
                            </children>
                         </HBox>
                      </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
                   </VBox>
                </children>
             </HBox>
