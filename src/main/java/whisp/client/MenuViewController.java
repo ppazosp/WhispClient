@@ -38,8 +38,6 @@ public class MenuViewController {
     }
 
     @FXML
-    Label usernameLabel;
-    @FXML
     Label chatLabel;
 
     @FXML
@@ -66,7 +64,6 @@ public class MenuViewController {
     public void initialize(Client client)
     {
         this.client = client;
-        usernameLabel.setText(client.username + " Whisp's");
 
         chatVbox.heightProperty().addListener((_, _, _) -> {
             chatScroll.setVvalue(1.0);
