@@ -12,7 +12,7 @@
          <children>
             <HBox fx:id="textHbox" alignment="CENTER_LEFT">
                <children>
-                  <Label fx:id="messageLabel" style="-fx-text-fill: #FFFFFF;" text="Text" wrapText="true">
+                  <Label fx:id="messageLabel" style="-fx-text-fill: #FFFFFF;" wrapText="true">
                      <HBox.margin>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                      </HBox.margin>
