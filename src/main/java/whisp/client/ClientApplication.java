@@ -141,7 +141,7 @@ public class ClientApplication extends Application {
 
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname", "100.79.5.93");
+            System.setProperty("java.rmi.server.hostname", "localhost");
             System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
             System.setProperty("javax.rmi.ssl.client.enabledProtocols", "TLSv1.2,TLSv1.3");
             System.setProperty("javax.net.ssl.trustStore", "client.truststore");
@@ -150,7 +150,7 @@ public class ClientApplication extends Application {
             SslRMIClientSocketFactory sslRMIClientSocketFactory = new SslRMIClientSocketFactory();
 
 
-            Registry registry = LocateRegistry.getRegistry("100.79.5.93", 1099, sslRMIClientSocketFactory);
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099, sslRMIClientSocketFactory);
 
             server = (ServerInterface) registry.lookup("MessagingServer");
 

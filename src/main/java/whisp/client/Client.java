@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Client extends UnicastRemoteObject implements ClientInterface, Serializable {
@@ -65,6 +66,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
             Logger.error("Cannot receive friends");
         }
     }
+
+
 
     @Override
     public void receiveNewClient(ClientInterface client) throws RemoteException {
@@ -160,6 +163,14 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     @Override
     public void receiveFriendRequest(String requestSender) throws RemoteException {
         controller.addResquest(requestSender, username);
+    }
+
+    @Override
+    public void receiveBDrequests(List<String> requestSenders) throws RemoteException {
+        //recorro la lista de requestSenders y llamo a addRequest
+        for(String requestSender : requestSenders){
+            controller.addResquest(requestSender, username);
+        }
     }
 
 }
