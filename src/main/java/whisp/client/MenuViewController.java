@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
@@ -314,4 +313,12 @@ public class MenuViewController {
     }
 
 
+    public void cancelRequest(String senderName) {
+        client.cancelRequest(senderName);
+        friendRequests.removeIf(f -> f.getSenderUsername().equals(senderName));
+    }
+
+    public void removeRequest(String senderName, String receiverName) {
+        friendRequests.removeIf(f -> f.getReceiverUsername().equals(receiverName) && f.getSenderUsername().equals(senderName));
+    }
 }

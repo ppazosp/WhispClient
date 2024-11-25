@@ -177,5 +177,21 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     }
 
 
+    public void cancelRequest(String senderName){
 
+        try {
+            server.cancelRequest(username, senderName);
+            printActiveClients();
+
+        } catch (RemoteException e) {
+            Logger.error("Cannot connect to server");
+        }
+
+    }
+
+    @Override
+    public void receiveRequestCancelled(String senderName, String receiverName) throws RemoteException {
+        controller.removeRequest(senderName,receiverName);
+        printActiveClients();
+    }
 }
