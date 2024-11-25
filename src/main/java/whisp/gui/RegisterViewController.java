@@ -1,10 +1,11 @@
-package whisp.client;
+package whisp.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import whisp.Logger;
+import whisp.ClientApplication;
+import whisp.utils.Logger;
 
 
 public class RegisterViewController {

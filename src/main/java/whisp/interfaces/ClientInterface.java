@@ -5,14 +5,22 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
 
-public interface ClientInterface extends Remote  {
+public interface ClientInterface extends Remote {
     String getUsername() throws RemoteException;
+
     void receiveMessage(String message, String senderName, boolean isText) throws RemoteException;
-    void receiveActiveClients(HashMap<String,ClientInterface> clients) throws RemoteException;
+
+    void receiveActiveClients(HashMap<String, ClientInterface> clients) throws RemoteException;
+
     void receiveNewClient(ClientInterface clients) throws RemoteException;
+
     void disconnectClient(ClientInterface client) throws RemoteException;
+
     void ping() throws RemoteException;
+
     void receiveFriendRequest(String requestSender) throws RemoteException;
-    void receiveBDrequests(List<String> requestSenders) throws RemoteException;
-    void receiveRequestCancelled(String senderName, String receiverName) throws RemoteException;
+
+    void receiveRequests(List<String> requestSenders) throws RemoteException;
+
+    void receiveRequestCancelled(String receiverName) throws RemoteException;
 }

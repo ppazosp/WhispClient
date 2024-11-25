@@ -1,14 +1,12 @@
-package whisp.client;
+package whisp.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import whisp.Logger;
-
-import java.io.ByteArrayInputStream;
-import java.util.Base64;
+import whisp.ClientApplication;
+import whisp.utils.Logger;
+import whisp.utils.GraphicUtils;
 
 public class AuthRegisterViewController {
 
@@ -39,7 +37,7 @@ public class AuthRegisterViewController {
         this.clientApp = clientApp;
         this.username = username;
 
-        qrView.setImage(Utils.stringToImage(qr));
+        qrView.setImage(GraphicUtils.stringToImage(qr));
 
         TextField[] code = {digit1, digit2, digit3, digit4, digit5, digit6};
 

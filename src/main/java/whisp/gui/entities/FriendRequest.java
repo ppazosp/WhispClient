@@ -1,6 +1,4 @@
-package whisp.client;
-
-import java.io.Serializable;
+package whisp.gui.entities;
 
 public class FriendRequest {
 

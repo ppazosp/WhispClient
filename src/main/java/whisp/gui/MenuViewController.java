@@ -1,58 +1,56 @@
-package whisp.client;
+package whisp.gui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import whisp.Logger;
+import whisp.ClientApplication;
+import whisp.gui.entities.Friend;
+import whisp.gui.entities.FriendRequest;
+import whisp.gui.entities.Message;
+import whisp.utils.Logger;
+import whisp.utils.GraphicUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
-import static whisp.client.Utils.isImageFile;
+import static whisp.utils.GraphicUtils.isImageFile;
 
 public class MenuViewController {
 
-    Client client;
+    /*******************************************************************************************
+     * ATTRIBUTES
+     *******************************************************************************************/
 
+    ClientApplication mainApp;
     String loadedChatUser = "";
-
-    HashMap<String, Friend> friendsMap;
+    HashMap<String, Friend> friendsMap = new HashMap<>();
     ArrayList<FriendRequest> friendRequests = new ArrayList<>();
-
-    public void setLoadedChatUser(String loadedChatUser) {
-        this.loadedChatUser = loadedChatUser;
-    }
 
     @FXML
     Label chatLabel;
-
     @FXML
     VBox chatSideVbox;
-
     @FXML
     VBox friendsVbox;
     @FXML
     VBox chatVbox;
-
     @FXML
     TextField searchField;
-
     @FXML
     ScrollPane chatScroll;
-
     @FXML
     HBox myMessageHbox;
     @FXML
@@ -60,9 +58,24 @@ public class MenuViewController {
     @FXML
     Button sendButton;
 
-    public void initialize(Client client)
-    {
-        this.client = client;
+
+
+    /*******************************************************************************************
+     * INITIALIZERS
+     *******************************************************************************************/
+
+    public void initialize(ClientApplication mainApp, Scene scene) {
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                if (searchField.isFocused()) {
+                    sendRequest();
+                } else if (myMessageField.isFocused() && !sendButton.isDisable()) {
+                    sendMessage();
+                }
+            }
+        });
+
+        this.mainApp = mainApp;
 
         chatVbox.heightProperty().addListener((_, _, _) -> {
             chatScroll.setVvalue(1.0);
@@ -73,7 +86,7 @@ public class MenuViewController {
 
             Dragboard dragboard = event.getDragboard();
             if (dragboard.hasFiles()) {
-                if (dragboard.getFiles().stream().allMatch(Utils::isImageFile)) {
+                if (dragboard.getFiles().stream().allMatch(GraphicUtils::isImageFile)) {
                     event.acceptTransferModes(TransferMode.COPY);
                 }
             }
@@ -91,17 +104,16 @@ public class MenuViewController {
                     if (isImageFile(file)) {
                         try {
                             Image image = new Image(file.toURI().toString());
-                            String simage = Utils.imageToString(image);
+                            String simage = GraphicUtils.imageToString(image);
 
-                            Message message = new Message(client.username, simage, loadedChatUser, false);
-                            client.sendMessage(message);
+                            Message message = new Message(mainApp.getUsername(), simage, loadedChatUser, false);
+                            mainApp.sendMessage(message);
                             friendsMap.get(loadedChatUser).addMessage(message);
                             loadChat();
 
                             success = true;
                         } catch (Exception e) {
                             Logger.error("Could not convert image to String");
-                            e.printStackTrace();
                         }
 
                     }
@@ -112,47 +124,73 @@ public class MenuViewController {
             event.consume();
         });
 
+        Logger.info("MenuView initialized correctly");
+
     }
 
-    public void createDB(){
-        friendsMap = new HashMap<>();
-        for (String friendName : client.getFriends().keySet()){
+    public void setLoadedChatUser(String loadedChatUser) {
+        this.loadedChatUser = loadedChatUser;
+    }
+
+    public void setFriends(Set<String> friends){
+        Logger.info("Setting friends on frontend...");
+        for (String friendName : friends){
             friendsMap.put(friendName, new Friend());
         }
 
-        //friendRequests = new ArrayList<>();
+        showFriends();
     }
 
+
+
+    /*******************************************************************************************
+     * FXML METHODS
+     *******************************************************************************************/
+
     @FXML
-    public void sendMessage()
-    {
-        if(myMessageField.getText().isEmpty()) return;
+    public void sendMessage() {
+        Logger.info("Send buton pressed, trying to send message...");
 
-        Message message = new Message(client.username, myMessageField.getText(), loadedChatUser, true);
-        client.sendMessage(message);
+        if(myMessageField.getText().isEmpty()){
+            Logger.info("MessageField was empty, returning...");
+            return;
+        }
+
+        Message message = new Message(mainApp.getUsername(), myMessageField.getText(), loadedChatUser, true);
+        mainApp.sendMessage(message);
+
+        Logger.info("Adding sended message to gui...");
         friendsMap.get(loadedChatUser).addMessage(message);
-
         myMessageField.clear();
+
         loadChat();
     }
 
     @FXML
     public void sendRequest(){
-        if (searchField.getText().isEmpty()) return;
+        Logger.info("Send resquest button pressed, trying to send request...");
+        if (searchField.getText().isEmpty()){
+            Logger.info("SearchField was empty, returning...");
+            return;
+        }
 
-        client.sendRequest(searchField.getText());
+        mainApp.sendResquest(searchField.getText());
         searchField.clear();
+
+        showFriends();
     }
 
-    public void loadChat()
-    {
+
+
+    /*******************************************************************************************
+     * MORE METHODS
+     *******************************************************************************************/
+
+    private void loadChat() {
+        Logger.info("Loading chat...");
         Platform.runLater(() -> {
             try {
                 chatSideVbox.setVisible(true);
-
-                System.out.println("Scene: " + myMessageHbox.getScene());
-                System.out.println("Visible: " + myMessageHbox.isVisible());
-                System.out.println("Managed: " + myMessageHbox.isManaged());
 
                 chatVbox.getChildren().clear();
 
@@ -164,7 +202,7 @@ public class MenuViewController {
                         MessageViewController controller = loader.getController();
                         controller.setMessage(message);
 
-                        if (message.getSender().equals(client.username)) {
+                        if (message.getSender().equals(mainApp.getUsername())) {
                             controller.ownMessage();
                         }
 
@@ -176,7 +214,7 @@ public class MenuViewController {
                         MessageViewController controller = loader.getController();
                         controller.setImageMessage(message);
 
-                        if (message.getSender().equals(client.username)) {
+                        if (message.getSender().equals(mainApp.getUsername())) {
                             controller.ownMessage();
                         }
 
@@ -198,28 +236,40 @@ public class MenuViewController {
                 friendsMap.get(loadedChatUser).readMessage();
                 showFriends();
             } catch (IOException e) {
-                Logger.error("Cannot load chat");
+                Logger.error("Cannot load chat, check xml path files");
             }
         });
     }
 
     public void friendConnected(String friend){
+        Logger.info("Updating frontend...");
+
         if(!friendsMap.containsKey(friend)) {
             friendsMap.put(friend, new Friend());
         }else{
+            Logger.info("User was connected before, setting connected to true...");
             friendsMap.get(friend).setConnected(true);
         }
 
+        Logger.info("Checking if user had a friend request...");
         friendRequests.removeIf(f -> f.getReceiverUsername().equals(friend));
+
+        showFriends();
     }
 
     public void friendDisconnected(String friend){
+        Logger.info("Setting friend to disconnected on gui");
         friendsMap.get(friend).setConnected(false);
-        if(loadedChatUser.equals(friend)) loadChat();
+        if(loadedChatUser.equals(friend)){
+            Logger.info("Friend chat is active, updating...");
+            loadChat();
+        }
+
+        showFriends();
     }
 
-    public void showFriends()
-    {
+    private void showFriends() {
+        Logger.info("Showing friends...");
         Platform.runLater(() -> {
             try {
                 friendsVbox.getChildren().clear();
@@ -255,7 +305,7 @@ public class MenuViewController {
                 }
 
                 for (FriendRequest fr : friendRequests){
-                    if(fr.getSenderUsername().equals(client.username)){
+                    if(fr.getSenderUsername().equals(mainApp.getUsername())){
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("friend-view.fxml"));
                         Node ownRequestNode = loader.load();
 
@@ -286,39 +336,47 @@ public class MenuViewController {
         });
     }
 
-    public void receiveMessage(Message message)
-    {
+    public void receiveMessage(Message message) {
+
+        Logger.info("Adding message to chat history");
         friendsMap.get(message.getSender()).addMessage(message);
 
-        if(loadedChatUser.equals(message.getSender())) loadChat();
+        if(loadedChatUser.equals(message.getSender())){
+            Logger.info("User chat is active, updating...");
+            loadChat();
+        }
 
         showFriends();
     }
 
     public void addResquest(String sender, String receiver){
-        System.out.println("Request from " + sender + " to " + receiver);
+        Logger.info("Adding request item to gui...");
         friendRequests.add(new FriendRequest(sender, receiver));
-        System.out.println("Requests: " + friendRequests.size());
-
-        showFriends();
     }
 
     public void addFriend(String friendName){
-        client.addFriend(friendName);
+        mainApp.requestAccepted(friendName);
+
+        Logger.info("Removing request item from gui...");
         friendRequests.removeIf(f -> f.getSenderUsername().equals(friendName));
     }
 
     public void friendAdded(String friendName){
         friendsMap.put(friendName, new Friend());
+        showFriends();
     }
-
 
     public void cancelRequest(String senderName) {
-        client.cancelRequest(senderName);
+        mainApp.cancelRequest(senderName);
+
+        Logger.info("Removing request item from gui...");
         friendRequests.removeIf(f -> f.getSenderUsername().equals(senderName));
+        showFriends();
     }
 
-    public void removeRequest(String senderName, String receiverName) {
-        friendRequests.removeIf(f -> f.getReceiverUsername().equals(receiverName) && f.getSenderUsername().equals(senderName));
+    public void removeRequest(String receiverName) {
+        Logger.info("Removing request item from gui...");
+        friendRequests.removeIf(f -> f.getReceiverUsername().equals(receiverName));
+        showFriends();
     }
 }

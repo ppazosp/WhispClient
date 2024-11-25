@@ -1,8 +1,8 @@
 package whisp.client;
 
-import whisp.Logger;
+import whisp.ClientApplication;
+import whisp.utils.Logger;
 import whisp.interfaces.ClientInterface;
-import whisp.interfaces.ServerInterface;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -13,28 +13,18 @@ import java.util.Map;
 
 public class Client extends UnicastRemoteObject implements ClientInterface, Serializable {
 
-    final String username;
+    public final String username;
     private HashMap<String, ClientInterface> friends;
-    private MenuViewController controller;
-    private static ServerInterface server;
-
-    //setter para server
-    public static void setServer(ServerInterface server) {
-        Client.server = server;
-    }
+    private ClientApplication mainApp;
 
     public HashMap<String, ClientInterface> getFriends() {
         return friends;
     }
 
-    public void setController(MenuViewController controller) {
-        this.controller = controller;
-    }
-
-    protected Client(String username) throws RemoteException {
+    public Client(String username, ClientApplication mainApp) throws RemoteException {
         super();
         this.username = username;
-        setServer(ClientApplication.getServer());
+        this.mainApp = mainApp;
     }
 
     @Override
@@ -44,44 +34,33 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 
     @Override
     public void receiveMessage(String message, String senderName, boolean isText) throws RemoteException {
-        if(isText) {
-            System.out.println("-----New text received-----");
-            System.out.println("[" + senderName + "]: " + message);
-            System.out.println("------------------------------");
-        }else {
-            System.out.println("-----New image received-----");
-            System.out.println("[" + senderName + "]: image");
-            System.out.println("------------------------------");
-        }
+        Logger.info("Received message from " + senderName);
 
-        controller.receiveMessage(new Message(senderName, message, username, isText));
+        mainApp.receiveMessage(message, senderName, isText);
     }
 
     @Override
     public void receiveActiveClients(HashMap<String,ClientInterface> clients) throws RemoteException {
-        try {
-            friends = clients;
-            printActiveClients();
-        }catch (Exception e){
-            Logger.error("Cannot receive friends");
-        }
+        Logger.info("received " + clients.size() + " clients from server...");
+        Logger.info("settings friends on backend...");
+        friends = clients;
+        mainApp.setFriends(clients);
+
     }
-
-
 
     @Override
     public void receiveNewClient(ClientInterface client) throws RemoteException {
-        System.out.println(client.getUsername() + " connected");
+        Logger.info("User " + client.getUsername() + " received from server");
 
+        Logger.info("updating backend...");
         friends.put(client.getUsername(), client);
 
-        controller.friendConnected(client.getUsername());
-
-        printActiveClients();
+        mainApp.friendConnected(client.getUsername());
     }
 
     @Override
     public void disconnectClient(ClientInterface client) throws RemoteException {
+        Logger.info("A friend disconnected, searching identity...");
         String clientUsername = "";
         for (Map.Entry<String, ClientInterface> entry : friends.entrySet()) {
             if (entry.getValue().equals(client)) {
@@ -89,109 +68,49 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
                 break;
             }
         }
+        Logger.info("Friend recognized as " + clientUsername);
 
-        System.out.println( clientUsername + " disconnected");
-
+        Logger.info("Removing friend reference from backend");
         friends.remove(clientUsername);
 
-        controller.friendDisconnected(clientUsername);
+        mainApp.friendDisconnected(clientUsername);
+    }
 
-        printActiveClients();
+    @Override
+    public void receiveFriendRequest(String requestSender) throws RemoteException {
+        Logger.info("Friend request from " + requestSender + "received from server");
+        mainApp.addResquest(requestSender);
+    }
+
+    @Override
+    public void receiveRequests(List<String> requestSenders) throws RemoteException {
+        Logger.info("Received " + requestSenders.size() + " from server db...");
+        for(String requestSender : requestSenders){
+            mainApp.addResquest(requestSender);
+        }
+    }
+
+    @Override
+    public void receiveRequestCancelled(String receiverName) throws RemoteException {
+        Logger.info("Received a request cancellation from server from " + receiverName);
+        mainApp.removeResquest(receiverName);
     }
 
     @Override
     public void ping() throws RemoteException {}
 
-    private void printActiveClients() throws RemoteException {
-        System.out.println("\n-----Active friends (" + friends.size() + ")-----\n");
-        System.out.print("[ ");
-        for (ClientInterface c : friends.values()) {
-            System.out.print(c.getUsername() + " ");
-        }
-        System.out.print("]\n\n");
-
-        controller.showFriends();
-    }
-
-    public void sendMessage(Message message) {
+    public void sendMessage(String message, String receiver, boolean isText) {
         try {
-            ClientInterface friendClient = friends.get(message.getReceiver());
-            friendClient.receiveMessage(message.getContent(), message.getSender(), message.isText());
+            Logger.info("Sending " + message + " to " + receiver + "...");
+            ClientInterface friendClient = friends.get(receiver);
+            friendClient.receiveMessage(message, username, isText);
+            Logger.info("Message sended");
         }catch (RemoteException e){
-            System.err.println(message.getSender() + " is not available right now. Try messaging him later");
-            Logger.error("Cannot send message to " + message);
+            Logger.error(receiver + " is not available right now. Try messaging him later");
         }
     }
 
-    public void sendRequest(String userNewFriend){
-        for(String friend : friends.keySet()){
-            if(friend.equals(userNewFriend)){
-                Logger.error("You are already friend of "+ friend + ".");
-                return;
-            }
-        }
-
-        try {
-           server.sendRequest(username, userNewFriend);
-
-           controller.addResquest(username, userNewFriend);
-        }catch (RemoteException e){
-            System.err.println("Error connecting to server");
-            Logger.error("Error connecting to server");
-            e.printStackTrace();
-        }
-    }
-
-    public void addFriend(String friendName){
-        try {
-            System.out.println(friendName + " is now your friend");
-            server.requestAcepted(friendName, username);
-
-            ClientInterface friend = server.getClient(friendName);
-            if (friend == null) return;
-
-            friends.put(friendName, friend);
-
-            controller.friendAdded(friendName);
-
-
-            printActiveClients();
-
-        } catch (RemoteException e) {
-            Logger.error("Cannot connect to server");
-        }
-
-    }
-
-    @Override
-    public void receiveFriendRequest(String requestSender) throws RemoteException {
-        controller.addResquest(requestSender, username);
-    }
-
-    @Override
-    public void receiveBDrequests(List<String> requestSenders) throws RemoteException {
-        //recorro la lista de requestSenders y llamo a addRequest
-        for(String requestSender : requestSenders){
-            controller.addResquest(requestSender, username);
-        }
-    }
-
-
-    public void cancelRequest(String senderName){
-
-        try {
-            server.cancelRequest(username, senderName);
-            printActiveClients();
-
-        } catch (RemoteException e) {
-            Logger.error("Cannot connect to server");
-        }
-
-    }
-
-    @Override
-    public void receiveRequestCancelled(String senderName, String receiverName) throws RemoteException {
-        controller.removeRequest(senderName,receiverName);
-        printActiveClients();
+    public boolean isFriend(String username){
+        return friends.get(username)!= null;
     }
 }

@@ -1,4 +1,4 @@
-package whisp;
+package whisp.utils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,5 +21,6 @@ public class Logger {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String actualTime =  now.format(formatter);
         System.err.println("[ERROR] " + actualDate + actualTime + ": " + message);
+
     }
 }

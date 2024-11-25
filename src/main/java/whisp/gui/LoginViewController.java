@@ -1,11 +1,11 @@
-package whisp.client;
+package whisp.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import whisp.Logger;
+import whisp.ClientApplication;
+import whisp.utils.Logger;
 
 public class LoginViewController {
 
@@ -24,14 +24,12 @@ public class LoginViewController {
 
     @FXML
     public void login(){
+        Logger.info("Login button pressed, trying to login user...");
         if (clientApp.login(usernameField.getText(), passwordField.getText())){
-            try{
-                clientApp.showAuthScene(usernameField.getText());
-                System.out.println("name");
-            }catch (Exception e){
-                Logger.error("Cannot connect to mainApp");
-            }
+            Logger.info("Username and Password are correct, proceeding to Authentification window");
+            clientApp.showAuthScene(usernameField.getText());
         }else{
+            Logger.info("Username or Password incorrect, showing error label...");
             errorLabel.setVisible(true);
         }
     }

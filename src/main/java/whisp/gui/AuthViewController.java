@@ -1,9 +1,10 @@
-package whisp.client;
+package whisp.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import whisp.Logger;
+import whisp.ClientApplication;
+import whisp.utils.Logger;
 
 public class AuthViewController {
 
@@ -50,28 +51,25 @@ public class AuthViewController {
                 }
             });
         }
-
-
+        Logger.info("AuthView initialized correctly");
     }
 
     @FXML
     public void back(){
-        try {
-            clientApp.showLoginScene();
-        }catch (Exception e){
-            Logger.error("Cannot load Login Scene");
-        }
+        Logger.info("Back button pressed, going back to Login scene...");
+        clientApp.showLoginScene();
     }
 
     @FXML
     public void validate(){
+        Logger.info("Validate button pressed, trying to validate user...");
         if(digit1.getText().isEmpty() ||
                 digit2.getText().isEmpty() ||
                 digit3.getText().isEmpty() ||
                 digit4.getText().isEmpty() ||
                 digit5.getText().isEmpty() ||
                 digit6.getText().isEmpty()){
-
+            Logger.info("At least one digit is empty, showing error label...");
             errorLabel.setVisible(true);
             errorLabel.setText("Blanks are not allowed");
             return;
@@ -84,17 +82,17 @@ public class AuthViewController {
                 digit5.getText() +
                 digit6.getText();
         int code = Integer.parseInt(scode);
+        Logger.info("Code " + code + " introduced, checking with server...");
 
         if(clientApp.validate(username, code)){
+            Logger.info("Validation completed");
             if(mode == 1){
+                Logger.info("Changing password...");
                 clientApp.changePassword(username, password);
             }
-            try {
                 clientApp.showMenuStage(username);
-            }catch (Exception e){
-                Logger.error("Could not show Menu");
-            }
         }else{
+            Logger.info("Validation failed, showing error label...");
             errorLabel.setVisible(true);
             errorLabel.setText("Invalid Code");
         }

@@ -1,4 +1,4 @@
-package whisp.client;
+package whisp.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

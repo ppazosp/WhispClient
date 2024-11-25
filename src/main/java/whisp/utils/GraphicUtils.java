@@ -1,4 +1,4 @@
-package whisp.client;
+package whisp.utils;
 
 import javafx.scene.image.Image;
 
@@ -12,7 +12,7 @@ import java.util.Base64;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritablePixelFormat;
 
-public class Utils {
+public class GraphicUtils {
 
     public static Image stringToImage(String source){
         byte[] imageBytes = Base64.getDecoder().decode(source);

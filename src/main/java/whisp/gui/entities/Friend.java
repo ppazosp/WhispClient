@@ -1,6 +1,5 @@
-package whisp.client;
+package whisp.gui.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Friend {

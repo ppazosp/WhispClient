@@ -1,4 +1,4 @@
-package whisp.client;
+package whisp.gui;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -7,7 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import whisp.gui.entities.Message;
+import whisp.utils.GraphicUtils;
 
 public class MessageViewController {
 
@@ -23,7 +24,7 @@ public class MessageViewController {
     ImageView imageView;
 
     public void setImageMessage(Message message){
-        Image image = Utils.stringToImage(message.getContent());
+        Image image = GraphicUtils.stringToImage(message.getContent());
         imageView.setImage(image);
         timeLabel.setText(message.getTime());
     }

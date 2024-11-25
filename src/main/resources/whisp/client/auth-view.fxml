@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="439.0" prefWidth="330.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.AuthViewController">
+<AnchorPane prefHeight="439.0" prefWidth="330.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.gui.AuthViewController">
     <children>
         <ImageView fitHeight="228.0" fitWidth="380.0" layoutX="-50.0" pickOnBounds="true" preserveRatio="true">
             <image>
