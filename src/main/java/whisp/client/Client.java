@@ -132,13 +132,13 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
         }
 
         try {
-           if (server.sendRequest(username, userNewFriend)){
-               controller.addResquest(username, userNewFriend);
+           server.sendRequest(username, userNewFriend);
 
-           }
+           controller.addResquest(username, userNewFriend);
         }catch (RemoteException e){
             System.err.println("Error connecting to server");
             Logger.error("Error connecting to server");
+            e.printStackTrace();
         }
     }
 
@@ -146,7 +146,10 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
         try {
             System.out.println(friendName + " is now your friend");
 
-            friends.put(friendName, server.getClient(friendName));
+            ClientInterface friend = server.getClient(friendName);
+            if (friend == null) return;
+
+            friends.put(friendName, friend);
 
             controller.friendAdded(friendName);
 
