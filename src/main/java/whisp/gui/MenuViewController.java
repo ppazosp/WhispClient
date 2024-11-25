@@ -174,7 +174,7 @@ public class MenuViewController {
             return;
         }
 
-        mainApp.sendResquest(searchField.getText());
+        mainApp.sendRequest(searchField.getText());
         searchField.clear();
 
         showFriends();
@@ -349,7 +349,7 @@ public class MenuViewController {
         showFriends();
     }
 
-    public void addResquest(String sender, String receiver){
+    public void addRequest(String sender, String receiver){
         Logger.info("Adding request item to gui...");
         friendRequests.add(new FriendRequest(sender, receiver));
     }

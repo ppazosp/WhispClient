@@ -22,9 +22,9 @@ import java.util.HashMap;
 
 public class ClientApplication extends Application {
 
-    /*******************************************************************************************
-     * ATTRIBUTES
-     *******************************************************************************************/
+    //*******************************************************************************************
+    //* ATTRIBUTES
+    // *******************************************************************************************
 
     private static Client client;
     private static ServerInterface server;
@@ -38,13 +38,24 @@ public class ClientApplication extends Application {
     //* MAIN METHODS
     //*******************************************************************************************
 
+    /**
+     * Lanza el hilo principal de JavaFX y llama a la función que crea la ventana inicial (login)
+     *
+     * @param stage ventana default
+     *  */
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage)  {
         Logger.info("Program started, calling login stage...");
         window = stage;
         showLoginStage();
     }
 
+    /**
+     * Main del programa, define las propiedas a usar en JavaRMI, encuentra el Registry del servidor
+     * y obtiene la referencia al objeto servidor para comunicarse a posteriori
+     *
+     * @param args argumentos por línea de comandos
+     *  */
     public static void main(String[] args) {
         try {
             System.setProperty("java.rmi.server.hostname", "localhost");
@@ -356,19 +367,43 @@ public class ClientApplication extends Application {
          view.setFriends(friends.keySet());
     }
 
+    /**
+     * Crea un objeto mensaje a partir de los parámetros para pasérselo a la GUI
+     *
+     * @param message mensaje recibido
+     * @param senderName nonbre del remitente
+     * @param isText true si es texto plano, false si es una imagen
+     *  */
     public void receiveMessage(String message, String senderName, boolean isText){
         view.receiveMessage(new Message(senderName, message, client.username, isText));
     }
 
+    /**
+     * Notifica a la GUI de que se ha conectado un amigo
+     *
+     * @param friend nombre del amigo conectado
+     *  */
     public void friendConnected(String friend){
         view.friendConnected(friend);
     }
 
+    /**
+     * Notifica a la GUI de que se ha desconectado un amigo
+     *
+     * @param friend nombre del amigo que se ha desconectado
+     *  */
     public void friendDisconnected(String friend){
         view.friendDisconnected(friend);
     }
 
-    public void sendResquest(String friend){
+    /**
+     * Envía una solicitud de amistad a un usuario comunicándose con el servidor
+     * Antes de eso comprueba si el usuario ya es amigo; si lo es, returnea
+     * Si la solicitud se envía correctamente se le comunica a la GUI para que lo  muestre
+     *
+     * @param friend nombre del usuario a quien enviar la solicitud
+     *  */
+    public void sendRequest(String friend){
         Logger.info("checking if " + getUsername() + " and " + friend + "...");
         if(client.isFriend(getUsername())){
             Logger.info("They are already friends, returning...");
@@ -378,14 +413,19 @@ public class ClientApplication extends Application {
             Logger.info("They are not friends, sending request to server...");
             server.sendRequest(client.username, friend);
         }catch (Exception e){
-            Logger.error("Resquest could not be sended, check server connection");
+            Logger.error("Request could not be sended, check server connection");
         }
 
-        Logger.info("Resquest sended");
-        view.addResquest(client.username, friend);
+        Logger.info("Request sended");
+        view.addRequest(client.username, friend);
 
     }
 
+    /**
+     * Notifica al servidor que se ha aceptado la solicitud de amistad recibida por un usuario
+     *
+     * @param friendName nombre del nuevo amigo
+     *  */
     public void requestAccepted(String friendName){
         try {
             server.requestAcepted(friendName, client.username);
@@ -395,10 +435,20 @@ public class ClientApplication extends Application {
         }
     }
 
+    /**
+     * Notifica a la GUI de que ha llegado una nueva solicitud de amistad
+     *
+     * @param requestSender nombre del usuario que envía la solicitud
+     *  */
     public void addResquest(String requestSender){
-        view.addResquest(requestSender, client.username);
+        view.addRequest(requestSender, client.username);
     }
 
+    /**
+     * Notifica al servidor que se ha cancelado la solicitud de amistad recibida por un usuario
+     *
+     * @param requestSender nombre del usuario rechazado
+     *  */
     public void cancelRequest(String requestSender){
         try {
             server.cancelRequest(client.username, requestSender);
@@ -409,20 +459,34 @@ public class ClientApplication extends Application {
 
     }
 
+    /**
+     * Notifica a la GUI de que el usuario al que se le envío una solicitud previamente la ha aceptado o rechazado
+     *
+     * @param receiverName nombre del usuario
+     *  */
     public void removeResquest(String receiverName){
          view.removeRequest(receiverName);
     }
 
 
 
-    /*******************************************************************************************
-     * FRONT TO BACK PIPE METHODS
-     *******************************************************************************************/
+    //*******************************************************************************************
+    //* FRONT TO BACK PIPE METHODS
+    //*******************************************************************************************
 
+    /**
+     * Devuelve el username del usuario de la sesión actual
+     *  */
     public String getUsername(){
          return client.username;
     }
 
+    /**
+     * Notifica al backend para el envío de una mensaje
+     * El objeto Message se desempaqueta para enviarlo
+     *
+     * @param message objeto Message a enviar
+     *  */
     public void sendMessage(Message message){
         client.sendMessage(message.getContent(), message.getReceiver(), message.isText());
     }

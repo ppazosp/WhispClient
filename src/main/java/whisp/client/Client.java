@@ -17,10 +17,6 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     private HashMap<String, ClientInterface> friends;
     private ClientApplication mainApp;
 
-    public HashMap<String, ClientInterface> getFriends() {
-        return friends;
-    }
-
     public Client(String username, ClientApplication mainApp) throws RemoteException {
         super();
         this.username = username;
