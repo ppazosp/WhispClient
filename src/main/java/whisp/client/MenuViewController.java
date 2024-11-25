@@ -306,10 +306,10 @@ public class MenuViewController {
 
     public void addFriend(String friendName){
         client.addFriend(friendName);
+        friendRequests.removeIf(f -> f.getSenderUsername().equals(friendName));
     }
 
     public void friendAdded(String friendName){
-        friendRequests.removeIf(f -> f.getSenderUsername().equals(friendName));
         friendsMap.put(friendName, new Friend());
     }
 

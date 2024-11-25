@@ -145,6 +145,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     public void addFriend(String friendName){
         try {
             System.out.println(friendName + " is now your friend");
+            server.requestAcepted(friendName, username);
 
             ClientInterface friend = server.getClient(friendName);
             if (friend == null) return;
@@ -153,7 +154,6 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
 
             controller.friendAdded(friendName);
 
-            server.requestAcepted(friendName, username);
 
             printActiveClients();
 
