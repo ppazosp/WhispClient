@@ -31,7 +31,7 @@ public class MenuViewController {
     String loadedChatUser = "";
 
     HashMap<String, Friend> friendsMap;
-    ArrayList<FriendRequest> friendRequests;
+    ArrayList<FriendRequest> friendRequests = new ArrayList<>();
 
     public void setLoadedChatUser(String loadedChatUser) {
         this.loadedChatUser = loadedChatUser;
@@ -121,7 +121,7 @@ public class MenuViewController {
             friendsMap.put(friendName, new Friend());
         }
 
-        friendRequests = new ArrayList<>();
+        //friendRequests = new ArrayList<>();
     }
 
     @FXML
@@ -225,6 +225,13 @@ public class MenuViewController {
             try {
                 friendsVbox.getChildren().clear();
 
+                //CHECK: if friendsMap is empty, show message
+                if(friendsMap.isEmpty()){
+                    System.out.println("No friends to show");
+                }else{
+                    System.out.println("Friends to show");
+                }
+
                 for (String friendName : friendsMap.keySet()) {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("friend-view.fxml"));
                     Node friendNode = loader.load();
@@ -290,7 +297,9 @@ public class MenuViewController {
     }
 
     public void addResquest(String sender, String receiver){
+        System.out.println("Request from " + sender + " to " + receiver);
         friendRequests.add(new FriendRequest(sender, receiver));
+        System.out.println("Requests: " + friendRequests.size());
 
         showFriends();
     }
