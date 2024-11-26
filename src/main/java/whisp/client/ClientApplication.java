@@ -77,7 +77,7 @@ public class ClientApplication extends Application {
             launch(args);
 
         } catch (Exception e) {
-            System.err.println("Error connecting to server");
+            System.err.println("Error connecting to serve, check server connection");
             e.printStackTrace();
         }
     }
@@ -494,7 +494,7 @@ public class ClientApplication extends Application {
 
     /**
      * Notifica al backend para el envío de una mensaje.
-     * El objeto Message se desempaqueta para enviarlo.
+     * El objeto {@link Message} se desempaqueta para enviarlo.
      *
      * @param message objeto Message a enviar
      *  */

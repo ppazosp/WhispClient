@@ -173,7 +173,7 @@ public class MenuViewController {
      *
      * <p>
      *     Envía un mensaje al usuario actualmente cargado en el chat (atributo {@code loadedChatUser}).
-     *     Guarda el mensaje enviado en el historial de mensajes del objeto Friend correspondiente y recarga el chat
+     *     Guarda el mensaje enviado en el historial de mensajes del objeto {@link Friend} correspondiente y recarga el chat
      *     para que el mensaje sea visible.
      * </p>
      *
@@ -431,7 +431,7 @@ public class MenuViewController {
     }
 
     /**
-     * Recibe un mensaje enviado por un amigo y lo guarda en el historial de mensajes del objeto Friend correspondiente.
+     * Recibe un mensaje enviado por un amigo y lo guarda en el historial de mensajes del objeto {@link Friend} correspondiente.
      * Al acabar actualiza la lista de amigos para mostrar que hay un mensaje nuevo.
      *
      * <p>

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface ClientInterface extends Remote {
+
     String getUsername() throws RemoteException;
 
     void receiveMessage(String message, String senderName, boolean isText) throws RemoteException;

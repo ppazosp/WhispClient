@@ -5,6 +5,20 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Logger {
+
+    //*******************************************************************************************
+    //* METHODS
+    //*******************************************************************************************
+
+    /**
+     * Log para mostrar información durante la ejecución
+     *
+     * <p>
+     *     Acompaña la información con la hora
+     * </p>
+     *
+     * @param message información que mostrar
+     */
     public static void info(String message)
     {
         LocalDate actualDate = LocalDate.now();
@@ -14,6 +28,15 @@ public class Logger {
         System.out.println("[INFO] " + actualDate + actualTime + ": " + message);
     }
 
+    /**
+     * Log para mostrar un error durante la ejecución
+     *
+     * <p>
+     *     Acompaña el error con la hora
+     * </p>
+     *
+     * @param message error que mostrar
+     */
     public static void error(String message)
     {
         LocalDate actualDate = LocalDate.now();
