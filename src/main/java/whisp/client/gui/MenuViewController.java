@@ -135,7 +135,7 @@ public class MenuViewController {
             event.consume();
         });
 
-        Logger.info("MenuView initialized correctly");
+        Logger.info("Menu view initialized correctly");
 
     }
 
@@ -168,6 +168,19 @@ public class MenuViewController {
     //* FXML METHODS
     //*******************************************************************************************
 
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de enviar mensaje.
+     *
+     * <p>
+     *     Envía un mensaje al usuario actualmente cargado en el chat (atributo {@code loadedChatUser}).
+     *     Guarda el mensaje enviado en el historial de mensajes del objeto Friend correspondiente y recarga el chat
+     *     para que el mensaje sea visible.
+     * </p>
+     *
+     * <p>
+     *     Antes de enviar el mensaje comprueba si está vacío; si lo está, no lo envía
+     * </p>
+     */
     @FXML
     public void sendMessage() {
         Logger.info("Send buton pressed, trying to send message...");
@@ -187,6 +200,18 @@ public class MenuViewController {
         loadChat();
     }
 
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de añadir amigo.
+     *
+     * <p>
+     *     Envía una solicitud de amistad al servidor comunicándose con él a través la clase principal.
+     *     Luego de enviarla recarga la lista de amigos para confirmar que se ha enviado
+     * </p>
+     *
+     * <p>
+     *     Antes de enviar la solicitud comprueba si el nombre vacío; si lo está, no la envía
+     * </p>
+     */
     @FXML
     public void sendRequest(){
         Logger.info("Send resquest button pressed, trying to send request...");
@@ -207,6 +232,13 @@ public class MenuViewController {
     //* MORE METHODS
     //*******************************************************************************************
 
+    /**
+     * Carga y muestra por pantalla el historial de chat para el usuario actualmente seleccionado.
+     *
+     * <p>
+     *     Comprueba si el usuario está desconectado para deshabilitar el envío de mesanjes
+     * </p>
+     */
     public void loadChat() {
         Logger.info("Loading chat...");
         Platform.runLater(() -> {
@@ -262,6 +294,19 @@ public class MenuViewController {
         });
     }
 
+    /**
+     * Maneja de conexión de un nuevo amigo. Al acabar actualiza la lista de amigos para mostrar el cambio
+     *
+     * <p>
+     *     Si el amigo ya se había conectado previamente, se actualiza su estado a conectado.
+     * </p>
+     *
+     * <p>
+     *     Si el amigo tenía una solicitud, se elimina de solicitudes pendientes
+     * </p>
+     *
+     * @param friend nombre del nuevo usuario conectado
+     */
     public void friendConnected(String friend){
         Logger.info("Updating frontend...");
 
@@ -278,6 +323,19 @@ public class MenuViewController {
         showFriends();
     }
 
+    /**
+     * Maneja de desconexión de un amigo. Al acabar actualiza la lista de amigos para mostrar el cambio.
+     *
+     * <p>
+     *     Se guarda su estado como desconectado.
+     * </p>
+     *
+     * <p>
+     *     Si el chat actual era con él, se actualiza el chat para deshabilitar el envío de mensajes.
+     * </p>
+     *
+     * @param friend nombre del usuario desconectado
+     */
     public void friendDisconnected(String friend){
         Logger.info("Setting friend to disconnected on gui");
         friendsMap.get(friend).setConnected(false);
@@ -289,6 +347,21 @@ public class MenuViewController {
         showFriends();
     }
 
+    /**
+     * Muestra la lista de amigos y manejo los casos posibles.
+     *
+     * <p>
+     *     Si se recibe un mensaje de un amigo, aparecerá una exclamación al lado de su nombre.
+     * </p>
+     *
+     * <p>
+     *     Si se envía una solicitud a un usuario, aparecerá con un avión al lado de su nombre.
+     * </p>
+     *
+     * <p>
+     *     Si se desconecta un amigo, aparecerá un símbolo de desconexión a su lado.
+     * </p>
+     */
     public void showFriends() {
         Logger.info("Showing friends...");
         Platform.runLater(() -> {
@@ -357,6 +430,16 @@ public class MenuViewController {
         });
     }
 
+    /**
+     * Recibe un mensaje enviado por un amigo y lo guarda en el historial de mensajes del objeto Friend correspondiente.
+     * Al acabar actualiza la lista de amigos para mostrar que hay un mensaje nuevo.
+     *
+     * <p>
+     *     Si el chat actual es del amigo que envió el mensaje, se actualiza el chat para mostrarlo.
+     * </p>
+     *
+     * @param message mensaje recibido
+     */
     public void receiveMessage(Message message) {
 
         Logger.info("Adding message to chat history");
@@ -370,6 +453,13 @@ public class MenuViewController {
         showFriends();
     }
 
+    /**
+     * Recibe y guarda un solicitud de amistad para mostrar en la lista de amigos.
+     * Al acabar actualiza la lista de amigos para mostrar el cambio.
+     *
+     * @param sender nombre del usuario que envió la solicitud
+     * @param receiver nombre del usuario que recibe la solicitud
+     */
     public void addRequest(String sender, String receiver){
         Logger.info("Adding request item to gui...");
         friendRequests.add(new FriendRequest(sender, receiver));
@@ -377,23 +467,37 @@ public class MenuViewController {
         showFriends();
     }
 
+    /**
+     * Añade a un amigo al aceptar una solicitud de amistad.
+     *
+     * <p>
+     *     Comunica al servidor de la aceptación a través de la clase principal y luego llama a
+     *     {@code friendConnected} para guardar al nuevo amigo
+     * </p>
+     */
     public void addFriend(String friendName){
         mainApp.requestAccepted(friendName);
-
-        Logger.info("Removing request item from gui...");
-        friendRequests.removeIf(f -> f.getSenderUsername().equals(friendName));
-        friendsMap.put(friendName, new Friend());
-        showFriends();
+        friendConnected(friendName);
     }
 
+    /**
+     * Cancela la solicitud de amistad de un amigo
+     *
+     * <p>
+     *     Comunica al servidor de la cancelación a través de la clase principal y luego llama a
+     *     {@code removeRequest} para manejar la eliminación de la solicitud en la GUI.
+     * </p>
+     */
     public void cancelRequest(String senderName) {
         mainApp.cancelRequest(senderName);
 
-        Logger.info("Removing request item from gui...");
-        friendRequests.removeIf(f -> f.getSenderUsername().equals(senderName));
-        showFriends();
+        removeRequest(senderName);
     }
 
+    /**
+     * Elimina una solicitud de la lista de solicitudes pendientes para no mostrarla más por pantalla.
+     * Al acabar actualiza la lista de amigos para mostrar el cambio.
+     */
     public void removeRequest(String receiverName) {
         Logger.info("Removing request item from gui...");
         friendRequests.removeIf(f -> f.getReceiverUsername().equals(receiverName));

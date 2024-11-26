@@ -40,7 +40,7 @@ public class ClientApplication extends Application {
     //*******************************************************************************************
 
     /**
-     * Lanza el hilo principal de JavaFX y llama a la función que crea la ventana inicial (login)
+     * Lanza el hilo principal de JavaFX y llama a la función que crea la ventana inicial (login).
      *
      * @param stage ventana default
      *  */
@@ -53,7 +53,7 @@ public class ClientApplication extends Application {
 
     /**
      * Main del programa, define las propiedas a usar en JavaRMI, encuentra el Registry del servidor
-     * y obtiene la referencia al objeto servidor para comunicarse a posteriori
+     * y obtiene la referencia al objeto servidor para comunicarse a posteriori.
      *
      * @param args argumentos por línea de comandos
      *  */
@@ -89,7 +89,7 @@ public class ClientApplication extends Application {
     //*******************************************************************************************
 
     /**
-     * Crea la ventana de Login y llama a una función para acoplarle la escena login
+     * Crea la ventana de Login y llama a una función para acoplarle la escena login.
      * */
     private void showLoginStage() {
         window.setResizable(false);
@@ -100,9 +100,9 @@ public class ClientApplication extends Application {
 
     /**
      * Crea la ventana principal del programa, carga la escena menú en ella y cierra la ventana de login.
-     * Para cargar el menú crea al Cliente con la información obtenida del login y contacta
+     * Para cargar el menú crea al Cliente con la información obtenida del login y contacta.
      * con el servidor para que le proporcione la información necesaria para la GUI
-     * (amigos conectados y solicitudes enviadas y recibidas)
+     * (amigos conectados y solicitudes enviadas y recibidas).
      *
      * @param username nombre del usuario que inició sesión
      * */
@@ -142,7 +142,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Login a la stage actual
+     * Asigna la escena de Login a la stage actual.
      *  */
     public void showLoginScene() {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/login-view.fxml"));
@@ -162,7 +162,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Registro a la stage actual
+     * Asigna la escena de Registro a la stage actual.
      *  */
     public void showRegisterScene() {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/register-view.fxml"));
@@ -181,7 +181,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Autentificación al registrarse a la stage actual
+     * Asigna la escena de Autentificación al registrarse a la stage actual.
      *
      * @param username nombre del nuevo usuario a registrar
      * @param qr image QR a escanear por el usuario codificada como String con Base64
@@ -203,7 +203,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Autentificación al iniciar sesión a la stage actual
+     * Asigna la escena de Autentificación al iniciar sesión a la stage actual.
      *
      * @param username nombre del usuario que requiere autentificación
      *  */
@@ -225,7 +225,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Autentificación al cambiar contraseña a la stage actual
+     * Asigna la escena de Autentificación al cambiar contraseña a la stage actual.
      *
      * @param username nombre del usuario que requiere autentificación
      * @param password nueva contraseña del usuario
@@ -247,7 +247,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Cambio de contraseña a la stage actual
+     * Asigna la escena de Cambio de contraseña a la stage actual.
      *  */
     public void showChangePasswordScene() {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/change_password-view.fxml"));
@@ -291,9 +291,25 @@ public class ClientApplication extends Application {
     }
 
     /**
+     * Se conecta al servidor para comprobar si el nombre de usuario está disponible.
+     *
+     *
+     * @param username nombre del nuevo usuario
+     * @return {@code true} si el usuario está disponible, de lo contrario {@code false}
+     *  */
+    public boolean checkUsernameAvailability(String username) {
+        try {
+            return server.checkUsernameAvailability(username);
+        }catch (Exception e){
+            Logger.error("Registration failed, check server connection");
+        }
+        return false;
+    }
+
+    /**
      * Se conecta al servidor para registrar al nuevo usuario, recibir su qr de autentificación y
      * mostrar la pantalla donde escanearlo. Antes de registrar al usuario comprueba si su username está usado;
-     * si lo está muestra, un error
+     * si lo está muestra, un error.
      * La contraseña se hashea antes de ser enviada.
      *
      *
@@ -302,25 +318,18 @@ public class ClientApplication extends Application {
      *  */
     public void register(String username, String password) {
         try {
-            if(server.checkUsernameAvailability(username)){
-                    // TODO: mostrar ventanita
-                Logger.error("Username is taken");
-                return;
-            }
-
             String[] pass = Encrypter.createHashPassword(password);
             String qr = server.register(username, pass[1], pass[0]);
-
+            Logger.info("Registrarion completed, moving to validation...");
             showAuthRegisterScene(username, qr);
-
         }catch (Exception e){
             Logger.error("Registration failed, check server connection");
         }
     }
 
     /**
-     * Se conecta al servidor para cambiar la contraseña del usuario
-     * Antes de enviar la nueva contraseña, se hashea
+     * Se conecta al servidor para cambiar la contraseña del usuario.
+     * Antes de enviar la nueva contraseña, se hashea.
      *
      * @param username nombre del usuario
      * @param password nueva contraseña sin hashear
@@ -337,7 +346,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Se conecta al servidor para validar el código de autentificación introducido por el ususario
+     * Se conecta al servidor para validar el código de autentificación introducido por el ususario.
      *
      * @param username nombre del nuevo usuario
      * @param code código de autentificación
@@ -361,7 +370,7 @@ public class ClientApplication extends Application {
 
     /**
      * Recibe un Hashmap de amigos con el nombre de usuario como clave y su referencia de Java RMI como valor
-     * y se lo pasa a la GUI como un Set de nombres de usuario
+     * y se lo pasa a la GUI como un Set de nombres de usuario.
      *
      * @param friends amigos del usuario conectados
      *  */
@@ -370,7 +379,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Crea un objeto mensaje a partir de los parámetros para pasérselo a la GUI
+     * Crea un objeto mensaje a partir de los parámetros para pasérselo a la GUI.
      *
      * @param message mensaje recibido
      * @param senderName nonbre del remitente
@@ -381,7 +390,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Notifica a la GUI de que se ha conectado un amigo
+     * Notifica a la GUI de que se ha conectado un amigo.
      *
      * @param friend nombre del amigo conectado
      *  */
@@ -390,7 +399,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Notifica a la GUI de que se ha desconectado un amigo
+     * Notifica a la GUI de que se ha desconectado un amigo.
      *
      * @param friend nombre del amigo que se ha desconectado
      *  */
@@ -399,9 +408,9 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Envía una solicitud de amistad a un usuario comunicándose con el servidor
+     * Envía una solicitud de amistad a un usuario comunicándose con el servidor.
      * Antes de eso comprueba si el usuario ya es amigo; si lo es, returnea
-     * Si la solicitud se envía correctamente se le comunica a la GUI para que lo  muestre
+     * Si la solicitud se envía correctamente se le comunica a la GUI para que lo  muestre.
      *
      * @param friend nombre del usuario a quien enviar la solicitud
      *  */
@@ -424,7 +433,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Notifica al servidor que se ha aceptado la solicitud de amistad recibida por un usuario
+     * Notifica al servidor que se ha aceptado la solicitud de amistad recibida por un usuario.
      *
      * @param friendName nombre del nuevo amigo
      *  */
@@ -438,7 +447,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Notifica a la GUI de que ha llegado una nueva solicitud de amistad
+     * Notifica a la GUI de que ha llegado una nueva solicitud de amistad.
      *
      * @param requestSender nombre del usuario que envía la solicitud
      *  */
@@ -447,7 +456,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Notifica al servidor que se ha cancelado la solicitud de amistad recibida por un usuario
+     * Notifica al servidor que se ha cancelado la solicitud de amistad recibida por un usuario.
      *
      * @param requestSender nombre del usuario rechazado
      *  */
@@ -462,7 +471,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Notifica a la GUI de que el usuario al que se le envío una solicitud previamente la ha aceptado o rechazado
+     * Notifica a la GUI de que el usuario al que se le envío una solicitud previamente la ha aceptado o rechazado.
      *
      * @param receiverName nombre del usuario
      *  */
@@ -477,15 +486,15 @@ public class ClientApplication extends Application {
     //*******************************************************************************************
 
     /**
-     * Devuelve el username del usuario de la sesión actual
+     * Devuelve el username del usuario de la sesión actual.
      *  */
     public String getUsername(){
          return client.username;
     }
 
     /**
-     * Notifica al backend para el envío de una mensaje
-     * El objeto Message se desempaqueta para enviarlo
+     * Notifica al backend para el envío de una mensaje.
+     * El objeto Message se desempaqueta para enviarlo.
      *
      * @param message objeto Message a enviar
      *  */

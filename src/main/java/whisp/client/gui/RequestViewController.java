@@ -6,18 +6,44 @@ import whisp.utils.Logger;
 
 public class RequestViewController {
 
+    //*******************************************************************************************
+    //* ATTRIBUTES
+    //*******************************************************************************************
+
     MenuViewController menuViewController;
 
     @FXML
     Label usernameLabel;
 
+
+
+    //*******************************************************************************************
+    //* INITIALIZERS
+    //*******************************************************************************************
+
+    /**
+     * Setter para el texto del label {@code username}
+     *
+     * @param username nombre de usuario de la solicitud a mostrar
+     */
     public void setUsernameLabel(String username) {
         usernameLabel.setText(username);
     }
 
+    /**
+     * Setter para la referencia a la clase principal de GUI
+     *
+     * @param menuViewController nueva referencia a la clase principal de GUI
+     */
     public void setMenuViewController(MenuViewController menuViewController) {
         this.menuViewController = menuViewController;
     }
+
+
+
+    //*******************************************************************************************
+    //* FXML METHODS
+    //*******************************************************************************************
 
     @FXML
     public void acceptResquest(){

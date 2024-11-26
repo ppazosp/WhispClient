@@ -87,15 +87,6 @@ public class AuthRegisterViewController {
     // *******************************************************************************************
 
     /**
-     * Función lanzada por {@code FXML} al pulsar el botón de retroceder. Carga la escena de login
-     */
-    @FXML
-    public void back(){
-        Logger.info("Back button pressed, going back t login scene...");
-        clientApp.showLoginScene();
-    }
-
-    /**
      * Función lanzada por {@code FXML} al pulsar el botón de validar.
      *
      * <p>
@@ -140,5 +131,17 @@ public class AuthRegisterViewController {
             errorLabel.setVisible(true);
             errorLabel.setText("Invalid Code");
         }
+    }
+
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de retroceder.
+     * <p>
+     *     Carga la escena de login
+     * </p>
+     */
+    @FXML
+    public void back(){
+        Logger.info("Back button pressed, going back t login scene...");
+        clientApp.showLoginScene();
     }
 }

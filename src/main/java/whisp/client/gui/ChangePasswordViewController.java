@@ -39,6 +39,8 @@ public class ChangePasswordViewController {
      */
     public void initialize(ClientApplication clientApp){
         this.clientApp = clientApp;
+
+        Logger.info("Change Password view initialized correctly");
     }
 
 

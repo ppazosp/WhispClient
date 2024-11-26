@@ -72,6 +72,7 @@ public class AuthViewController {
                 }
             });
         }
+
         Logger.info("AuthView initialized correctly");
     }
 
@@ -82,7 +83,10 @@ public class AuthViewController {
     // *******************************************************************************************
 
     /**
-     * Función lanzada por {@code FXML} al pulsar el botón de retroceder. Carga la escena de login
+     * Función lanzada por {@code FXML} al pulsar el botón de retroceder.
+     * <p>
+     *     Carga la escena de login
+     * </p>
      */
     @FXML
     public void back(){

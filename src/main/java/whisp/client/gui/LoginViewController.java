@@ -35,6 +35,9 @@ public class LoginViewController {
      */
     public void initialize(ClientApplication clientApp){
         this.clientApp = clientApp;
+
+        Logger.info("Login view initialized correctly");
+
     }
 
 
