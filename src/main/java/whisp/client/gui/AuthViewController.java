@@ -8,6 +8,10 @@ import whisp.utils.Logger;
 
 public class AuthViewController {
 
+    //*******************************************************************************************
+    //* ATTRIBUTES
+    // *******************************************************************************************
+
     int mode;
 
     ClientApplication clientApp;
@@ -16,7 +20,6 @@ public class AuthViewController {
 
     @FXML
     Label errorLabel;
-
     @FXML
     TextField digit1;
     @FXML
@@ -30,6 +33,24 @@ public class AuthViewController {
     @FXML
     TextField digit6;
 
+
+
+    //*******************************************************************************************
+    //* INITIALIZERS
+    // *******************************************************************************************
+
+    /**
+     * Inicializa el controlador de la escena de validación en el registro.
+     *
+     * <p>
+     * Hace que los fields para dígitos de validación permitan solo un int
+     * por field y salten al siguiente si están llenos.
+     *</p>
+     *
+     * @param username nombre del usuario que se quiera validar
+     * @param aux contraseña del usuario si se llama para la validación de registro, sino null
+     * @param clientApp referencia a la clase princial de flujo de ejecución
+     */
     public void initialize(String username, String aux, ClientApplication clientApp, int mode){
 
         this.clientApp = clientApp;
@@ -54,12 +75,34 @@ public class AuthViewController {
         Logger.info("AuthView initialized correctly");
     }
 
+
+
+    //*******************************************************************************************
+    //* FXML METHODS
+    // *******************************************************************************************
+
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de retroceder. Carga la escena de login
+     */
     @FXML
     public void back(){
         Logger.info("Back button pressed, going back to Login scene...");
         clientApp.showLoginScene();
     }
 
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de validar.
+     *
+     * <p>
+     *      Intenta validar al usuario conectándose a la clase principal para llegar al servidor.
+     *      Si lo consigue llama a {@code back}, si no muestra una label de error.
+     * </p>
+     *
+     * <p>
+     *      Antes de comunicarse comprueba que los campos
+     *      de la escena han sido correctamente rellenados
+     * </p>
+     */
     @FXML
     public void validate(){
         Logger.info("Validate button pressed, trying to validate user...");

@@ -9,6 +9,10 @@ import whisp.utils.Logger;
 
 public class LoginViewController {
 
+    //*******************************************************************************************
+    //* ATTRIBUTES
+    // *******************************************************************************************
+
     ClientApplication clientApp;
 
     @FXML
@@ -18,10 +22,36 @@ public class LoginViewController {
     @FXML
     PasswordField passwordField;
 
+
+
+    //*******************************************************************************************
+    //* INITIALIZERS
+    // *******************************************************************************************
+
+    /**
+     * Inicializa el controlador de la escena de Login.
+     *
+     * @param clientApp referencia a la clase princial de flujo de ejecución
+     */
     public void initialize(ClientApplication clientApp){
         this.clientApp = clientApp;
     }
 
+
+
+    //*******************************************************************************************
+    //* FXML METHODS
+    // *******************************************************************************************
+
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de Login.
+     *
+     * <p>
+     *     Recoge usuario y contraseña de los campos de la escena y se los pasa a la clase principal
+     *     para conectarse al servidor y comprobar si las credenciales de inicio de sesión son válidas.
+     *     Si lo son muestra la escena de validación, si no muestra un label de error.
+     * </p>
+     */
     @FXML
     public void login(){
         Logger.info("Login button pressed, trying to login user...");
@@ -34,6 +64,12 @@ public class LoginViewController {
         }
     }
 
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de cambiar contraseña.
+     * <p>
+     *     Muestra la escena de cambio de contraseña
+     * </p>
+     */
     @FXML
     public void changePassword(){
         try {
@@ -43,6 +79,12 @@ public class LoginViewController {
         }
     }
 
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de crear cuenta.
+     * <p>
+     *     Muestra la escena de registro
+     * </p>
+     */
     @FXML
     public void register(){
         try {

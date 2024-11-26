@@ -33,7 +33,7 @@ public class ChangePasswordViewController {
     // *******************************************************************************************
 
     /**
-     * Inicializa la escena de cambio de contraseña.
+     * Inicializa el controlador de la escena de cambio de contraseña.
      *
      * @param clientApp referencia a la clase princial de flujo de ejecución
      */
@@ -48,12 +48,16 @@ public class ChangePasswordViewController {
     // *******************************************************************************************
 
     /**
-     * Función lanzada por {@code FXML}. Obtiene los datos introducidos por el usuario para cambiar
-     * su contraseña.
+     * Función lanzada por {@code FXML} al pulsar el botón de cambiar contraseña.
      *
      * <p>
-     * Antes de comunicarse con la clase principal para conectarse con el servidor
-     * comprueba que todos los campos de la escena han sido correctamente rellenados.
+     *     Obtiene los datos introducidos por el usuario para cambiar
+     *     su contraseña.
+     * </p>
+     *
+     * <p>
+     *     Antes de comunicarse con la clase principal para conectarse con el servidor
+     *     comprueba que todos los campos de la escena han sido correctamente rellenados.
      * </p>
      */
     @FXML
@@ -92,7 +96,7 @@ public class ChangePasswordViewController {
     }
 
     /**
-     * Función lanzada por {@code FXML}. Carga la escena de login
+     * Función lanzada por {@code FXML} al pulsar el botón de retroceder. Carga la escena de login
      */
     @FXML
     public void back(){

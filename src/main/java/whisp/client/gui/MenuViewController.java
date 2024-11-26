@@ -30,9 +30,9 @@ import static whisp.utils.GraphicUtils.isImageFile;
 
 public class MenuViewController {
 
-    /*******************************************************************************************
-     * ATTRIBUTES
-     *******************************************************************************************/
+    //*******************************************************************************************
+    //* ATTRIBUTES
+    //*******************************************************************************************
 
     ClientApplication mainApp;
     String loadedChatUser = "";
@@ -60,10 +60,21 @@ public class MenuViewController {
 
 
 
-    /*******************************************************************************************
-     * INITIALIZERS
-     *******************************************************************************************/
+    //*******************************************************************************************
+    //* INITIALIZERS
+    //*******************************************************************************************/
 
+    /**
+     * Inicializa el controlador de la escena principal.
+     *
+     * <p>
+     *     Añade los eventos de Drag and Drop en el chat para poder enviar imágenes y de onKeyPressed
+     *     para poder enviar mensajes o solicitudes al presionar Enter
+     * </p>
+     *
+     * @param mainApp referencia a la clase princial de flujo de ejecución
+     * @param scene   la escena actual utilizada para registrar eventos de teclado.
+     */
     public void initialize(ClientApplication mainApp, Scene scene) {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -128,10 +139,20 @@ public class MenuViewController {
 
     }
 
+    /**
+     * Setter del atributo {@code loadedChatUser}
+     *
+     * @param loadedChatUser usuario al que pertenece el chat actual
+     */
     public void setLoadedChatUser(String loadedChatUser) {
         this.loadedChatUser = loadedChatUser;
     }
 
+    /**
+     * Setter del HashMap friends
+     *
+     * @param friends set de nombres de amigos conectados
+     */
     public void setFriends(Set<String> friends){
         Logger.info("Setting friends on frontend...");
         for (String friendName : friends){
@@ -143,9 +164,9 @@ public class MenuViewController {
 
 
 
-    /*******************************************************************************************
-     * FXML METHODS
-     *******************************************************************************************/
+    //*******************************************************************************************
+    //* FXML METHODS
+    //*******************************************************************************************
 
     @FXML
     public void sendMessage() {
@@ -182,9 +203,9 @@ public class MenuViewController {
 
 
 
-    /*******************************************************************************************
-     * MORE METHODS
-     *******************************************************************************************/
+    //*******************************************************************************************
+    //* MORE METHODS
+    //*******************************************************************************************
 
     public void loadChat() {
         Logger.info("Loading chat...");

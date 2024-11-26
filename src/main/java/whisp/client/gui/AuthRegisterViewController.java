@@ -43,11 +43,11 @@ public class AuthRegisterViewController {
     // *******************************************************************************************
 
     /**
-     * Inicializa la escena de validación en el registro.
+     * Inicializa el controlador de la escena de validación en el registro.
      *
      * <p>
      * Hace que los fields para dígitos de validación permitan solo un int
-     * por field y salten al siguiente si están llenos.
+     * por field y salten al siguiente si están llenos. Añade la imgen del QR
      *</p>
      *
      * @param username nombre del usuario que se quiera validar
@@ -87,7 +87,7 @@ public class AuthRegisterViewController {
     // *******************************************************************************************
 
     /**
-     * Función lanzada por {@code FXML}. Carga la escena de login
+     * Función lanzada por {@code FXML} al pulsar el botón de retroceder. Carga la escena de login
      */
     @FXML
     public void back(){
@@ -96,12 +96,16 @@ public class AuthRegisterViewController {
     }
 
     /**
-     * Función lanzada por {@code FXML}. Intenta validar al usuario conectándose a la clase principal para llegar al servidor.
-     * Si lo consigue llama a {@code back}, si no muestra una label de error.
+     * Función lanzada por {@code FXML} al pulsar el botón de validar.
      *
      * <p>
-     * Antes de comunicarse comprueba que los campos
-     * de la escena han sido correctamente rellenados
+     *     Intenta validar al usuario conectándose a la clase principal para llegar al servidor.
+     *     Si lo consigue llama a {@code back}, si no muestra una label de error.
+     * </p>
+     *
+     * <p>
+     *      Antes de comunicarse comprueba que los campos
+     *      de la escena han sido correctamente rellenados
      * </p>
      */
     @FXML
