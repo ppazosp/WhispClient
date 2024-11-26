@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="532.0" prefWidth="800.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.gui.MenuViewController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <ImageView fitHeight="583.0" fitWidth="901.0" layoutX="-101.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/bg3.jpeg" />
+         </image>
+      </ImageView>
+      <AnchorPane prefHeight="533.0" prefWidth="220.0" style="-fx-background-color: #055763;" />
+      <Label alignment="CENTER_RIGHT" prefHeight="532.0" prefWidth="800.0" text="made by PABLO PAZOS &amp; DAVID M. RAPOSEIRAS" textAlignment="RIGHT" textFill="WHITE" visible="false">
+         <padding>
+            <Insets right="80.0" />
+         </padding>
+         <font>
+            <Font name="Arial Hebrew Scholar Bold" size="18.0" />
+         </font>
+      </Label>
+      <VBox alignment="TOP_CENTER" prefHeight="532.0" prefWidth="800.0" spacing="15.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+         <children>
+            <HBox prefHeight="500.0" prefWidth="760.0" spacing="20.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+               <children>
+                  <VBox prefHeight="390.0" prefWidth="200.0" spacing="5.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+                     <children>
+                        <Label text="My Friends" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Hebrew Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane focusTraversable="false" hbarPolicy="NEVER" prefHeight="440.0" prefWidth="180.0" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="NEVER">
+                           <content>
+                              <VBox fx:id="friendsVbox" prefHeight="434.0" prefWidth="178.0" spacing="4.0" style="-fx-background: transparent; -fx-background-color: transparent;">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <HBox alignment="CENTER" prefHeight="10.0" prefWidth="180.0" spacing="5.0">
+                           <children>
+                              <TextField fx:id="searchField" prefHeight="34.0" prefWidth="151.0" promptText="Search friend..." styleClass="field-menu" stylesheets="@../styles.css" />
+                              <Button fx:id="searchButton" graphicTextGap="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendRequest" prefHeight="24.0" prefWidth="24.0" styleClass="menu-button" stylesheets="@../styles.css">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add_user_black.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="chatSideVbox" prefHeight="390.0" prefWidth="580.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="chatLabel">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane fx:id="chatScroll" focusTraversable="false" hbarPolicy="NEVER" prefHeight="476.0" prefWidth="560.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER">
+                           <content>
+                              <VBox fx:id="chatVbox" alignment="BOTTOM_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="540.0" spacing="10.0" style="-fx-background-color: transparent;">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <HBox fx:id="myMessageHbox" fillHeight="false" prefHeight="3.0" prefWidth="560.0" spacing="5.0" stylesheets="@../styles.css">
+                           <children>
+                              <TextField fx:id="myMessageField" focusTraversable="false" prefHeight="26.0" prefWidth="550.0" promptText="Message..." styleClass="field-menu" stylesheets="@../styles.css" />
+                              <Button fx:id="sendButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" prefHeight="24.0" prefWidth="32.0" styleClass="menu-button" stylesheets="@../styles.css">
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/send_black.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
