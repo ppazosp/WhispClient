@@ -36,7 +36,7 @@ public class Encrypter {
     }
 
     /**
-     * Hashea una contraseña usando como algoritmo PBKDF2 y el salt proporcionado
+     * Hashea una contraseña usando como algoritmo {@link Encrypter#ALGORITHM} y el salt proporcionado
      *
      * @param password contraseña en plano a hashear
      * @param salt array de bytes para usar como salt en el hash
@@ -58,8 +58,8 @@ public class Encrypter {
      * Genera un salt y hashea una contraseña
      *
      * <p>
-     *     Llama a la función {@code generateSalt()} para generar el salt y a
-     *     {@code getHashedPassword()} para hashear la contraseña con el salt
+     *     Llama a la función {@link Encrypter#generateSalt()} para generar el salt y a
+     *     {@link Encrypter#getHashedPassword(String, byte[])} para hashear la contraseña con el salt
      * </p>
      *
      * @param password contraseña en plano a hashear

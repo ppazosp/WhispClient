@@ -13,6 +13,8 @@ public interface ServerInterface extends Remote {
 
     void requestAccepted(String requestSender, String requestReceiver) throws RemoteException;
 
+    void requestCancelled(String username, String senderName) throws RemoteException;
+
     boolean login(String username, String password) throws RemoteException;
 
     String getSalt(String username) throws RemoteException;
@@ -24,6 +26,4 @@ public interface ServerInterface extends Remote {
     boolean validate(String username, int code) throws RemoteException;
 
     void changePassword(String username, String password, String salt) throws RemoteException;
-
-    void cancelRequest(String username, String senderName) throws RemoteException;
 }

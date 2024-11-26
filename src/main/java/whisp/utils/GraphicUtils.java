@@ -19,7 +19,7 @@ public class GraphicUtils {
     //*******************************************************************************************
 
     /**
-     * Convierte una cadena Base64 en una imagen JavaFX.
+     * Convierte una cadena codificada en Base64 en una imagen JavaFX.
      *
      * @param source la cadena Base64 que representa la imagen.
      * @return un objeto {@link Image} creado a partir de la cadena Base64.
@@ -32,7 +32,7 @@ public class GraphicUtils {
     }
 
     /**
-     * Convierte una imagen JavaFX en una cadena Base64.
+     * Convierte una imagen JavaFX en una cadena codificada enBase64.
      *
      * @param image la imagen que se desea convertir a cadena Base64.
      * @return una cadena Base64 que representa la imagen.

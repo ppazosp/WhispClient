@@ -462,7 +462,7 @@ public class ClientApplication extends Application {
      *  */
     public void cancelRequest(String requestSender){
         try {
-            server.cancelRequest(client.username, requestSender);
+            server.requestCancelled(client.username, requestSender);
             Logger.info("Request cancelled on server");
         }catch (Exception e){
             Logger.error("Cancelling request failed when connecting to server, check server connection");
