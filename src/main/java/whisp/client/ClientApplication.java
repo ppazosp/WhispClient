@@ -136,6 +136,7 @@ public class ClientApplication extends Application {
             server.registerClient(client);
         } catch (Exception e) {
             Logger.error("Cannot register client, check server connection");
+            e.printStackTrace();
         }
 
         Stage oldWindow = window;
