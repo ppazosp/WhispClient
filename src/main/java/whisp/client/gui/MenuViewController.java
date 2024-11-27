@@ -113,19 +113,15 @@ public class MenuViewController {
             if (dragboard.hasFiles()) {
                 for (File file : dragboard.getFiles()) {
                     if (isImageFile(file)) {
-                        try {
-                            Image image = new Image(file.toURI().toString());
-                            String simage = GraphicUtils.imageToString(image);
+                        Image image = new Image(file.toURI().toString());
+                        String simage = GraphicUtils.imageToString(image);
 
-                            Message message = new Message(mainApp.getUsername(), simage, loadedChatUser, false);
-                            mainApp.sendMessage(message);
-                            friendsMap.get(loadedChatUser).addMessage(message);
-                            loadChat();
+                        Message message = new Message(mainApp.getUsername(), simage, loadedChatUser, false);
+                        mainApp.sendMessage(message);
+                        friendsMap.get(loadedChatUser).addMessage(message);
+                        loadChat();
 
-                            success = true;
-                        } catch (Exception e) {
-                            Logger.error("Could not convert image to String");
-                        }
+                        success = true;
 
                     }
                 }
@@ -187,6 +183,7 @@ public class MenuViewController {
 
         if(myMessageField.getText().isEmpty() || loadedChatUser.isEmpty()){
             Logger.info("MessageField, returning...");
+            ClientApplication.showErrorWindow("You sending air now?");
             return;
         }
 
@@ -217,6 +214,7 @@ public class MenuViewController {
         Logger.info("Send resquest button pressed, trying to send request...");
         if (searchField.getText().isEmpty()){
             Logger.info("SearchField was empty, returning...");
+            ClientApplication.showErrorWindow("People have a name");
             return;
         }
 
@@ -290,6 +288,7 @@ public class MenuViewController {
                 showFriends();
             } catch (IOException e) {
                 Logger.error("Cannot load chat, check xml path files");
+                System.exit(1);
             }
         });
     }

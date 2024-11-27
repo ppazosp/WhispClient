@@ -7,7 +7,7 @@ public interface ServerInterface extends Remote {
 
     void registerClient(ClientInterface client) throws RemoteException;
 
-    void sendRequest(String requestSender, String requestReceiver) throws RemoteException;
+    boolean sendRequest(String requestSender, String requestReceiver) throws RemoteException;
 
     ClientInterface getClient(String username) throws RemoteException;
 

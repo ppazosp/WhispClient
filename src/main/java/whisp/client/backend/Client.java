@@ -195,6 +195,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
             Logger.info("Message sended");
         }catch (RemoteException e){
             Logger.error(receiver + " is not available right now. Try messaging him later");
+            ClientApplication.showErrorWindow(receiver + " is not available");
         }
     }
 

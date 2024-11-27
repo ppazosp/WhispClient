@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.Base64;
 import javafx.scene.image.PixelReader;
@@ -38,11 +39,17 @@ public class GraphicUtils {
      * @return una cadena Base64 que representa la imagen.
      * @throws Exception si ocurre un error durante el procesamiento de la imagen.
      */
-    public static String imageToString(Image image) throws Exception {
+    public static String imageToString(Image image) {
         BufferedImage bufferedImage = getBufferedImage(image);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "png", outputStream);
+        try {
+
+            ImageIO.write(bufferedImage, "png", outputStream);
+        } catch (IOException e) {
+            Logger.error("Critical error converting image to String");
+            throw new IllegalStateException("This should never happen, somthing went horribly wrong", e);
+        }
         byte[] imageBytes = outputStream.toByteArray();
 
         return Base64.getEncoder().encodeToString(imageBytes);

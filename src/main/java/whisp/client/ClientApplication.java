@@ -2,7 +2,13 @@ package whisp.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import whisp.client.backend.Client;
 import whisp.client.gui.*;
@@ -265,6 +271,25 @@ public class ClientApplication extends Application {
         window.show();
     }
 
+    public static void showErrorWindow(String message) {
+            FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/error-view.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(fxmlLoader.load());
+            }catch (IOException e){
+                Logger.error("Error loading error scene, check xml filepath");
+                System.exit(1);
+            }
+            ErrorViewController controller = fxmlLoader.getController();
+            controller.setErrorMessage(message);
+
+            Stage errorStage = new Stage();
+            errorStage.initModality(Modality.APPLICATION_MODAL);
+            errorStage.setTitle("Error");
+            errorStage.setScene(scene);
+            errorStage.showAndWait();
+    }
+
 
 
     //*******************************************************************************************
@@ -423,13 +448,17 @@ public class ClientApplication extends Application {
         }
         try{
             Logger.info("They are not friends, sending request to server...");
-            server.sendRequest(client.username, friend);
+            if(server.sendRequest(client.username, friend)){
+                Logger.info("Request sended");
+                addSentRequest(friend);
+            }else{
+                Logger.info("User " + friend + " does not exist, showing error...");
+                showErrorWindow("That bro is not here");
+
+            }
         }catch (Exception e){
             Logger.error("Request could not be sended, check server connection");
         }
-
-        Logger.info("Request sended");
-        addSentRequest(friend);
     }
 
     /**
