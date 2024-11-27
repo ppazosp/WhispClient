@@ -131,6 +131,7 @@ public class ClientApplication extends Application {
             Logger.error("Could not create a new Client");
             System.exit(1);
         }
+
         try {
             server.registerClient(client);
         } catch (Exception e) {
@@ -515,6 +516,14 @@ public class ClientApplication extends Application {
      *  */
     public void removeResquest(String receiverName){
          view.removeRequest(receiverName);
+    }
+
+    public void askForClientDisconnection(String clientUsername){
+        try {
+            server.askForClientDisconnection(clientUsername);
+        } catch (RemoteException e) {
+            Logger.error("Could not ask for client disconnection, check server connection");
+        }
     }
 
 

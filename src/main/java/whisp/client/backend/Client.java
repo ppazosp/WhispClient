@@ -3,6 +3,7 @@ package whisp.client.backend;
 import whisp.client.ClientApplication;
 import whisp.utils.Logger;
 import whisp.interfaces.ClientInterface;
+import whisp.utils.P2Pencryption;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -31,6 +32,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
         super();
         this.username = username;
         this.mainApp = mainApp;
+        //crear keystore
+        P2Pencryption.createKeyStore();
     }
 
 
@@ -174,6 +177,22 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     @Override
     public void ping() throws RemoteException {}
 
+    @Override
+    public void receiveKeys(HashMap<String, String> keys) throws RemoteException {
+        Logger.info("Received keys from server");
+        //añadir a la keystore
+        for(Map.Entry<String, String> entry : keys.entrySet()){
+            P2Pencryption.addKeyToKeyStore(entry.getKey(), entry.getValue());
+        }
+    }
+
+    @Override
+    public void receiveNewKey(String username, String key) throws RemoteException{
+        Logger.info("Received new key from server");
+        //añadir a la keystore
+        P2Pencryption.addKeyToKeyStore(username, key);
+    }
+
 
     //*******************************************************************************************
     //* MORE METHODS
@@ -196,6 +215,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
         }catch (RemoteException e){
             Logger.error(receiver + " is not available right now. Try messaging him later");
             ClientApplication.showErrorWindow(receiver + " is not available");
+
+            mainApp.askForClientDisconnection(receiver);
         }
     }
 
@@ -207,4 +228,6 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     public boolean isFriend(String username){
         return friends.get(username)!= null;
     }
+
+
 }
