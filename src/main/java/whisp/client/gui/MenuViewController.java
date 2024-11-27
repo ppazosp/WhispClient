@@ -213,9 +213,17 @@ public class MenuViewController {
     public void sendRequest(){
         Logger.info("Send resquest button pressed, trying to send request...");
         if (searchField.getText().isEmpty()){
-            Logger.info("SearchField was empty, returning...");
+            Logger.info("SearchField was empty, showing error window...");
             ClientApplication.showErrorWindow("People have a name");
             return;
+        }
+
+        for(FriendRequest fr : friendRequests){
+            if(fr.getReceiverUsername().equals(searchField.getText())){
+                Logger.info("Resquest for " + searchField.getText() + " has already been sent, showing error window...");
+                ClientApplication.showErrorWindow("Stop spamming, bot");
+                return;
+            }
         }
 
         mainApp.sendRequest(searchField.getText());
