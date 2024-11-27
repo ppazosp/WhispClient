@@ -130,21 +130,28 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     @Override
     public void receiveFriendRequest(String requestSender) throws RemoteException {
         Logger.info("Friend request from " + requestSender + "received from server");
-        mainApp.addResquest(requestSender);
+        mainApp.addReceivedRequest(requestSender);
     }
 
     /**
-     * Recibe una lista de solicitudes de amistad desde el servidor.
+     * Recibe la lista de solicitudes de amistad recibidas y enviadas por el usuario desde el servidor.
      *
-     * @param requestSenders lista de usuarios que enviaron solicitudes de amistad al usuario de la sesión actual.
+     * @param sentRequests lista de nombres de usuarios que han recibido una solicitud de amistad por parte del usuario de la sesión actual.
+     * @param receivedRequests lista de nombres de usuarios que le han enviado al usuario de la sesión actual una solicitud de amistad.
      * @throws RemoteException si ocurre un error de comunicación remota.
      */
     @Override
-    public void receiveRequests(List<String> requestSenders) throws RemoteException {
-        Logger.info("Received " + requestSenders.size() + " from server db...");
-        for(String requestSender : requestSenders){
-            mainApp.addResquest(requestSender);
+    public void receiveRequests(List<String> sentRequests, List<String> receivedRequests) throws RemoteException {
+        Logger.info("Received " + sentRequests.size() + " sent requests and " + receivedRequests.size() + " received requests from server db...");
+
+        for(String requestReceiver : sentRequests){
+            mainApp.addSentRequest(requestReceiver);
         }
+
+        for(String requestSender : receivedRequests){
+            mainApp.addReceivedRequest(requestSender);
+        }
+
     }
 
     /**
@@ -182,7 +189,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
      */
     public void sendMessage(String message, String receiver, boolean isText) {
         try {
-            Logger.info("Sending " + message + " to " + receiver + "...");
+            Logger.info("Sending message to " + receiver + "...");
             ClientInterface friendClient = friends.get(receiver);
             friendClient.receiveMessage(message, username, isText);
             Logger.info("Message sended");

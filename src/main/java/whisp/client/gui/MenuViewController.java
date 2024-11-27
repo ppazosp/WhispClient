@@ -185,8 +185,8 @@ public class MenuViewController {
     public void sendMessage() {
         Logger.info("Send buton pressed, trying to send message...");
 
-        if(myMessageField.getText().isEmpty()){
-            Logger.info("MessageField was empty, returning...");
+        if(myMessageField.getText().isEmpty() || loadedChatUser.isEmpty()){
+            Logger.info("MessageField, returning...");
             return;
         }
 
@@ -318,7 +318,7 @@ public class MenuViewController {
         }
 
         Logger.info("Checking if user had a friend request...");
-        friendRequests.removeIf(f -> f.getReceiverUsername().equals(friend));
+        friendRequests.removeIf(f -> f.getSenderUsername().equals(friend) || f.getReceiverUsername().equals(friend));
 
         showFriends();
     }
@@ -368,12 +368,6 @@ public class MenuViewController {
             try {
                 friendsVbox.getChildren().clear();
 
-                //CHECK: if friendsMap is empty, show message
-                if(friendsMap.isEmpty()){
-                    System.out.println("No friends to show");
-                }else{
-                    System.out.println("Friends to show");
-                }
 
                 for (String friendName : friendsMap.keySet()) {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/friend-view.fxml"));
@@ -397,7 +391,7 @@ public class MenuViewController {
 
                     friendsVbox.getChildren().add(friendNode);
                 }
-
+                Logger.info(friendRequests.size() + " requests");
                 for (FriendRequest fr : friendRequests){
                     if(fr.getSenderUsername().equals(mainApp.getUsername())){
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/friend-view.fxml"));
@@ -463,6 +457,7 @@ public class MenuViewController {
     public void addRequest(String sender, String receiver){
         Logger.info("Adding request item to gui...");
         friendRequests.add(new FriendRequest(sender, receiver));
+        Logger.info(friendRequests.size() + " requests");
 
         showFriends();
     }
@@ -498,9 +493,9 @@ public class MenuViewController {
      * Elimina una solicitud de la lista de solicitudes pendientes para no mostrarla más por pantalla.
      * Al acabar actualiza la lista de amigos para mostrar el cambio.
      */
-    public void removeRequest(String receiverName) {
+    public void removeRequest(String username) {
         Logger.info("Removing request item from gui...");
-        friendRequests.removeIf(f -> f.getReceiverUsername().equals(receiverName));
+        friendRequests.removeIf(f -> f.getReceiverUsername().equals(username) || f.getSenderUsername().equals(username) );
         showFriends();
     }
 }

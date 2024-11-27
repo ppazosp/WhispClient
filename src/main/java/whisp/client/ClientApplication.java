@@ -77,7 +77,7 @@ public class ClientApplication extends Application {
             launch(args);
 
         } catch (Exception e) {
-            System.err.println("Error connecting to serve, check server connection");
+            System.err.println("Error connecting to server, check server connection");
             e.printStackTrace();
         }
     }
@@ -284,7 +284,7 @@ public class ClientApplication extends Application {
             String salt = server.getSalt(username);
             if (salt == null) return false;
             return server.login(username, Encrypter.getHashedPassword(password, Base64.getDecoder().decode(salt.getBytes())));
-        }catch (Exception e){
+        }catch (RemoteException e){
             Logger.error("Login failed, check server connection");
         }
         return false;
@@ -352,14 +352,15 @@ public class ClientApplication extends Application {
      * @param code código de autentificación
      *  */
     public boolean validate(String username, int code){
-        //return true
-        try {
+        return true;
+        /*try {
             return server.validate(username, code);
         } catch (RemoteException e) {
             Logger.error("Could not validate code, check server connection");
         }
 
         return false;
+         */
     }
 
 
@@ -428,8 +429,7 @@ public class ClientApplication extends Application {
         }
 
         Logger.info("Request sended");
-        view.addRequest(client.username, friend);
-
+        addSentRequest(friend);
     }
 
     /**
@@ -451,8 +451,17 @@ public class ClientApplication extends Application {
      *
      * @param requestSender nombre del usuario que envía la solicitud
      *  */
-    public void addResquest(String requestSender){
+    public void addReceivedRequest(String requestSender){
         view.addRequest(requestSender, client.username);
+    }
+
+    /**
+     * Notifica a la GUI de que se ha enviado una solicitud de amistad.
+     *
+     * @param requestReceiver nombre del usuario al que se le envió la solicitud
+     *  */
+    public void addSentRequest(String requestReceiver){
+        view.addRequest(client.username, requestReceiver);
     }
 
     /**

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import whisp.utils.Logger;
 
 public class FriendViewController {
 
@@ -62,6 +63,7 @@ public class FriendViewController {
     public void loadChat()
     {
         menuViewController.showFriends();
+        Logger.info(usernameLabel.getText() + " is now the loaded user");
         menuViewController.setLoadedChatUser(usernameLabel.getText());
         menuViewController.loadChat();
     }
