@@ -218,6 +218,12 @@ public class MenuViewController {
             return;
         }
 
+        if (searchField.getText().equals(mainApp.getUsername())){
+            Logger.info("Trying to send request to yourself, showing error window...");
+            ClientApplication.showErrorWindow("You are so alone...");
+            return;
+        }
+
         for(FriendRequest fr : friendRequests){
             if(fr.getReceiverUsername().equals(searchField.getText())){
                 Logger.info("Resquest for " + searchField.getText() + " has already been sent, showing error window...");
@@ -479,7 +485,6 @@ public class MenuViewController {
      */
     public void addFriend(String friendName){
         mainApp.requestAccepted(friendName);
-        friendConnected(friendName);
     }
 
     /**

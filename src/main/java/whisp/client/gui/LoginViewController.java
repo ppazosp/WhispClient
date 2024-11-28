@@ -58,10 +58,12 @@ public class LoginViewController {
     @FXML
     public void login(){
         Logger.info("Login button pressed, trying to login user...");
+        clientApp.showLoadingScene();
         if (clientApp.login(usernameField.getText(), passwordField.getText())){
             Logger.info("Username and Password are correct, proceeding to Authentification window");
             clientApp.showAuthScene(usernameField.getText());
         }else{
+            clientApp.quitLoadingScene();
             Logger.info("Username or Password incorrect, showing error label...");
             errorLabel.setVisible(true);
         }

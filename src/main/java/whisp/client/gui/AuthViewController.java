@@ -131,6 +131,7 @@ public class AuthViewController {
         int code = Integer.parseInt(scode);
         Logger.info("Code " + code + " introduced, checking with server...");
 
+        clientApp.showLoadingScene();
         if(clientApp.validate(username, code)){
             Logger.info("Validation completed");
             if(mode == 1){
@@ -139,6 +140,7 @@ public class AuthViewController {
             }
                 clientApp.showMenuStage(username);
         }else{
+            clientApp.quitLoadingScene();
             Logger.info("Validation failed, showing error label...");
             errorLabel.setVisible(true);
             errorLabel.setText("Invalid Code");

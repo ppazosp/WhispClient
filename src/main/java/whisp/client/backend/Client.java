@@ -180,7 +180,6 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     @Override
     public void receiveKeys(HashMap<String, String> keys) throws RemoteException {
         Logger.info("Received keys from server");
-        //añadir a la keystore
         for(Map.Entry<String, String> entry : keys.entrySet()){
             P2Pencryption.addKeyToKeyStore(entry.getKey(), entry.getValue());
         }
@@ -189,7 +188,6 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     @Override
     public void receiveNewKey(String username, String key) throws RemoteException{
         Logger.info("Received new key from server");
-        //añadir a la keystore
         P2Pencryption.addKeyToKeyStore(username, key);
     }
 

@@ -38,6 +38,8 @@ public class ClientApplication extends Application {
     private static MenuViewController view;
 
     private Stage window;
+    private Scene currScene;
+    private Scene loadingScene;
 
 
 
@@ -54,6 +56,7 @@ public class ClientApplication extends Application {
     public void start(Stage stage)  {
         Logger.info("Program started, calling login stage...");
         window = stage;
+        createLoadingScene();
         showLoginStage();
     }
 
@@ -65,7 +68,7 @@ public class ClientApplication extends Application {
      *  */
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname", "localhost");
+            System.setProperty("java.rmi.server.hostname", "100.79.5.93");
             System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
             System.setProperty("javax.rmi.ssl.client.enabledProtocols", "TLSv1.2,TLSv1.3");
             System.setProperty("javax.net.ssl.trustStore", "client.truststore");
@@ -74,7 +77,7 @@ public class ClientApplication extends Application {
             SslRMIClientSocketFactory sslRMIClientSocketFactory = new SslRMIClientSocketFactory();
 
 
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099, sslRMIClientSocketFactory);
+            Registry registry = LocateRegistry.getRegistry("100.126.172.16", 1099, sslRMIClientSocketFactory);
 
             server = (ServerInterface) registry.lookup("MessagingServer");
 
@@ -143,6 +146,7 @@ public class ClientApplication extends Application {
         window = new Stage();
         window.setTitle( username + "'s Whisp");
         window.setScene(scene);
+        window.setResizable(false);
         window.show();
 
         oldWindow.close();
@@ -289,6 +293,31 @@ public class ClientApplication extends Application {
             errorStage.setTitle("Error");
             errorStage.setScene(scene);
             errorStage.showAndWait();
+    }
+
+    public void createLoadingScene(){
+        Logger.info("Creating Loading scene...");
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/loading-view.fxml"));
+        try {
+            loadingScene = new Scene(fxmlLoader.load());
+        }catch (IOException e) {
+            Logger.error("Error loading Loading scene, check xml filepath");
+            System.exit(1);
+        }
+        Logger.info("Loading scene create correctly");
+    }
+
+    public void showLoadingScene(){
+        Logger.info("Loading...");
+        currScene = window.getScene();
+        window.setScene(loadingScene);
+        window.show();
+    }
+
+    public void quitLoadingScene(){
+        Logger.info("Loaded");
+        window.setScene(currScene);
+        window.show();
     }
 
 
