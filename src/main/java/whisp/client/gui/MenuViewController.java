@@ -117,10 +117,11 @@ public class MenuViewController {
                         String simage = GraphicUtils.imageToString(image);
 
                         Message message = new Message(mainApp.getUsername(), simage, loadedChatUser, false);
-                        mainApp.sendMessage(message);
-                        friendsMap.get(loadedChatUser).addMessage(message);
-                        loadChat();
+                        if (mainApp.sendMessage(message)) {
+                            friendsMap.get(loadedChatUser).addMessage(message);
+                        }
 
+                        loadChat();
                         success = true;
 
                     }
@@ -188,10 +189,10 @@ public class MenuViewController {
         }
 
         Message message = new Message(mainApp.getUsername(), myMessageField.getText(), loadedChatUser, true);
-        mainApp.sendMessage(message);
-
-        Logger.info("Adding sended message to gui...");
-        friendsMap.get(loadedChatUser).addMessage(message);
+        if(mainApp.sendMessage(message)){
+            Logger.info("Adding sended message to gui...");
+            friendsMap.get(loadedChatUser).addMessage(message);
+        }
         myMessageField.clear();
 
         loadChat();

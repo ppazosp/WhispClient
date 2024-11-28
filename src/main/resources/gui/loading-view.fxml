@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane fx:controller="whisp.client.gui.LoadingViewController" prefHeight="200.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22">
-    <!-- ProgressIndicator para el círculo de carga -->
-    <ProgressIndicator fx:id="loadingCircle" prefHeight="100" prefWidth="100" style="-fx-progress-color: #5b8085;" />
+<StackPane prefHeight="220.0" prefWidth="330.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="whisp.client.gui.LoadingViewController">
+   <AnchorPane prefHeight="203.0" prefWidth="330.0" style="-fx-background-color: #FFFFFF;">
+      <children>
+         <ImageView fitHeight="229.0" fitWidth="380.0" layoutX="-50.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/bg3.jpeg" />
+            </image>
+         </ImageView>
+      </children>
+   </AnchorPane>
+   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+      <children>
+         <Label prefHeight="0.0" prefWidth="54.0" text="Whisp" textFill="WHITE">
+            <font>
+               <Font name="Arial Hebrew Scholar Bold" size="18.0" />
+            </font>
+         </Label>
+         <Label text="stop shouting your secrets" textFill="WHITE">
+            <font>
+               <Font name="Arial Hebrew Scholar Bold" size="12.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+         </Label>
+          <!-- ProgressIndicator para el círculo de carga -->
+          <ProgressIndicator fx:id="loadingCircle" prefHeight="148.0" prefWidth="212.0" style="-fx-progress-color: #FFFFFF;" />
+      </children>
+   </VBox>
 </StackPane>

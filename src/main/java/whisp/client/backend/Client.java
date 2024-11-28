@@ -205,29 +205,21 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
      * @param receiver nombre del usuario q va a recibir el mensaje
      * @param isText {@code true} si el mensaje es texto plano, {@code false} en otro caso
      */
-    public void sendMessage(String message, String receiver, boolean isText) {
+    public boolean sendMessage(String message, String receiver, boolean isText) {
         try {
             Logger.info("Sending message to " + receiver + "...");
             ClientInterface friendClient = friends.get(receiver);
             final String encryptedMessage = P2Pencryption.encryptMessage(receiver, message);
-            Logger.info("Message encrypted"+ encryptedMessage);
+            Logger.info("Message encrypted correctly");
             friendClient.receiveMessage(encryptedMessage, username, isText);
             Logger.info("Message sended");
+            return true;
         }catch (RemoteException e){
             Logger.error(receiver + " is not available right now. Try messaging him later");
             ClientApplication.showErrorWindow(receiver + " is not available");
-
-            mainApp.askForClientDisconnection(receiver);
+            mainApp.checkClientStatus(receiver);
+            return false;
         }
-    }
-
-    /**
-     * Comprueba si un usuario es amigo del usuario de la sesión actual.
-     *
-     * @param username nombre del usuario a comprobar
-     */
-    public boolean isFriend(String username){
-        return friends.get(username)!= null;
     }
 
 

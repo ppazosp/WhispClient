@@ -1,5 +1,6 @@
 package whisp.client.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -132,18 +133,28 @@ public class AuthViewController {
         Logger.info("Code " + code + " introduced, checking with server...");
 
         clientApp.showLoadingScene();
-        if(clientApp.validate(username, code)){
-            Logger.info("Validation completed");
-            if(mode == 1){
-                Logger.info("Changing password...");
-                clientApp.changePassword(username, password);
-            }
-                clientApp.showMenuStage(username);
-        }else{
-            clientApp.quitLoadingScene();
-            Logger.info("Validation failed, showing error label...");
-            errorLabel.setVisible(true);
-            errorLabel.setText("Invalid Code");
-        }
+        new Thread(() -> {
+            boolean isValid = clientApp.validate(username, code);
+
+            Platform.runLater(() -> {
+                if (isValid) {
+                    Logger.info("Validation completed");
+
+                    if (mode == 1) {
+                        Logger.info("Changing password...");
+                            clientApp.changePassword(username, password);
+                            Logger.info("Password changed successfully");
+                            clientApp.showMenuStage(username);
+                    } else {
+                        clientApp.showMenuStage(username);
+                    }
+                } else {
+                    clientApp.quitLoadingScene();
+                    Logger.info("Validation failed, showing error label...");
+                    errorLabel.setVisible(true);
+                    errorLabel.setText("Invalid Code");
+                }
+            });
+        }).start();
     }
 }

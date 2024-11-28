@@ -1,5 +1,6 @@
 package whisp.client.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -59,14 +60,19 @@ public class LoginViewController {
     public void login(){
         Logger.info("Login button pressed, trying to login user...");
         clientApp.showLoadingScene();
-        if (clientApp.login(usernameField.getText(), passwordField.getText())){
-            Logger.info("Username and Password are correct, proceeding to Authentification window");
-            clientApp.showAuthScene(usernameField.getText());
-        }else{
-            clientApp.quitLoadingScene();
-            Logger.info("Username or Password incorrect, showing error label...");
-            errorLabel.setVisible(true);
-        }
+        new Thread(() -> {
+            boolean loginSuccess = clientApp.login(usernameField.getText(), passwordField.getText());
+            Platform.runLater(() -> {
+                if (loginSuccess) {
+                    Logger.info("Username and Password are correct, proceeding to Authentication window");
+                    clientApp.showAuthScene(usernameField.getText());
+                } else {
+                    clientApp.quitLoadingScene();
+                    Logger.info("Username or Password incorrect, showing error label...");
+                    errorLabel.setVisible(true);
+                }
+            });
+        }).start();
     }
 
     /**

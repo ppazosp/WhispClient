@@ -1,13 +1,9 @@
 package whisp.client;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import whisp.client.backend.Client;
@@ -77,7 +73,7 @@ public class ClientApplication extends Application {
             SslRMIClientSocketFactory sslRMIClientSocketFactory = new SslRMIClientSocketFactory();
 
 
-            Registry registry = LocateRegistry.getRegistry("100.126.172.16", 1099, sslRMIClientSocketFactory);
+            Registry registry = LocateRegistry.getRegistry("100.78.128.24", 1099, sslRMIClientSocketFactory);
 
             server = (ServerInterface) registry.lookup("MessagingServer");
 
@@ -116,41 +112,47 @@ public class ClientApplication extends Application {
      * @param username nombre del usuario que inició sesión
      * */
     public void showMenuStage(String username) {
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/menu-view.fxml"));
-        Scene scene = null;
         try {
-            scene = new Scene(fxmlLoader.load());
-        }catch (IOException e){
+            FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/menu-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+
+            view = fxmlLoader.getController();
+            view.initialize(this, scene);
+
+            new Thread(() -> {
+                try {
+                    Logger.info("Trying to create Client...");
+                    client = new Client(username, this);
+                } catch (Exception e) {
+                    Logger.error("Could not create a new Client");
+                    System.exit(1);
+                }
+
+                try {
+                    server.registerClient(client);
+                } catch (RemoteException e) {
+                    Logger.error("Cannot register client, check server connection");
+                    e.printStackTrace();
+                }
+
+                Platform.runLater(() -> {
+
+                    Stage oldWindow = window;
+
+                    window = new Stage();
+                    window.setTitle(username + "'s Whisp");
+                    window.setScene(scene);
+                    window.setResizable(false);
+                    window.show();
+
+                    oldWindow.close();
+                });
+            }).start();
+        } catch (IOException e) {
             Logger.error("Error loading Menu scene, check xml filepath");
             System.exit(1);
         }
-        view = fxmlLoader.getController();
-        view.initialize(this, scene);
 
-        try {
-            Logger.info("Trying to create Client...");
-            client = new Client(username, this);
-        }catch (Exception e) {
-            Logger.error("Could not create a new Client");
-            System.exit(1);
-        }
-
-        try {
-            server.registerClient(client);
-        } catch (Exception e) {
-            Logger.error("Cannot register client, check server connection");
-            e.printStackTrace();
-        }
-
-        Stage oldWindow = window;
-
-        window = new Stage();
-        window.setTitle( username + "'s Whisp");
-        window.setScene(scene);
-        window.setResizable(false);
-        window.show();
-
-        oldWindow.close();
     }
 
     /**
@@ -305,13 +307,15 @@ public class ClientApplication extends Application {
             Logger.error("Error loading Loading scene, check xml filepath");
             System.exit(1);
         }
-        Logger.info("Loading scene create correctly");
+        Logger.info("Loading scene created correctly");
     }
 
     public void showLoadingScene(){
         Logger.info("Loading...");
         currScene = window.getScene();
+
         window.setScene(loadingScene);
+
         window.show();
     }
 
@@ -338,10 +342,11 @@ public class ClientApplication extends Application {
     public boolean login(String username, String password){
         try{
             String salt = server.getSalt(username);
-            if (salt == null) return false;
+            if (salt.isEmpty()) return false;
             return server.login(username, Encrypter.getHashedPassword(password, Base64.getDecoder().decode(salt.getBytes())));
         }catch (RemoteException e){
             Logger.error("Login failed, check server connection");
+            e.printStackTrace();
         }
         return false;
     }
@@ -356,8 +361,9 @@ public class ClientApplication extends Application {
     public boolean checkUsernameAvailability(String username) {
         try {
             return server.checkUsernameAvailability(username);
-        }catch (Exception e){
+        }catch (RemoteException e){
             Logger.error("Registration failed, check server connection");
+            e.printStackTrace();
         }
         return false;
     }
@@ -378,8 +384,9 @@ public class ClientApplication extends Application {
             String qr = server.register(username, pass[1], pass[0]);
             Logger.info("Registrarion completed, moving to validation...");
             showAuthRegisterScene(username, qr);
-        }catch (Exception e){
+        }catch (RemoteException e){
             Logger.error("Registration failed, check server connection");
+            e.printStackTrace();
         }
     }
 
@@ -396,8 +403,9 @@ public class ClientApplication extends Application {
             String[] pass = Encrypter.createHashPassword(password);
             server.changePassword(username, pass[1], pass[0]);
             Logger.info("Password changed correctly");
-        }catch (Exception e){
+        }catch (RemoteException e){
             Logger.error("Registration failed when connecting to server");
+            e.printStackTrace();
         }
     }
 
@@ -408,15 +416,14 @@ public class ClientApplication extends Application {
      * @param code código de autentificación
      *  */
     public boolean validate(String username, int code){
-        return true;
-        /*try {
+        try {
             return server.validate(username, code);
         } catch (RemoteException e) {
             Logger.error("Could not validate code, check server connection");
+            e.printStackTrace();
         }
 
         return false;
-         */
     }
 
 
@@ -472,11 +479,18 @@ public class ClientApplication extends Application {
      * @param friend nombre del usuario a quien enviar la solicitud
      *  */
     public void sendRequest(String friend){
-        Logger.info("checking if " + getUsername() + " and " + friend + "...");
-        if(client.isFriend(getUsername())){
-            Logger.info("They are already friends, returning...");
-            return;
+        try{
+            Logger.info("checking if " + getUsername() + " and " + friend + "are already friends...");
+            if(server.areFriends(getUsername(), friend)) {
+                Logger.info("They are already friends, showing error...");
+                showErrorWindow("You are already bros");
+                return;
+            }
+        }catch (RemoteException e){
+            Logger.error("Check could not be completed, check server connection");
+            e.printStackTrace();
         }
+
         try{
             Logger.info("They are not friends, sending request to server...");
             if(server.sendRequest(client.username, friend)){
@@ -487,8 +501,9 @@ public class ClientApplication extends Application {
                 showErrorWindow("That bro is not here");
 
             }
-        }catch (Exception e){
+        }catch (RemoteException e){
             Logger.error("Request could not be sended, check server connection");
+            e.printStackTrace();
         }
     }
 
@@ -501,8 +516,9 @@ public class ClientApplication extends Application {
         try {
             server.requestAccepted(friendName, client.username);
             Logger.info("Request accepted on server");
-        }catch (Exception e) {
+        }catch (RemoteException e) {
             Logger.error("Accepting request failed when connecting to server, check server connection");
+            e.printStackTrace();
         }
     }
 
@@ -533,8 +549,9 @@ public class ClientApplication extends Application {
         try {
             server.requestCancelled(client.username, requestSender);
             Logger.info("Request cancelled on server");
-        }catch (Exception e){
+        }catch (RemoteException e){
             Logger.error("Cancelling request failed when connecting to server, check server connection");
+            e.printStackTrace();
         }
 
     }
@@ -548,11 +565,12 @@ public class ClientApplication extends Application {
          view.removeRequest(receiverName);
     }
 
-    public void askForClientDisconnection(String clientUsername){
+    public void checkClientStatus(String clientUsername){
         try {
-            server.askForClientDisconnection(clientUsername);
+            server.checkClientStatus(clientUsername);
         } catch (RemoteException e) {
             Logger.error("Could not ask for client disconnection, check server connection");
+            e.printStackTrace();
         }
     }
 
@@ -575,8 +593,8 @@ public class ClientApplication extends Application {
      *
      * @param message objeto Message a enviar
      *  */
-    public void sendMessage(Message message){
-        client.sendMessage(message.getContent(), message.getReceiver(), message.isText());
+    public boolean sendMessage(Message message){
+        return client.sendMessage(message.getContent(), message.getReceiver(), message.isText());
     }
 }
 
