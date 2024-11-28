@@ -28,7 +28,7 @@ public class FriendViewController {
     // *******************************************************************************************
 
     /**
-     * Setter para el atributo {@code username}
+     * Setter para el texto mostrado en {@link FriendViewController#usernameLabel}
      *
      * @param username nombre de usuario que mostrar
      */
@@ -37,7 +37,7 @@ public class FriendViewController {
     }
 
     /**
-     * Setter para el atributo {@code menuViewController}
+     * Setter para el atributo {@link FriendViewController#menuViewController}
      *
      * <p>
      *     Es la referencia a la clase principal de manejo de  la GUI

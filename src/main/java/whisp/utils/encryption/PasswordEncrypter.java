@@ -1,4 +1,6 @@
-package whisp.utils;
+package whisp.utils.encryption;
+
+import whisp.utils.Logger;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -7,7 +9,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class Encrypter {
+public class PasswordEncrypter {
 
     //*******************************************************************************************
     //* CONSTANTS
@@ -20,7 +22,7 @@ public class Encrypter {
 
 
     //*******************************************************************************************
-    //* METHODS
+    //* STATIC METHODS
     //*******************************************************************************************
 
     /**
@@ -36,7 +38,7 @@ public class Encrypter {
     }
 
     /**
-     * Hashea una contraseña usando como algoritmo {@link Encrypter#ALGORITHM} y el salt proporcionado
+     * Hashea una contraseña usando como algoritmo {@link PasswordEncrypter#ALGORITHM} y el salt proporcionado
      *
      * @param password contraseña en plano a hashear
      * @param salt array de bytes para usar como salt en el hash
@@ -58,8 +60,8 @@ public class Encrypter {
      * Genera un salt y hashea una contraseña
      *
      * <p>
-     *     Llama a la función {@link Encrypter#generateSalt()} para generar el salt y a
-     *     {@link Encrypter#getHashedPassword(String, byte[])} para hashear la contraseña con el salt
+     *     Llama a la función {@link PasswordEncrypter#generateSalt()} para generar el salt y a
+     *     {@link PasswordEncrypter#getHashedPassword(String, byte[])} para hashear la contraseña con el salt
      * </p>
      *
      * @param password contraseña en plano a hashear

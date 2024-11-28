@@ -3,7 +3,7 @@ package whisp.client.backend;
 import whisp.client.ClientApplication;
 import whisp.utils.Logger;
 import whisp.interfaces.ClientInterface;
-import whisp.utils.P2Pencryption;
+import whisp.utils.encryption.P2PEncrypter;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -33,7 +33,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
         this.username = username;
         this.mainApp = mainApp;
         //crear keystore
-        P2Pencryption.createKeyStore();
+        P2PEncrypter.createKeyStore();
     }
 
 
@@ -64,7 +64,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     @Override
     public void receiveMessage(String message, String senderName, boolean isText) throws RemoteException {
         Logger.info("Received message from " + senderName);
-        String encryptedMessage = P2Pencryption.decryptMessage(senderName, message);
+        String encryptedMessage = P2PEncrypter.decryptMessage(senderName, message);
 
         mainApp.receiveMessage(encryptedMessage, senderName, isText);
     }
@@ -178,18 +178,31 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     @Override
     public void ping() throws RemoteException {}
 
+    /**
+     * Recibe múltiples claves desde el servidor para cada amigo conectado y las almacena en el KeyStore.
+     *
+     * @param keys un HashMap que contiene pares de alias (nombre del amigo) y claves codificadas en Base64.
+     * @throws RemoteException si ocurre un error durante la comunicación remota.
+     */
     @Override
     public void receiveKeys(HashMap<String, String> keys) throws RemoteException {
         Logger.info("Received keys from server");
         for(Map.Entry<String, String> entry : keys.entrySet()){
-            P2Pencryption.addKeyToKeyStore(entry.getKey(), entry.getValue());
+            P2PEncrypter.addKeyToKeyStore(entry.getKey(), entry.getValue());
         }
     }
 
+    /**
+     * Recibe una nueva clave desde el servidor para un amigo recién conectado y la almacena en el KeyStore.
+     *
+     * @param username el alias asociado a la clave.
+     * @param key la clave codificada en Base64 que será almacenada en el KeyStore.
+     * @throws RemoteException si ocurre un error durante la comunicación remota.
+     */
     @Override
     public void receiveNewKey(String username, String key) throws RemoteException{
         Logger.info("Received new key from server");
-        P2Pencryption.addKeyToKeyStore(username, key);
+        P2PEncrypter.addKeyToKeyStore(username, key);
     }
 
 
@@ -209,7 +222,7 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
         try {
             Logger.info("Sending message to " + receiver + "...");
             ClientInterface friendClient = friends.get(receiver);
-            final String encryptedMessage = P2Pencryption.encryptMessage(receiver, message);
+            final String encryptedMessage = P2PEncrypter.encryptMessage(receiver, message);
             Logger.info("Message encrypted correctly");
             friendClient.receiveMessage(encryptedMessage, username, isText);
             Logger.info("Message sended");

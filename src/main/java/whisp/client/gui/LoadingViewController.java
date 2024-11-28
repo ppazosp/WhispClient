@@ -5,6 +5,10 @@ import javafx.scene.control.ProgressIndicator;
 
 public class LoadingViewController {
 
+    //*******************************************************************************************
+    //* ATTRIBUTES
+    // *******************************************************************************************
+
     @FXML
     ProgressIndicator loadingCircle;
 }

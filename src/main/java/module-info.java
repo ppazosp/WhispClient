@@ -17,4 +17,6 @@ module whisp.client {
     opens whisp.client.gui.entities to javafx.fxml;
     exports whisp.client;
     opens whisp.client to javafx.fxml;
+    exports whisp.utils.encryption;
+    opens whisp.utils.encryption to javafx.fxml;
 }

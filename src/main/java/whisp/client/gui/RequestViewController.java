@@ -45,12 +45,26 @@ public class RequestViewController {
     //* FXML METHODS
     //*******************************************************************************************
 
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de aceptar solicitud.
+     *
+     * <p>
+     *      Comunica a la clase principal de GUI de que se ha aceptado una solicitud de amistad
+     * </p>
+     */
     @FXML
     public void acceptResquest(){
         Logger.info("Accept resquest button pressed, trying to add friend...");
         menuViewController.addFriend(usernameLabel.getText());
     }
 
+    /**
+     * Función lanzada por {@code FXML} al pulsar el botón de rechazar solicitud.
+     *
+     * <p>
+     *      Comunica a la clase principal de GUI de que se ha rechazado una solicitud de amistad
+     * </p>
+     */
     @FXML
     public void cancelResquest(){
         Logger.info("Cancel resquest button pressed, informing server... ");

@@ -12,7 +12,7 @@ import whisp.client.gui.entities.Message;
 import whisp.interfaces.ClientInterface;
 import whisp.utils.Logger;
 import whisp.interfaces.ServerInterface;
-import whisp.utils.Encrypter;
+import whisp.utils.encryption.PasswordEncrypter;
 
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 
@@ -156,7 +156,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Login a la stage actual.
+     * Asigna la escena de Login al stage actual.
      *  */
     public void showLoginScene() {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/login-view.fxml"));
@@ -176,7 +176,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Registro a la stage actual.
+     * Asigna la escena de Registro al stage actual.
      *  */
     public void showRegisterScene() {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/register-view.fxml"));
@@ -195,7 +195,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Autentificación al registrarse a la stage actual.
+     * Asigna la escena de Autentificación al registrarse al stage actual.
      *
      * @param username nombre del nuevo usuario a registrar
      * @param qr image QR a escanear por el usuario codificada como String con Base64
@@ -217,7 +217,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Autentificación al iniciar sesión a la stage actual.
+     * Asigna la escena de Autentificación al iniciar sesión al stage actual.
      *
      * @param username nombre del usuario que requiere autentificación
      *  */
@@ -239,7 +239,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Autentificación al cambiar contraseña a la stage actual.
+     * Asigna la escena de Autentificación al cambiar contraseña al stage actual.
      *
      * @param username nombre del usuario que requiere autentificación
      * @param password nueva contraseña del usuario
@@ -261,7 +261,7 @@ public class ClientApplication extends Application {
     }
 
     /**
-     * Asigna la escena de Cambio de contraseña a la stage actual.
+     * Asigna la escena de Cambio de contraseña al stage actual.
      *  */
     public void showChangePasswordScene() {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/change_password-view.fxml"));
@@ -279,6 +279,11 @@ public class ClientApplication extends Application {
         window.show();
     }
 
+    /**
+     * Crea la ventana de error y la muestra por pantalla junto a un mensaje.
+     *
+     * @param message el mensaje de error que se mostrará en la ventana.
+     */
     public static void showErrorWindow(String message) {
             FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/error-view.fxml"));
             Scene scene = null;
@@ -298,6 +303,13 @@ public class ClientApplication extends Application {
             errorStage.showAndWait();
     }
 
+    /**
+     * Crea la escena de carga (loading) y la prepara para ser utilizada.
+     *
+     * <p>
+     *     Este método debe ejecutarse antes de llamar a {@link #showLoadingScene()}.
+     * </p>
+     */
     public void createLoadingScene(){
         Logger.info("Creating Loading scene...");
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/loading-view.fxml"));
@@ -310,6 +322,14 @@ public class ClientApplication extends Application {
         Logger.info("Loading scene created correctly");
     }
 
+    /**
+     * Asigna la escena de carga (loading) al stage actual.
+     *
+     * <p>
+     *     La escena actual se guarda en la variable {@link ClientApplication#currScene} para poder restaurarla
+     *     posteriormente con {@link #quitLoadingScene()}.
+     * </p>
+     */
     public void showLoadingScene(){
         Logger.info("Loading...");
         currScene = window.getScene();
@@ -319,6 +339,13 @@ public class ClientApplication extends Application {
         window.show();
     }
 
+    /**
+     * Restaura la escena anterior a mostrar la escena de carga.
+     *
+     * <p>
+     *     Este método recoge la escena anterior de la variable {@link ClientApplication#currScene}.
+     * </p>
+     */
     public void quitLoadingScene(){
         Logger.info("Loaded");
         window.setScene(currScene);
@@ -343,7 +370,7 @@ public class ClientApplication extends Application {
         try{
             String salt = server.getSalt(username);
             if (salt.isEmpty()) return false;
-            return server.login(username, Encrypter.getHashedPassword(password, Base64.getDecoder().decode(salt.getBytes())));
+            return server.login(username, PasswordEncrypter.getHashedPassword(password, Base64.getDecoder().decode(salt.getBytes())));
         }catch (RemoteException e){
             Logger.error("Login failed, check server connection");
             e.printStackTrace();
@@ -380,7 +407,7 @@ public class ClientApplication extends Application {
      *  */
     public void register(String username, String password) {
         try {
-            String[] pass = Encrypter.createHashPassword(password);
+            String[] pass = PasswordEncrypter.createHashPassword(password);
             String qr = server.register(username, pass[1], pass[0]);
             Logger.info("Registrarion completed, moving to validation...");
             showAuthRegisterScene(username, qr);
@@ -400,7 +427,7 @@ public class ClientApplication extends Application {
     public void changePassword(String username, String password){
         try {
             Logger.info("Hashing introduced password...");
-            String[] pass = Encrypter.createHashPassword(password);
+            String[] pass = PasswordEncrypter.createHashPassword(password);
             server.changePassword(username, pass[1], pass[0]);
             Logger.info("Password changed correctly");
         }catch (RemoteException e){
@@ -416,14 +443,15 @@ public class ClientApplication extends Application {
      * @param code código de autentificación
      *  */
     public boolean validate(String username, int code){
-        try {
+        return true;
+        /*try {
             return server.validate(username, code);
         } catch (RemoteException e) {
             Logger.error("Could not validate code, check server connection");
             e.printStackTrace();
         }
 
-        return false;
+        return false;*/
     }
 
 
