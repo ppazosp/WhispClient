@@ -64,8 +64,9 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
     @Override
     public void receiveMessage(String message, String senderName, boolean isText) throws RemoteException {
         Logger.info("Received message from " + senderName);
+        String encryptedMessage = P2Pencryption.decryptMessage(senderName, message);
 
-        mainApp.receiveMessage(message, senderName, isText);
+        mainApp.receiveMessage(encryptedMessage, senderName, isText);
     }
 
     /**
@@ -208,7 +209,9 @@ public class Client extends UnicastRemoteObject implements ClientInterface, Seri
         try {
             Logger.info("Sending message to " + receiver + "...");
             ClientInterface friendClient = friends.get(receiver);
-            friendClient.receiveMessage(message, username, isText);
+            final String encryptedMessage = P2Pencryption.encryptMessage(receiver, message);
+            Logger.info("Message encrypted"+ encryptedMessage);
+            friendClient.receiveMessage(encryptedMessage, username, isText);
             Logger.info("Message sended");
         }catch (RemoteException e){
             Logger.error(receiver + " is not available right now. Try messaging him later");
