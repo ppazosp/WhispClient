@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:controller="whisp.client.gui.LoadingViewController" prefHeight="200.0" prefWidth="200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22">
+    <!-- ProgressIndicator para el círculo de carga -->
+    <ProgressIndicator fx:id="loadingCircle" prefHeight="100" prefWidth="100" style="-fx-progress-color: #5b8085;" />
+</StackPane>
