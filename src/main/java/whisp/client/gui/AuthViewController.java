@@ -17,7 +17,8 @@ public class AuthViewController {
 
     ClientApplication clientApp;
     String username;
-    String password;
+    String oldPassword;
+    String newPassword;
 
     @FXML
     Label errorLabel;
@@ -49,16 +50,20 @@ public class AuthViewController {
      *</p>
      *
      * @param username nombre del usuario que se quiera validar
-     * @param aux contraseña del usuario si se llama para la validación de registro, sino null
+     * @param oldPassword contraseña vieja del usuario si se llama para la validación de registro, sino null
+     * @param newPassword contraseña vieja del usuario si se llama para la validación de registro, sino null
      * @param clientApp referencia a la clase princial de flujo de ejecución
      */
-    public void initialize(String username, String aux, ClientApplication clientApp, int mode){
+    public void initialize(String username, String oldPassword, String newPassword, ClientApplication clientApp, int mode){
 
         this.clientApp = clientApp;
         this.username = username;
         this.mode = mode;
 
-        if(mode == 1)  this.password = aux;
+        if(mode == 1) {
+            this.oldPassword = oldPassword;
+            this.newPassword = newPassword;
+        }
 
         TextField[] code = {digit1, digit2, digit3, digit4, digit5, digit6};
 
@@ -143,7 +148,7 @@ public class AuthViewController {
 
                     if (mode == 1) {
                         Logger.info("Changing password...");
-                            clientApp.changePassword(username, password);
+                            clientApp.changePassword(username, oldPassword, newPassword);
                             Logger.info("Password changed successfully");
                     }
                     clientApp.showMenuStage(username);

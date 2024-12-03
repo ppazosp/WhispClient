@@ -88,7 +88,7 @@ public class ChangePasswordViewController {
         if (clientApp.login(usernameField.getText(), oldPasswordField.getText())){
 
             Logger.info("Credentiales were correct, showing AuthChanges scene...");
-            clientApp.showAuthChangesScene(usernameField.getText(), newPasswordField.getText());
+            clientApp.showAuthChangesScene(usernameField.getText(), oldPasswordField.getText(), newPasswordField.getText());
 
         }else{
             Logger.info("Incorect credentials, showing error label...");

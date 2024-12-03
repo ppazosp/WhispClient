@@ -244,7 +244,7 @@ public class ClientApplication extends Application {
      * @param username nombre del usuario que requiere autentificación
      * @param password nueva contraseña del usuario
      *  */
-    public void showAuthChangesScene(String username, String password) {
+    public void showAuthChangesScene(String username, String oldPassword, String newPassword) {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/auth-view.fxml"));
         Scene scene = null;
         try {
@@ -254,7 +254,7 @@ public class ClientApplication extends Application {
             System.exit(1);
         }
         AuthViewController authViewController = fxmlLoader.getController();
-        authViewController.initialize(username, password, this, 1);
+        authViewController.initialize(username, oldPassword, newPassword, this, 1);
 
         window.setScene(scene);
         window.show();
@@ -424,11 +424,11 @@ public class ClientApplication extends Application {
      * @param username nombre del usuario
      * @param password nueva contraseña sin hashear
      *  */
-    public void changePassword(String username, String password){
+    public void changePassword(String username, String oldPassword, String newPassword){
         try {
             Logger.info("Hashing introduced password...");
-            String[] pass = PasswordEncrypter.createHashPassword(password);
-            server.changePassword(username, pass[1], pass[0]);
+            String[] pass = PasswordEncrypter.createHashPassword(newPassword);
+            server.changePassword(username, oldPassword, pass[1], pass[0]);
             Logger.info("Password changed correctly");
         }catch (RemoteException e){
             Logger.error("Registration failed when connecting to server");
@@ -443,15 +443,14 @@ public class ClientApplication extends Application {
      * @param code código de autentificación
      *  */
     public boolean validate(String username, int code){
-        return true;
-        /*try {
+        try {
             return server.validate(username, code);
         } catch (RemoteException e) {
             Logger.error("Could not validate code, check server connection");
             e.printStackTrace();
         }
 
-        return false;*/
+        return false;
     }
 
 
