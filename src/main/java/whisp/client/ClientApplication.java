@@ -73,7 +73,7 @@ public class ClientApplication extends Application {
             SslRMIClientSocketFactory sslRMIClientSocketFactory = new SslRMIClientSocketFactory();
 
 
-            Registry registry = LocateRegistry.getRegistry("100.78.128.24", 1099, sslRMIClientSocketFactory);
+            Registry registry = LocateRegistry.getRegistry("100.79.5.93", 1099, sslRMIClientSocketFactory);
 
             server = (ServerInterface) registry.lookup("MessagingServer");
 
@@ -245,7 +245,7 @@ public class ClientApplication extends Application {
      * @param password nueva contraseña del usuario
      *  */
     public void showAuthChangesScene(String username, String password) {
-        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/auth_register-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/auth-view.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load());

@@ -56,6 +56,7 @@ public class AuthViewController {
 
         this.clientApp = clientApp;
         this.username = username;
+        this.mode = mode;
 
         if(mode == 1)  this.password = aux;
 
@@ -144,10 +145,8 @@ public class AuthViewController {
                         Logger.info("Changing password...");
                             clientApp.changePassword(username, password);
                             Logger.info("Password changed successfully");
-                            clientApp.showMenuStage(username);
-                    } else {
-                        clientApp.showMenuStage(username);
                     }
+                    clientApp.showMenuStage(username);
                 } else {
                     clientApp.quitLoadingScene();
                     Logger.info("Validation failed, showing error label...");

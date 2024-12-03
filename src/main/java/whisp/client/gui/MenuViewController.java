@@ -291,10 +291,11 @@ public class MenuViewController {
                 if (friendsMap.get(loadedChatUser).isConnected()) {
                     sendButton.setDisable(false);
                     myMessageField.setDisable(false);
+                    myMessageField.setPromptText("Message...");
                 }else{
                     sendButton.setDisable(true);
                     myMessageField.setDisable(true);
-                    myMessageField.setPromptText("User disconnected");
+                    myMessageField.setPromptText("User disconnected, please try again later");
                 }
 
                 chatLabel.setText(loadedChatUser);
