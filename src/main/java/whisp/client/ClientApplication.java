@@ -231,7 +231,7 @@ public class ClientApplication extends Application {
             System.exit(1);
         }
         AuthViewController authViewController = fxmlLoader.getController();
-        authViewController.initialize(username, null, this, 0);
+        authViewController.initialize(username, null, null,this, 0);
 
         Logger.info("Auth scene created, showing it...");
         window.setScene(scene);
@@ -242,7 +242,8 @@ public class ClientApplication extends Application {
      * Asigna la escena de Autentificación al cambiar contraseña al stage actual.
      *
      * @param username nombre del usuario que requiere autentificación
-     * @param password nueva contraseña del usuario
+     * @param oldPassword vieja contraseña del usuario
+     * @param newPassword nueva contraseña del usuario
      *  */
     public void showAuthChangesScene(String username, String oldPassword, String newPassword) {
         FXMLLoader fxmlLoader = new FXMLLoader(ClientApplication.class.getResource("/gui/auth-view.fxml"));
@@ -422,13 +423,19 @@ public class ClientApplication extends Application {
      * Antes de enviar la nueva contraseña, se hashea.
      *
      * @param username nombre del usuario
-     * @param password nueva contraseña sin hashear
+     * @param oldPassword vieja contraseña sin hashear
+     * @param newPassword nueva contraseña sin hashear
      *  */
     public void changePassword(String username, String oldPassword, String newPassword){
         try {
             Logger.info("Hashing introduced password...");
-            String[] pass = PasswordEncrypter.createHashPassword(newPassword);
-            server.changePassword(username, oldPassword, pass[1], pass[0]);
+
+            String salt = server.getSalt(username);
+            String oldPass = PasswordEncrypter.getHashedPassword(oldPassword, Base64.getDecoder().decode(salt.getBytes()));
+
+            String[] newPass = PasswordEncrypter.createHashPassword(newPassword);
+
+            server.changePassword(username, oldPass, newPass[1], newPass[0]);
             Logger.info("Password changed correctly");
         }catch (RemoteException e){
             Logger.error("Registration failed when connecting to server");
