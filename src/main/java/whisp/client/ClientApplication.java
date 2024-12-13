@@ -74,11 +74,11 @@ public class ClientApplication extends Application {
         try {
             String basePath = "/Applications/Whisp.app/Contents/app/conf";
 
-            //String logPath = Paths.get(basePath, "app.log").toString();
-            //PrintStream logStream = new PrintStream(new FileOutputStream(logPath, true));
-            //System.setOut(logStream);
-            //System.setErr(logStream);
-            //System.out.println("Log Path: " + logPath);
+            String logPath = Paths.get(basePath, "app.log").toString();
+            PrintStream logStream = new PrintStream(new FileOutputStream(logPath, true));
+            System.setOut(logStream);
+            System.setErr(logStream);
+            System.out.println("Log Path: " + logPath);
 
             String filePath = Paths.get(basePath, "ips.conf").toString();
             String[] ips = readIpsFromFile(filePath);
