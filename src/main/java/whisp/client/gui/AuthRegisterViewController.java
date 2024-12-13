@@ -1,5 +1,6 @@
 package whisp.client.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -123,14 +124,20 @@ public class AuthRegisterViewController {
         int code = Integer.parseInt(scode);
         Logger.info("Code " + code + " introduced, checking with server...");
 
-        if(clientApp.validate(username, code)){
-            Logger.info("Validation completed, going back to login scene...");
-            clientApp.showLoginScene();
-        }else{
-            Logger.info("Validation failed, showing error label...");
-            errorLabel.setVisible(true);
-            errorLabel.setText("Invalid Code");
-        }
+        clientApp.showLoadingScene();
+        new Thread(() -> {
+            boolean isValid =  clientApp.validate(username, code);
+            Platform.runLater(() -> {
+                if(isValid){
+                    Logger.info("Validation completed, going back to login scene...");
+                    clientApp.showLoginScene();
+                }else{
+                    Logger.info("Validation failed, showing error label...");
+                    errorLabel.setVisible(true);
+                    errorLabel.setText("Invalid Code");
+                }
+            });
+        }).start();
     }
 
     /**

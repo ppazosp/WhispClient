@@ -21,7 +21,7 @@ public class P2PEncrypter {
     //* CONSTANTS
     //*******************************************************************************************
 
-    private final static String KEYSTORE_PATH = "client.keystore";
+    private final static String KEYSTORE_PATH = "/Applications/Whisp.app/Contents/app/conf/client.keystore";
     private static final String PASSWORD = "password";
 
 

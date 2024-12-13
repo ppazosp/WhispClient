@@ -1,5 +1,6 @@
 package whisp.client.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -78,15 +79,22 @@ public class RegisterViewController {
             return;
         }
 
-        Logger.info("Checking username availability...");
-        if(clientApp.checkUsernameAvailability(usernameField.getText())) {
-            Logger.info("Username available, proceeding to register user...");
-            clientApp.register(usernameField.getText(), passwordField.getText());
-        }else{
-            Logger.info("Username not available, showing error label...");
-            errorLabel.setText("Username is taken");
-            errorLabel.setVisible(true);
-        }
+        clientApp.showLoadingScene();
+        new Thread(() -> {
+            Logger.info("Checking username availability...");
+            if (clientApp.checkUsernameAvailability(usernameField.getText())) {
+                Logger.info("Username available, proceeding to register user...");
+                String qr = clientApp.register(usernameField.getText(), passwordField.getText());
+                Platform.runLater(() -> clientApp.showAuthRegisterScene(usernameField.getText(), qr));
+            } else {
+                Platform.runLater(() -> {
+                    clientApp.quitLoadingScene();
+                    Logger.info("Username not available, showing error label...");
+                    errorLabel.setText("Username is taken");
+                    errorLabel.setVisible(true);
+                });
+            }
+        }).start();
     }
 
     /**

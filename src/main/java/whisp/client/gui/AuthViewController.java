@@ -150,8 +150,10 @@ public class AuthViewController {
                         Logger.info("Changing password...");
                             clientApp.changePassword(username, oldPassword, newPassword);
                             Logger.info("Password changed successfully");
+                            clientApp.showLoginScene();
+                    }else {
+                        clientApp.showMenuStage(username);
                     }
-                    clientApp.showMenuStage(username);
                 } else {
                     clientApp.quitLoadingScene();
                     Logger.info("Validation failed, showing error label...");

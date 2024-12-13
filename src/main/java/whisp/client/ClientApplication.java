@@ -16,10 +16,13 @@ import whisp.utils.encryption.PasswordEncrypter;
 
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Paths;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Base64;
 import java.util.HashMap;
 
@@ -43,6 +46,11 @@ public class ClientApplication extends Application {
     //* MAIN METHODS
     //*******************************************************************************************
 
+    public static void shutdown(){
+        System.out.println("Closing application...");
+        Runtime.getRuntime().halt(0);
+    }
+
     /**
      * Lanza el hilo principal de JavaFX y llama a la función que crea la ventana inicial (login).
      *
@@ -64,27 +72,74 @@ public class ClientApplication extends Application {
      *  */
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname", "100.79.5.93");
+            String basePath = "/Applications/Whisp.app/Contents/app/conf";
+
+            //String logPath = Paths.get(basePath, "app.log").toString();
+            //PrintStream logStream = new PrintStream(new FileOutputStream(logPath, true));
+            //System.setOut(logStream);
+            //System.setErr(logStream);
+            //System.out.println("Log Path: " + logPath);
+
+            String filePath = Paths.get(basePath, "ips.conf").toString();
+            String[] ips = readIpsFromFile(filePath);
+            String serverIp = ips[0];
+            String clientIp = ips[1];
+            System.out.println("Server IP: " + serverIp);
+            System.out.println("Client IP: " + clientIp);
+
+            String trustStorePath = Paths.get(basePath, "client.truststore").toString();
+            System.out.println("Trust Store Path: " + trustStorePath);
+
+            System.setProperty("java.rmi.server.hostname", clientIp);
             System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
             System.setProperty("javax.rmi.ssl.client.enabledProtocols", "TLSv1.2,TLSv1.3");
-            System.setProperty("javax.net.ssl.trustStore", "client.truststore");
+            System.setProperty("javax.net.ssl.trustStore", trustStorePath);
             System.setProperty("javax.net.ssl.trustStorePassword", "password");
 
             SslRMIClientSocketFactory sslRMIClientSocketFactory = new SslRMIClientSocketFactory();
-
-
-            Registry registry = LocateRegistry.getRegistry("100.79.5.93", 1099, sslRMIClientSocketFactory);
+            Registry registry = LocateRegistry.getRegistry(serverIp, 1099, sslRMIClientSocketFactory);
 
             server = (ServerInterface) registry.lookup("MessagingServer");
 
-
+            Runtime.getRuntime().addShutdownHook(new Thread(ClientApplication::shutdown));
 
             launch(args);
 
         } catch (Exception e) {
             System.err.println("Error connecting to server, check server connection");
             e.printStackTrace();
+            System.exit(1);
         }
+    }
+
+    /**
+     * Lee el archivo ips.conf y extrae las direcciones IP.
+     *
+     * @param filePath Ruta al archivo ips.conf.
+     * @return Un array de cadenas con las IPs del servidor y del cliente.
+     * @throws IOException Si ocurre un error al leer el archivo.
+     */
+    public static String[] readIpsFromFile(String filePath) throws IOException {
+        String serverIp = null;
+        String clientIp = null;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (line.startsWith("SERVER_IP")) {
+                    serverIp = line.split("=")[1].trim();
+                } else if (line.startsWith("CLIENT_IP")) {
+                    clientIp = line.split("=")[1].trim();
+                }
+            }
+        }
+
+        if (serverIp == null || clientIp == null) {
+            throw new IOException("Missing SERVER_IP or CLIENT_IP in the file.");
+        }
+
+        return new String[]{serverIp, clientIp};
     }
 
 
@@ -143,6 +198,9 @@ public class ClientApplication extends Application {
                     window.setTitle(username + "'s Whisp");
                     window.setScene(scene);
                     window.setResizable(false);
+                    window.setOnCloseRequest(_ -> {
+                        shutdown();
+                    });
                     window.show();
 
                     oldWindow.close();
@@ -172,6 +230,9 @@ public class ClientApplication extends Application {
 
         Logger.info("Login scene created, showing it...");
         window.setScene(scene);
+        window.setOnCloseRequest(_ -> {
+            shutdown();
+        });
         window.show();
     }
 
@@ -406,16 +467,18 @@ public class ClientApplication extends Application {
      * @param username nombre del nuevo usuario
      * @param password contraseña sin hashear
      *  */
-    public void register(String username, String password) {
+    public String register(String username, String password) {
         try {
             String[] pass = PasswordEncrypter.createHashPassword(password);
             String qr = server.register(username, pass[1], pass[0]);
             Logger.info("Registrarion completed, moving to validation...");
-            showAuthRegisterScene(username, qr);
+            return qr;
         }catch (RemoteException e){
             Logger.error("Registration failed, check server connection");
             e.printStackTrace();
         }
+
+        return " ";
     }
 
     /**
