@@ -72,28 +72,17 @@ public class ClientApplication extends Application {
      *  */
     public static void main(String[] args) {
         try {
-            String basePath = "/Applications/Whisp.app/Contents/app/conf";
-
-            String logPath = Paths.get(basePath, "app.log").toString();
-            PrintStream logStream = new PrintStream(new FileOutputStream(logPath, true));
-            System.setOut(logStream);
-            System.setErr(logStream);
-            System.out.println("Log Path: " + logPath);
-
-            String filePath = Paths.get(basePath, "ips.conf").toString();
+            String filePath = Paths.get( "ips.conf").toString();
             String[] ips = readIpsFromFile(filePath);
             String serverIp = ips[0];
             String clientIp = ips[1];
             System.out.println("Server IP: " + serverIp);
             System.out.println("Client IP: " + clientIp);
 
-            String trustStorePath = Paths.get(basePath, "client.truststore").toString();
-            System.out.println("Trust Store Path: " + trustStorePath);
-
             System.setProperty("java.rmi.server.hostname", clientIp);
             System.setProperty("https.protocols", "TLSv1.2,TLSv1.3");
             System.setProperty("javax.rmi.ssl.client.enabledProtocols", "TLSv1.2,TLSv1.3");
-            System.setProperty("javax.net.ssl.trustStore", trustStorePath);
+            System.setProperty("javax.net.ssl.trustStore", "client.truststore");
             System.setProperty("javax.net.ssl.trustStorePassword", "password");
 
             SslRMIClientSocketFactory sslRMIClientSocketFactory = new SslRMIClientSocketFactory();
