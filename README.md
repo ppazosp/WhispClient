@@ -21,6 +21,15 @@ Communication is powered by **Java RMI**, with security as a key feature.
 
 - **P2P Communication**: Built using Java RMI for a smooth and decentralized experience.
 
+## Insight
+
+<img width="330" alt="Screenshot 2024-12-15 at 16 32 38" src="https://github.com/user-attachments/assets/f98b5448-9f33-4141-90a9-303949269311" />
+
+
+<img width="330" alt="register" src="https://github.com/user-attachments/assets/b59017ff-d729-464c-ba84-f93b7389b101" />
+
+
+<img width="800" alt="menu" src="https://github.com/user-attachments/assets/eecc4ce1-9a25-45f5-9fc3-d8c772ec4b3d" />
 
 
 ## Contributors
