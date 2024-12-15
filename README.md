@@ -4,6 +4,7 @@ WhispClient is the client implementation for **Whisp**, a peer-to-peer (P2P) ins
 This project originated as part of a Distributed Computing course and has evolved into a fully functional application. 
 Communication is powered by **Java RMI**, with security as a key feature.
 
+
 ## Key Features
 
 - **Advanced Security**:
@@ -21,7 +22,14 @@ Communication is powered by **Java RMI**, with security as a key feature.
 - **P2P Communication**: Built using Java RMI for a smooth and decentralized experience.
 
 
+
 ## Contributors
 
 - [ppazosp](https://github.com/ppazosp)
-- [davra](https://github.com/DavidMUSC)
+- [DavidMUSC](https://github.com/DavidMUSC)
+
+
+## Related repositories
+
+- [Client](https://github.com/ppazosp/WhispClient)
+- [Server](https://github.com/ppazosp/WhispServer)
