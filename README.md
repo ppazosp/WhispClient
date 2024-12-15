@@ -23,17 +23,13 @@ Communication is powered by **Java RMI**, with security as a key feature.
 
 ## Insight
 
-- Login screen:
-  <img width="330" alt="Screenshot 2024-12-15 at 16 32 38" src="https://github.com/user-attachments/assets/f98b5448-9f33-4141-90a9-303949269311" />
+## Insight
 
-
-- Registration 2FA screen:
-  <img width="330" alt="register" src="https://github.com/user-attachments/assets/b59017ff-d729-464c-ba84-f93b7389b101" />
-
-
-- Menu screen:
-  <img width="800" alt="menu" src="https://github.com/user-attachments/assets/eecc4ce1-9a25-45f5-9fc3-d8c772ec4b3d" />
-
+| Screen             | Description              | Screenshot                                                                 |
+|--------------------|--------------------------|----------------------------------------------------------------------------|
+| **Login Screen**   | The login screen users see when they start the application. | ![Login Screen](https://github.com/user-attachments/assets/f98b5448-9f33-4141-90a9-303949269311) |
+| **Registration 2FA** | The screen for two-factor authentication during registration. | ![Registration 2FA Screen](https://github.com/user-attachments/assets/b59017ff-d729-464c-ba84-f93b7389b101) |
+| **Menu Screen**    | The main menu showing the application's navigation. | ![Menu Screen](https://github.com/user-attachments/assets/eecc4ce1-9a25-45f5-9fc3-d8c772ec4b3d) |
 
 ## Contributors
 
