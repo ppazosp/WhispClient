@@ -21,4 +21,7 @@ Communication is powered by **Java RMI**, with security as a key feature.
 - **P2P Communication**: Built using Java RMI for a smooth and decentralized experience.
 
 
-Whisp was made by @ppazosp and @davra
+## Contributors
+
+- [ppazosp](https://github.com/ppazosp)
+- [davra](https://github.com/davra)
