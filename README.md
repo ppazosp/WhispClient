@@ -23,17 +23,16 @@ Communication is powered by **Java RMI**, with security as a key feature.
 
 ## Insight
 
-Login screen:
+- Login screen:
+  <img width="330" alt="Screenshot 2024-12-15 at 16 32 38" src="https://github.com/user-attachments/assets/f98b5448-9f33-4141-90a9-303949269311" />
 
-<img width="330" alt="Screenshot 2024-12-15 at 16 32 38" src="https://github.com/user-attachments/assets/f98b5448-9f33-4141-90a9-303949269311" />
 
-Registration 2FA screen:
+- Registration 2FA screen:
+  <img width="330" alt="register" src="https://github.com/user-attachments/assets/b59017ff-d729-464c-ba84-f93b7389b101" />
 
-<img width="330" alt="register" src="https://github.com/user-attachments/assets/b59017ff-d729-464c-ba84-f93b7389b101" />
 
-Menu screen:
-
-<img width="800" alt="menu" src="https://github.com/user-attachments/assets/eecc4ce1-9a25-45f5-9fc3-d8c772ec4b3d" />
+- Menu screen:
+  <img width="800" alt="menu" src="https://github.com/user-attachments/assets/eecc4ce1-9a25-45f5-9fc3-d8c772ec4b3d" />
 
 
 ## Contributors
