@@ -39,8 +39,8 @@ Communication is powered by **Java RMI**, with security as a key feature.
 ## Technologies Used
 
 - **Language:** [Java](https://www.java.com)
+- **Frontend:** [JavaFX](https://openjfx.io)
 - **IDE:** [IntelliJ IDEA](https://www.jetbrains.com/es-es/idea/)
-- **Database:** [Supabase](https://supabase.com)
 
 ---
 
