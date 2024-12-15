@@ -39,7 +39,7 @@ Communication is powered by **Java RMI**, with security as a key feature.
 ## Technologies Used
 
 - **Language:** [Java](https://www.java.com)
-- **Development Environment:** [IntelliJ IDEA](https://www.jetbrains.com/es-es/idea/)
+- **IDE:** [IntelliJ IDEA](https://www.jetbrains.com/es-es/idea/)
 - **Database:** [Supabase](https://supabase.com)
 
 ---
