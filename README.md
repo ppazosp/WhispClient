@@ -24,4 +24,4 @@ Communication is powered by **Java RMI**, with security as a key feature.
 ## Contributors
 
 - [ppazosp](https://github.com/ppazosp)
-- [davra](https://github.com/davra)
+- [davra](https://github.com/DavidMUSC)
